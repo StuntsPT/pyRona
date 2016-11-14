@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with misc_plotters.  If not, see <http://www.gnu.org/licenses/>.
 
-# Usage: python3
 
 from collections import defaultdict
 
@@ -84,19 +83,21 @@ def baypass_pij_parser(pij_filename, associations):
     return frequencies
 
 
-def calculate_rona(marker, covar, present_covar, future_covar, allele_freqs,
-                   popnames):
+def calculate_rona(marker_name, covar_name, present_covar, future_covar,
+                   allele_freqs, popnames_file, draw_plot=True):
     """
     Calculates the "Risk of non adaptation" (RONA) of each popuation for a
     given association.
+    Also plots the associations if requested.
     """
-    # TODO: Improve this function, get rid of redundant code and make the code more readable!
+    # Get population names
+    popnames = open(popnames_file, 'r').readlines()
 
     # Calculate trendline:
     fit = np.polyfit(present_covar, allele_freqs, 1)
     fit_fn = np.poly1d(fit)
 
-    print("Marker: %s; covar %s" % (marker, covar))
+    print("Marker: %s; covar %s" % (marker_name, covar_name))
     for pres, fut, freq, pops in zip(present_covar, future_covar, allele_freqs,
                                      popnames):
         pres_trendline_value = fit_fn(pres)
@@ -109,47 +110,46 @@ def calculate_rona(marker, covar, present_covar, future_covar, allele_freqs,
 
         print("%s: %s" % (pops.strip(), rel_dist))
 
+    if draw_plot is True:
+        all_covars = np.append(present_covar, future_covar)
 
-def plot_associations(marker, covar, present_covar, future_covar, allele_freqs):
-    """
-    Plots the relevant associtions, along with a trendline
-    """
-    all_covars = np.append(present_covar, future_covar)
+        # Set-up the plot
+        plt.xlabel("Covariate %s" % covar_name)
+        plt.ylabel('Marker %s standardized allele freqs.' % marker_name)
+        plt.title('Linear regression plot')
 
-    # Calculate trendline:
-    fit = np.polyfit(present_covar, allele_freqs, 1)
-    fit_fn = np.poly1d(fit)
+        plt.plot(present_covar, allele_freqs, 'bo', label='Present observations')
+        plt.plot(future_covar, allele_freqs, 'go', label='Future predictions')
+        plt.plot(all_covars, fit_fn(all_covars), 'r--', label='Regression line')
 
+        plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
+                 max(all_covars) + np.average(present_covar) * 0.1)
+        plt.ylim(0, max(allele_freqs) + 2)
 
-    # set-up the plot
-    plt.xlabel("Covariate %s" % covar)
-    plt.ylabel('Marker %s standardized allele freqs.' % marker)
-    plt.title('Linear regression plot')
-
-    plt.plot(present_covar, allele_freqs, 'bo', label='Present observations')
-    plt.plot(future_covar, allele_freqs, 'go', label='Future predictions')
-    plt.plot(all_covars, fit_fn(all_covars), 'r--', label='Regression line')
-
-    plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
-             max(all_covars) + np.average(present_covar) * 0.1)
-    plt.ylim(0, max(allele_freqs) + 2)
-
-    plt.show()
+        plt.show()
 
 
-if __name__ == "__main__":
-    from sys import argv
-    # TODO: Implement argparse!
-    present_covariates = parse_envfile(argv[1]) # ENVFILE
-    future_covariates = parse_envfile(argv[2]) # ENVFILE
-    assocs = baypass_summary_beta2_parser(argv[3], argv[4]) # summary; BF
-    al_freqs = baypass_pij_parser(argv[5], assocs) # summary_pij
-    popnames = open(argv[6], 'r').readlines()
+def main(present_covars_file, future_covars_file, baypass_summary_beta2_file,
+         bayes_factor, baypass_pij_file, popnames_file):
+    present_covariates = parse_envfile(present_covars_file)
+    future_covariates = parse_envfile(future_covars_file)
+    assocs = baypass_summary_beta2_parser(baypass_summary_beta2_file,
+                                          bayes_factor)
+    al_freqs = baypass_pij_parser(baypass_pij_file, assocs)
     # Get first 3 assocs, for testing
     for assoc in assocs[:3]:
         marker, covar = assoc
         calculate_rona(marker, covar, present_covariates[int(covar) + 1],
                        future_covariates[int(covar) + 1], al_freqs[marker],
-                       popnames)
-        plot_associations(marker, covar, present_covariates[int(covar) + 1],
-                          future_covariates[int(covar) + 1], al_freqs[marker])
+                       popnames_file)
+
+
+if __name__ == "__main__":
+    from sys import argv
+    """
+    Usage: python3 pyRone.py present_covar_file future_covar_file \
+    mcmc_core2_summary_betai_reg.out_file BF_threshold (int) \
+    mcmc_core2_summary_pij.out_file popnames_file
+    """
+    # TODO: Implement argparse!
+    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
