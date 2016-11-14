@@ -103,12 +103,12 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
 
-        pres_dist = freq - pres_trendline_value
-        fut_dist = freq - fut_trendline_value
-        diff_dist = abs(pres_dist) - abs(fut_dist)
-        rel_dist = diff_dist / max(allele_freqs)
+        pres_distance = freq - pres_trendline_value
+        fut_distance = freq - fut_trendline_value
+        diff_distance = abs(pres_distance) - abs(fut_distance)
+        rel_distance = diff_distance / max(allele_freqs)
 
-        print("%s: %s" % (pops.strip(), rel_dist))
+        print("%s: %s" % (pops.strip(), rel_distance))
 
     if draw_plot is True:
         all_covars = np.append(present_covar, future_covar)
