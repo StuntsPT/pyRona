@@ -93,6 +93,13 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     # Get population names
     popnames = open(popnames_file, 'r').readlines()
 
+    # Remove outliers
+    outlier_pos = MD_removeOutliers(present_covar, allele_freqs)
+    present_covar = np.delete(present_covar, outlier_pos)
+    future_covar = np.delete(future_covar, outlier_pos)
+    allele_freqs = np.delete(allele_freqs, outlier_pos)
+    popnames = np.delete(popnames, outlier_pos)
+
     # Calculate trendline:
     fit = np.polyfit(present_covar, allele_freqs, 1)
     fit_fn = np.poly1d(fit)
@@ -126,7 +133,56 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
                  max(all_covars) + np.average(present_covar) * 0.1)
         plt.ylim(0, max(allele_freqs) + 2)
 
+        # Annotation
+        for label, x, y in zip(popnames, present_covar, allele_freqs):
+            plt.annotate(label.strip(), xy=(x, y), xytext=(-15, 15),
+                         textcoords='offset points', ha='right',
+                         va='bottom', bbox=dict(boxstyle='round,pad=0.1',
+                                                fc='yellow',
+                                                alpha=0.5),
+                         arrowprops = dict(arrowstyle='->',
+                                           connectionstyle='arc3,rad=0'))
+
         plt.show()
+
+
+def MahalanobisDist(x, y):
+    """
+    Calculates Mahalanobis Distance.
+    Takes 2 np.array([]) as input which are used to calculate the MD distance.
+    Returns a list with the MD distances between every xy point.
+    http://kldavenport.com/mahalanobis-distance-and-outliers/
+    """
+    covariance_xy = np.cov(x,y, rowvar=0)
+    inv_covariance_xy = np.linalg.inv(covariance_xy)
+    xy_mean = np.mean(x),np.mean(y)
+    x_diff = np.array([x_i - xy_mean[0] for x_i in x])
+    y_diff = np.array([y_i - xy_mean[1] for y_i in y])
+    diff_xy = np.transpose([x_diff, y_diff])
+
+    md = []
+    for i in range(len(diff_xy)):
+        md.append(np.sqrt(np.dot(np.dot(np.transpose(diff_xy[i]),inv_covariance_xy),diff_xy[i])))
+    return md
+
+
+def MD_removeOutliers(x, y):
+    """
+    Removes outliers based on Mahalanobis Distance.
+    Takes 2 np.array([]) as input which are used to calculate the MD distance.
+    Returns an np.array([]) with the indices of the removed outliers.
+    http://kldavenport.com/mahalanobis-distance-and-outliers/
+    """
+    MD = MahalanobisDist(x, y)
+    threshold = np.mean(MD) * 1.5 # adjust 1.5 accordingly
+    nx, ny, outliers = [], [], []
+    for i in range(len(MD)):
+        if MD[i] <= threshold:
+            nx.append(x[i])
+            ny.append(y[i])
+        else:
+            outliers.append(i) # position of removed pair
+    return (np.array(outliers))
 
 
 def main(present_covars_file, future_covars_file, baypass_summary_beta2_file,
