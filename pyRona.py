@@ -212,11 +212,11 @@ def argument_parser(args):
                             help="Bayes factor treshold for considering "
                                  "associations.")
 
-    io_opts.add_argument("-pc", dest="present_covar_file", type=str,
+    io_opts.add_argument("-pc", dest="present_covars_file", type=str,
                          required=True, help="File with Present environmental "
                                              "data.")
 
-    io_opts.add_argument("-fc", dest="future_covar_file", type=str,
+    io_opts.add_argument("-fc", dest="future_covars_file", type=str,
                          required=True, help="File with Future environmental "
                                              "data.")
 
@@ -234,7 +234,7 @@ def argument_parser(args):
                                 "plots to be drawn.",
                            default=True)
 
-    misc_opts.add_argument("-purge-outliers", dest="outlers", type=bool,
+    misc_opts.add_argument("-purge-outliers", dest="outliers", type=bool,
                            help="Set this option to 'False' if you don't want "
                                 "to purge outliers from the data.",
                            required=False, default=True)
