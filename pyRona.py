@@ -16,7 +16,9 @@
 
 
 from collections import defaultdict
+from sys import argv
 
+import argparse as ap
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -188,31 +190,79 @@ def md_remove_outliers(x_coords, y_coords):
     return np.array(outliers)
 
 
-def main(present_covars_file, future_covars_file, baypass_summary_beta2_file,
-         bayes_factor, baypass_pij_file, popnames_file):
+def argument_parser(args):
+    """
+    Parses arguments and returns them in a neat variable.
+    """
+
+    # Argument list
+    parser = ap.ArgumentParser(description="A program to calculate "
+                                           "the 'Risk of Non Adaptation' "
+                                           "(RONA), based on BayPass "
+                                           "output.",
+                               prog="pyRona",
+                               formatter_class=ap.RawTextHelpFormatter)
+
+    io_opts = parser.add_argument_group("Input/Output options")
+    parameters = parser.add_argument_group("Program execution options")
+    misc_opts = parser.add_argument_group("Miscellaneous options")
+
+    parameters.add_argument("-bf", dest="bayes_factor", type=float,
+                            default=20, required=True,
+                            help="Bayes factor treshold for considering "
+                                 "associations.")
+
+    io_opts.add_argument("-pc", dest="present_covar_file", type=str,
+                         required=True, help="File with Present environmental "
+                                             "data.")
+
+    io_opts.add_argument("-fc", dest="future_covar_file", type=str,
+                         required=True, help="File with Future environmental "
+                                             "data.")
+
+    io_opts.add_argument("-pop", dest="popnames_file", type=str,
+                         required=True, help="File with population names.")
+
+    io_opts.add_argument("-be", dest="baypass_summary_beta2_file", type=str,
+                         required=True, help="Baypass summary beta2 file.")
+
+    io_opts.add_argument("-pij", dest="baypass_pij_file", type=str,
+                         required=True, help="Baypass pij file.")
+
+    misc_opts.add_argument("-plot", dest="plots", type=bool, required=False,
+                           help="Set this option to 'False' if you don't want "
+                                "plots to be drawn.",
+                           default=True)
+
+    misc_opts.add_argument("-purge-outliers", dest="outlers", type=bool,
+                           help="Set this option to 'False' if you don't want "
+                                "to purge outliers from the data.",
+                           required=False, default=True)
+
+    arguments = parser.parse_args(args)
+
+
+    return arguments
+
+
+def main(params):
     """
     Main function. Takes all the inputs as arguments and runs the remaining
     functions of the program.
     """
-    present_covariates = parse_envfile(present_covars_file)
-    future_covariates = parse_envfile(future_covars_file)
-    assocs = baypass_summary_beta2_parser(baypass_summary_beta2_file,
-                                          bayes_factor)
-    al_freqs = baypass_pij_parser(baypass_pij_file, assocs)
+    arg = argument_parser(params)
+    present_covariates = parse_envfile(arg.present_covars_file)
+    future_covariates = parse_envfile(arg.future_covars_file)
+    assocs = baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
+                                          arg.bayes_factor)
+    al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
     # Get first 3 assocs, for testing
     for assoc in assocs[:3]:
         marker, covar = assoc
         calculate_rona(marker, covar, present_covariates[int(covar) + 1],
                        future_covariates[int(covar) + 1], al_freqs[marker],
-                       popnames_file)
+                       arg.popnames_file)
 
 
 if __name__ == "__main__":
-    from sys import argv
-    """
-    Usage: python3 pyRone.py present_covar_file future_covar_file \
-    mcmc_core2_summary_betai_reg.out_file BF_threshold (int) \
-    mcmc_core2_summary_pij.out_file popnames_file
-    """
-    # TODO: Implement argparse!
-    main(argv[1], argv[2], argv[3], argv[4], argv[5], argv[6])
+    main(argv[1:])
