@@ -1,18 +1,18 @@
 #!/usr/bin/python3
 # Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
-# This file is part of misc_plotters.
-# misc_plotters is free software: you can redistribute it and/or modify
+# This file is part of pyRona.
+# pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 
-# misc_plotters is distributed in the hope that it will be useful,
+# pyRona is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with misc_plotters.  If not, see <http://www.gnu.org/licenses/>.
+# along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
 
 from collections import defaultdict
@@ -96,8 +96,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     popnames = open(popnames_file, 'r').readlines()
 
     # Remove outliers
-    if outliers is True:
-        outlier_pos = md_remove_outliers(present_covar, allele_freqs)
+    if outliers != 0:
+        outlier_pos = md_remove_outliers(present_covar, allele_freqs, outliers)
         present_covar = np.delete(present_covar, outlier_pos)
         future_covar = np.delete(future_covar, outlier_pos)
         allele_freqs = np.delete(allele_freqs, outlier_pos)
@@ -138,11 +138,11 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         # Annotation
         for label, x, y in zip(popnames, present_covar, allele_freqs):
-            plt.annotate(label.strip(), xy=(x, y), xytext=(-15, 15),
+            plt.annotate(label.strip(), xy=(x, y), xytext=(-9, 9),
                          textcoords='offset points', ha='right',
                          va='bottom', bbox=dict(boxstyle='round,pad=0.1',
                                                 fc='yellow',
-                                                alpha=0.5),
+                                                alpha=0.3),
                          arrowprops=dict(arrowstyle='->',
                                          connectionstyle='arc3,rad=0'))
 
@@ -171,24 +171,34 @@ def mahalanobis_dist_calculator(x_coords, y_coords):
     return mh_dist
 
 
-def md_remove_outliers(x_coords, y_coords):
+def md_remove_outliers(x_coords, y_coords, outliers):
     """
     Removes outliers based on Mahalanobis Distance.
     Takes 2 np.array([]) as input which are used to calculate the MD distance.
     Returns an np.array([]) with the indices of the removed outliers.
     http://kldavenport.com/mahalanobis-distance-and-outliers/
     """
-    mahalanobis_dist = mahalanobis_dist_calculator(x_coords, y_coords)
-    threshold = np.mean(mahalanobis_dist) * 1.5 # adjust 1.5 accordingly
-    n_x, n_y, outliers = [], [], []
-    for i in range(len(mahalanobis_dist)):
-        if mahalanobis_dist[i] <= threshold:
-            n_x.append(x_coords[i])
-            n_y.append(y_coords[i])
-        else:
-            outliers.append(i) # position of removed pair
+    mahalanobis_dists = mahalanobis_dist_calculator(x_coords, y_coords)
+    threshold = np.mean(mahalanobis_dists) * 1.5 # adjust 1.5 accordingly
 
-    return np.array(outliers)
+    # Single or no outliers approach
+    if outliers == 1:
+        if max(mahalanobis_dists) >= threshold:
+            outlier_indeces = [mahalanobis_dists.index(max(mahalanobis_dists))]
+        else:
+            outlier_indeces = []
+
+    # Multiple outlier approach
+    elif outliers == 2:
+        n_x, n_y, outlier_indeces = [], [], []
+        for i in range(len(mahalanobis_dists)):
+            if mahalanobis_dists[i] <= threshold:
+                n_x.append(x_coords[i])
+                n_y.append(y_coords[i])
+            else:
+                outlier_indeces.append(i) # position of removed pair
+
+    return np.array(outlier_indeces)
 
 
 def argument_parser(args):
@@ -213,6 +223,13 @@ def argument_parser(args):
                             help="Bayes factor treshold for considering "
                                  "associations.")
 
+    parameters.add_argument("-outliers", dest="outliers", type=int, default=2,
+                            required=False, choices=[0,1,2],
+                            help="Number of outliers to remove. 0 does no "
+                                 "outier removal, 1 removes **at most** 1 "
+                                 "outlier and 2 removes **any** number of "
+                                 "outliers.")
+
     io_opts.add_argument("-pc", dest="present_covars_file", type=str,
                          required=True, help="File with Present environmental "
                                              "data.")
@@ -233,12 +250,6 @@ def argument_parser(args):
     misc_opts.add_argument("-no-plots", dest="plots", action='store_false',
                            help="Pass this option if you don't want "
                                 "plots to be drawn.",
-                           required=False, default=True)
-
-    misc_opts.add_argument('-purge-outliers', dest='outliers',
-                           action='store_false',
-                           help="Pass this option if you don't want "
-                                "to purge outliers from the data.",
                            required=False, default=True)
 
     arguments = parser.parse_args(args)
