@@ -86,7 +86,7 @@ def baypass_pij_parser(pij_filename, associations):
 
 
 def calculate_rona(marker_name, covar_name, present_covar, future_covar,
-                   allele_freqs, popnames_file, draw_plot=True):
+                   allele_freqs, popnames_file, plot, outliers):
     """
     Calculates the "Risk of non adaptation" (RONA) of each popuation for a
     given association.
@@ -96,11 +96,15 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     popnames = open(popnames_file, 'r').readlines()
 
     # Remove outliers
-    outlier_pos = md_remove_outliers(present_covar, allele_freqs)
-    present_covar = np.delete(present_covar, outlier_pos)
-    future_covar = np.delete(future_covar, outlier_pos)
-    allele_freqs = np.delete(allele_freqs, outlier_pos)
-    popnames = np.delete(popnames, outlier_pos)
+    if outliers is True:
+        print("------------------------------------------------")
+        outlier_pos = md_remove_outliers(present_covar, allele_freqs)
+        print(present_covar)
+        present_covar = np.delete(present_covar, outlier_pos)
+        print(present_covar)
+        future_covar = np.delete(future_covar, outlier_pos)
+        allele_freqs = np.delete(allele_freqs, outlier_pos)
+        popnames = np.delete(popnames, outlier_pos)
 
     # Calculate trendline:
     fit = np.polyfit(present_covar, allele_freqs, 1)
@@ -119,7 +123,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         print("%s: %s" % (pops.strip(), rel_distance))
 
-    if draw_plot is True:
+    if plot is True:
         all_covars = np.append(present_covar, future_covar)
 
         # Set-up the plot
@@ -223,19 +227,20 @@ def argument_parser(args):
     io_opts.add_argument("-pop", dest="popnames_file", type=str,
                          required=True, help="File with population names.")
 
-    io_opts.add_argument("-be", dest="baypass_summary_beta2_file", type=str,
+    io_opts.add_argument("-beta", dest="baypass_summary_beta2_file", type=str,
                          required=True, help="Baypass summary beta2 file.")
 
     io_opts.add_argument("-pij", dest="baypass_pij_file", type=str,
                          required=True, help="Baypass pij file.")
 
-    misc_opts.add_argument("-plot", dest="plots", type=bool, required=False,
-                           help="Set this option to 'False' if you don't want "
+    misc_opts.add_argument("-no-plots", dest="plots", action='store_false',
+                           help="Pass this option if you don't want "
                                 "plots to be drawn.",
-                           default=True)
+                           required=False, default=True)
 
-    misc_opts.add_argument("-purge-outliers", dest="outliers", type=bool,
-                           help="Set this option to 'False' if you don't want "
+    misc_opts.add_argument('-purge-outliers', dest='outliers',
+                           action='store_false',
+                           help="Pass this option if you don't want "
                                 "to purge outliers from the data.",
                            required=False, default=True)
 
@@ -257,11 +262,12 @@ def main(params):
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
     # Get first 3 assocs, for testing
-    for assoc in assocs[:3]:
+    print(arg.outliers)
+    for assoc in assocs:
         marker, covar = assoc
-        calculate_rona(marker, covar, present_covariates[int(covar) + 1],
-                       future_covariates[int(covar) + 1], al_freqs[marker],
-                       arg.popnames_file)
+        calculate_rona(marker, covar, present_covariates[int(covar) - 1],
+                       future_covariates[int(covar) - 1], al_freqs[marker],
+                       arg.popnames_file, arg.plots, arg.outliers)
 
 
 if __name__ == "__main__":
