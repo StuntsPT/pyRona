@@ -228,7 +228,7 @@ def argument_parser(args):
                             help="Number of outliers to remove. 0 does no "
                                  "outier removal, 1 removes **at most** 1 "
                                  "outlier and 2 removes **any** number of "
-                                 "outliers.")
+                                 "outliers that match the distance criteria.")
 
     io_opts.add_argument("-pc", dest="present_covars_file", type=str,
                          required=True, help="File with Present environmental "
