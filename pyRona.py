@@ -97,11 +97,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
     # Remove outliers
     if outliers is True:
-        print("------------------------------------------------")
         outlier_pos = md_remove_outliers(present_covar, allele_freqs)
-        print(present_covar)
         present_covar = np.delete(present_covar, outlier_pos)
-        print(present_covar)
         future_covar = np.delete(future_covar, outlier_pos)
         allele_freqs = np.delete(allele_freqs, outlier_pos)
         popnames = np.delete(popnames, outlier_pos)
@@ -261,8 +258,7 @@ def main(params):
     assocs = baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
-    # Get first 3 assocs, for testing
-    print(arg.outliers)
+
     for assoc in assocs:
         marker, covar = assoc
         calculate_rona(marker, covar, present_covariates[int(covar) - 1],
