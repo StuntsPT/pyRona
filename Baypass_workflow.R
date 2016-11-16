@@ -1,18 +1,18 @@
 #!/usr/bin/Rscript
 # Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
-# This file is part of Baypass_workflow.R.
-# Baypass_workflow.R is free software: you can redistribute it and/or modify
+# This file is part of pyRona.
+# pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 
-# Baypass_workflow.R is distributed in the hope that it will be useful,
+# pyRona is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with Baypass_workflow.R. If not, see <http://www.gnu.org/licenses/>.
+# along with pyRona. If not, see <http://www.gnu.org/licenses/>.
 
 require(corrplot)
 require(ape)
@@ -67,7 +67,7 @@ num_SNPs =
 # Number of threads to use.
 # Type: int
 # Example: 8
-num_threads = 
+num_threads =
 
 # Should we normalize the data on ENVFILE?
 # Type: BOOL (TRUE or FALSE)
