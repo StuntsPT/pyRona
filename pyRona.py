@@ -125,9 +125,9 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         plt.ylabel('Marker %s standardized allele freqs.' % marker_name)
         plt.title('Linear regression plot')
 
-        plt.plot(present_covar, allele_freqs, 'bo', label='Present observations')
-        plt.plot(future_covar, allele_freqs, 'go', label='Future predictions')
-        plt.plot(all_covars, fit_fn(all_covars), 'r--', label='Regression line')
+        plt.plot(present_covar, allele_freqs, 'bo')
+        plt.plot(future_covar, allele_freqs, 'go')
+        plt.plot(all_covars, fit_fn(all_covars), 'r--')
 
         plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
                  max(all_covars) + np.average(present_covar) * 0.1)
@@ -146,7 +146,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         plt.show()
 
 
-def mahalanobis_dist(x_coords, y_coords):
+def mahalanobis_dist_calculator(x_coords, y_coords):
     """
     Calculates Mahalanobis Distance.
     Takes 2 np.array([]) as input which are used to calculate the MD distance.
@@ -175,13 +175,13 @@ def md_remove_outliers(x_coords, y_coords):
     Returns an np.array([]) with the indices of the removed outliers.
     http://kldavenport.com/mahalanobis-distance-and-outliers/
     """
-    MD = mahalanobis_dist(x_coords, y_coords)
-    threshold = np.mean(MD) * 1.5 # adjust 1.5 accordingly
-    nx, ny, outliers = [], [], []
-    for i in range(len(MD)):
-        if MD[i] <= threshold:
-            nx.append(x_coords[i])
-            ny.append(y_coords[i])
+    mahalanobis_dist = mahalanobis_dist_calculator(x_coords, y_coords)
+    threshold = np.mean(mahalanobis_dist) * 1.5 # adjust 1.5 accordingly
+    n_x, n_y, outliers = [], [], []
+    for i in range(len(mahalanobis_dist)):
+        if mahalanobis_dist[i] <= threshold:
+            n_x.append(x_coords[i])
+            n_y.append(y_coords[i])
         else:
             outliers.append(i) # position of removed pair
 
