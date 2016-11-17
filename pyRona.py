@@ -74,7 +74,7 @@ def baypass_pij_parser(pij_filename, associations):
     for lines in pij:
         splitline = lines.strip().split()
         if splitline[1] in marker_list:
-            frequencies[splitline[1]].append(float(splitline[0]))
+            frequencies[splitline[1]].append(float(splitline[4]))
 
     pij.close()
 
@@ -92,6 +92,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     given association.
     Also plots the associations if requested.
     """
+
     # Get population names
     popnames = open(popnames_file, 'r').readlines()
 
@@ -134,7 +135,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
                  max(all_covars) + np.average(present_covar) * 0.1)
-        plt.ylim(0, max(allele_freqs) + 2)
+        plt.ylim(min(allele_freqs) - 1, max(allele_freqs) + 1)
 
         # Annotation
         for label, x, y in zip(popnames, present_covar, allele_freqs):
