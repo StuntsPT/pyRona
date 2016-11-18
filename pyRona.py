@@ -125,8 +125,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         pres_distance = freq - pres_trendline_value
         fut_distance = freq - fut_trendline_value
         distance_diff = abs(pres_distance) - abs(fut_distance)
-        print(distance_diff)
-        rel_distance = distance_diff / max(allele_freqs)
+        amplitude = max(allele_freqs) - min(allele_freqs)
+        rel_distance = distance_diff / amplitude
 
         local_rona = "%s: %s" % (pops.strip(), rel_distance)
         ronas.append(local_rona)
