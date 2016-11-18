@@ -22,6 +22,7 @@ import argparse as ap
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def parse_envfile(envfile_filename):
     """
     Parses an ENVFILE (baypass) input file and returns a list of np arrays
@@ -74,7 +75,7 @@ def baypass_pij_parser(pij_filename, associations):
     for lines in pij:
         splitline = lines.strip().split()
         if splitline[1] in marker_list:
-            frequencies[splitline[1]].append(float(splitline[4]))
+            frequencies[splitline[1]].append(float(splitline[2]))
 
     pij.close()
 
@@ -93,6 +94,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     Also plots the associations if requested.
     """
 
+    ronas = []
     # Get population names
     popnames = open(popnames_file, 'r').readlines()
 
@@ -108,18 +110,30 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     fit = np.polyfit(present_covar, allele_freqs, 1)
     fit_fn = np.poly1d(fit)
 
-    print("Marker: %s; covar %s" % (marker_name, covar_name))
+    # Get R²:
+    corr_coef = np.corrcoef(present_covar, allele_freqs)[1, 0] ** 2
+
+
+
+    print("Marker: %s; covar: %s; R²:%s" % (marker_name, covar_name, corr_coef))
     for pres, fut, freq, pops in zip(present_covar, future_covar, allele_freqs,
                                      popnames):
+
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
 
+        print(pres_trendline_value)
+        print(fut_trendline_value)
+        print(freq)
         pres_distance = freq - pres_trendline_value
         fut_distance = freq - fut_trendline_value
-        diff_distance = abs(pres_distance) - abs(fut_distance)
-        rel_distance = diff_distance / max(allele_freqs)
+        distance_diff = abs(pres_distance) - abs(fut_distance)
+        print(distance_diff)
+        rel_distance = distance_diff / max(allele_freqs)
 
-        print("%s: %s" % (pops.strip(), rel_distance))
+        local_rona = "%s: %s" % (pops.strip(), rel_distance)
+        ronas.append(local_rona)
+        print(local_rona)
 
     if plot is True:
         all_covars = np.append(present_covar, future_covar)
@@ -135,7 +149,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
                  max(all_covars) + np.average(present_covar) * 0.1)
-        plt.ylim(min(allele_freqs) - 1, max(allele_freqs) + 1)
+        # plt.ylim(min(allele_freqs) - 1, max(allele_freqs) + 1)
+        plt.ylim(0, 1)
 
         # Annotation
         for label, x, y in zip(popnames, present_covar, allele_freqs):
@@ -148,6 +163,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
                                          connectionstyle='arc3,rad=0'))
 
         plt.show()
+
+    return [marker_name, corr_coef] + ronas
 
 
 def mahalanobis_dist_calculator(x_coords, y_coords):
@@ -225,7 +242,7 @@ def argument_parser(args):
                                  "associations.")
 
     parameters.add_argument("-outliers", dest="outliers", type=int, default=2,
-                            required=False, choices=[0,1,2],
+                            required=False, choices=[0, 1, 2],
                             help="Number of outliers to remove. 0 does no "
                                  "outier removal, 1 removes **at most** 1 "
                                  "outlier and 2 removes **any** number of "
@@ -271,11 +288,14 @@ def main(params):
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
 
+    rona = {}
     for assoc in assocs:
         marker, covar = assoc
-        calculate_rona(marker, covar, present_covariates[int(covar) - 1],
-                       future_covariates[int(covar) - 1], al_freqs[marker],
-                       arg.popnames_file, arg.plots, arg.outliers)
+        rona[covar] = calculate_rona(marker, covar,
+                                     present_covariates[int(covar) - 1],
+                                     future_covariates[int(covar) - 1],
+                                     al_freqs[marker],
+                                     arg.popnames_file, arg.plots, arg.outliers)
 
 
 if __name__ == "__main__":
