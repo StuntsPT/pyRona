@@ -75,7 +75,7 @@ def baypass_pij_parser(pij_filename, associations):
     for lines in pij:
         splitline = lines.strip().split()
         if splitline[1] in marker_list:
-            frequencies[splitline[1]].append(float(splitline[2]))
+            frequencies[splitline[1]].append(float(splitline[4]))
 
     pij.close()
 
@@ -114,7 +114,6 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     corr_coef = np.corrcoef(present_covar, allele_freqs)[1, 0] ** 2
 
 
-
     print("Marker: %s; covar: %s; R²:%s" % (marker_name, covar_name, corr_coef))
     for pres, fut, freq, pops in zip(present_covar, future_covar, allele_freqs,
                                      popnames):
@@ -122,9 +121,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
 
-        print(pres_trendline_value)
-        print(fut_trendline_value)
-        print(freq)
+
         pres_distance = freq - pres_trendline_value
         fut_distance = freq - fut_trendline_value
         distance_diff = abs(pres_distance) - abs(fut_distance)
@@ -149,8 +146,9 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
                  max(all_covars) + np.average(present_covar) * 0.1)
-        # plt.ylim(min(allele_freqs) - 1, max(allele_freqs) + 1)
-        plt.ylim(0, 1)
+        plt.ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
+                 max(allele_freqs) + max(allele_freqs) * 0.1)
+
 
         # Annotation
         for label, x, y in zip(popnames, present_covar, allele_freqs):
