@@ -19,6 +19,7 @@ from collections import defaultdict
 from sys import argv
 
 import argparse as ap
+import md_outiler_remover as mor
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -100,7 +101,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
     # Remove outliers
     if outliers != 0:
-        outlier_pos = md_remove_outliers(present_covar, allele_freqs, outliers)
+        outlier_pos = mor.md_remove_outliers(present_covar, allele_freqs,
+                                             outliers)
         present_covar = np.delete(present_covar, outlier_pos)
         future_covar = np.delete(future_covar, outlier_pos)
         allele_freqs = np.delete(allele_freqs, outlier_pos)
@@ -163,58 +165,6 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
     header = "%s\t%s" % (marker_name, corr_coef)
     return [header] + ronas
-
-
-def mahalanobis_dist_calculator(x_coords, y_coords):
-    """
-    Calculates Mahalanobis Distance.
-    Takes 2 np.array([]) as input which are used to calculate the MD distance.
-    Returns a list with the MD distances between every xy point.
-    http://kldavenport.com/mahalanobis-distance-and-outliers/
-    """
-    covariance_xy = np.cov(x_coords, y_coords, rowvar=0)
-    inv_covariance_xy = np.linalg.inv(covariance_xy)
-    xy_mean = np.mean(x_coords), np.mean(y_coords)
-    x_diff = np.array([x_i - xy_mean[0] for x_i in x_coords])
-    y_diff = np.array([y_i - xy_mean[1] for y_i in y_coords])
-    diff_xy = np.transpose([x_diff, y_diff])
-
-    mh_dist = []
-    for i in range(len(diff_xy)):
-        mh_dist.append(np.sqrt(np.dot(np.dot(np.transpose(diff_xy[i]),
-                                             inv_covariance_xy), diff_xy[i])))
-
-    return mh_dist
-
-
-def md_remove_outliers(x_coords, y_coords, outliers):
-    """
-    Removes outliers based on Mahalanobis Distance.
-    Takes 2 np.array([]) as input which are used to calculate the MD distance.
-    Returns an np.array([]) with the indices of the removed outliers.
-    http://kldavenport.com/mahalanobis-distance-and-outliers/
-    """
-    mahalanobis_dists = mahalanobis_dist_calculator(x_coords, y_coords)
-    threshold = np.mean(mahalanobis_dists) * 1.5 # adjust 1.5 accordingly
-
-    # Single or no outliers approach
-    if outliers == 1:
-        if max(mahalanobis_dists) >= threshold:
-            outlier_indeces = [mahalanobis_dists.index(max(mahalanobis_dists))]
-        else:
-            outlier_indeces = []
-
-    # Multiple outlier approach
-    elif outliers == 2:
-        n_x, n_y, outlier_indeces = [], [], []
-        for i in range(len(mahalanobis_dists)):
-            if mahalanobis_dists[i] <= threshold:
-                n_x.append(x_coords[i])
-                n_y.append(y_coords[i])
-            else:
-                outlier_indeces.append(i) # position of removed pair
-
-    return np.array(outlier_indeces)
 
 
 def argument_parser(args):
