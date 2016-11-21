@@ -28,13 +28,24 @@ class RonaClass:
     """
     Stores the RONA values for each covar
     """
+    names = []
     def __init__(self, covar):
         self.name = covar
+        RonaClass.names.append(self.name)
+
         self.pop_names = []
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
+        self.avg_ronas = []
 
     def averager(self):
+        list_of_lists = []
+        for v in self.pop_ronas.values():
+            list_of_lists.append(v)
+
+        list_of_lists = np.array(list_of_lists, dtype=float)
+        print(list_of_lists)
+
         return ""
 
 
@@ -156,7 +167,6 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
-    rona.pop_ronas[marker_name] = np.array(rona.pop_ronas[marker_name])
     #print(rona.pop_ronas[marker_name])
 
     if plot is True:
@@ -262,19 +272,26 @@ def main(params):
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
 
-    ronas = []
+    ronas = {}
     for assoc in assocs:
         marker, covar = assoc
 
         # Instanciate class
-        rona = RonaClass(covar)
-        rona.pop_names = popnames_parser(arg.popnames_file)
+        if covar not in ronas:
+            rona = RonaClass(covar)
+            rona.pop_names = popnames_parser(arg.popnames_file)
+        else:
+            rona = ronas[covar]
 
         calculate_rona(marker, rona, present_covariates[int(covar) - 1],
                        future_covariates[int(covar) - 1], al_freqs[marker],
                        arg.plots, arg.outliers)
 
-    ronas.append(rona)
+        ronas[covar] = rona
+
+    for k, rona in ronas.items():
+        print(k)
+        rona.averager()
 
 if __name__ == "__main__":
     main(argv[1:])
