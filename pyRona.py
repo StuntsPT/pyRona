@@ -24,6 +24,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+class RonaClass:
+    """
+    Stores the RONA values for each covar
+    """
+    def __init__(self, covar):
+        self.name = covar
+        self.pop_names = []
+        self.pop_ronas = defaultdict(list)
+        self.corr_coef = {}
+
+    def averager(self):
+        return ""
+
+
 def parse_envfile(envfile_filename):
     """
     Parses an ENVFILE (baypass) input file and returns a list of np arrays
@@ -86,9 +100,24 @@ def baypass_pij_parser(pij_filename, associations):
 
     return frequencies
 
+def popnames_parser(popnames_file):
+    """
+    Parses a file with population names and returns a list with these names.
+    The order is the same as in the file.
+    """
+    popnames = []
 
-def calculate_rona(marker_name, covar_name, present_covar, future_covar,
-                   allele_freqs, popnames_file, plot, outliers):
+    popfile = open(popnames_file, 'r')
+    for lines in popfile:
+        popnames.append(lines.strip())
+
+    popfile.close()
+
+    return popnames
+
+
+def calculate_rona(marker_name, rona, present_covar, future_covar,
+                   allele_freqs, plot, outliers):
     """
     Calculates the "Risk of non adaptation" (RONA) of each popuation for a
     given association.
@@ -96,8 +125,6 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
     """
 
     ronas = []
-    # Get population names
-    popnames = open(popnames_file, 'r').readlines()
 
     # Remove outliers
     if outliers != 0:
@@ -106,19 +133,17 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         present_covar = np.delete(present_covar, outlier_pos)
         future_covar = np.delete(future_covar, outlier_pos)
         allele_freqs = np.delete(allele_freqs, outlier_pos)
-        popnames = np.delete(popnames, outlier_pos)
+        rona.pop_names = np.delete(rona.pop_names, outlier_pos)
 
     # Calculate trendline:
     fit = np.polyfit(present_covar, allele_freqs, 1)
     fit_fn = np.poly1d(fit)
 
     # Get R²:
-    corr_coef = np.corrcoef(present_covar, allele_freqs)[1, 0] ** 2
+    rona.corr_coef[marker_name] = np.corrcoef(present_covar,
+                                              allele_freqs)[1, 0] ** 2
 
-
-    print("Marker: %s; covar: %s; R²:%s" % (marker_name, covar_name, corr_coef))
-    for pres, fut, freq, pops in zip(present_covar, future_covar, allele_freqs,
-                                     popnames):
+    for pres, fut, freq in zip(present_covar, future_covar, allele_freqs):
 
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
@@ -129,15 +154,16 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         amplitude = max(allele_freqs) - min(allele_freqs)
         rel_distance = distance_diff / amplitude
 
-        local_rona = "%s\t%s" % (pops.strip(), rel_distance)
-        ronas.append(local_rona)
-        print(local_rona)
+        rona.pop_ronas[marker_name] += [rel_distance]
+
+    rona.pop_ronas[marker_name] = np.array(rona.pop_ronas[marker_name])
+    #print(rona.pop_ronas[marker_name])
 
     if plot is True:
         all_covars = np.append(present_covar, future_covar)
 
         # Set-up the plot
-        plt.xlabel("Covariate %s" % covar_name)
+        plt.xlabel("Covariate %s" % rona.name)
         plt.ylabel('Marker %s standardized allele freqs.' % marker_name)
         plt.title('Linear regression plot')
 
@@ -152,7 +178,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
 
         # Annotation
-        for label, x, y in zip(popnames, present_covar, allele_freqs):
+        for label, x, y in zip(rona.pop_names, present_covar, allele_freqs):
             plt.annotate(label.strip(), xy=(x, y), xytext=(-9, 9),
                          textcoords='offset points', ha='right',
                          va='bottom', bbox=dict(boxstyle='round,pad=0.1',
@@ -163,7 +189,7 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         plt.show()
 
-    header = "%s\t%s" % (marker_name, corr_coef)
+    header = "%s\t%s" % (marker_name, rona.corr_coef[marker_name])
     return [header] + ronas
 
 
@@ -236,16 +262,19 @@ def main(params):
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
 
-    rona = defaultdict(list)
+    ronas = []
     for assoc in assocs:
         marker, covar = assoc
-        rona[covar] += calculate_rona(marker, covar,
-                                      present_covariates[int(covar) - 1],
-                                      future_covariates[int(covar) - 1],
-                                      al_freqs[marker],
-                                      arg.popnames_file, arg.plots,
-                                      arg.outliers)
 
+        # Instanciate class
+        rona = RonaClass(covar)
+        rona.pop_names = popnames_parser(arg.popnames_file)
+
+        calculate_rona(marker, rona, present_covariates[int(covar) - 1],
+                       future_covariates[int(covar) - 1], al_freqs[marker],
+                       arg.plots, arg.outliers)
+
+    ronas.append(rona)
 
 if __name__ == "__main__":
     main(argv[1:])
