@@ -121,14 +121,13 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
 
-
         pres_distance = freq - pres_trendline_value
         fut_distance = freq - fut_trendline_value
         distance_diff = abs(pres_distance) - abs(fut_distance)
         amplitude = max(allele_freqs) - min(allele_freqs)
         rel_distance = distance_diff / amplitude
 
-        local_rona = "%s: %s" % (pops.strip(), rel_distance)
+        local_rona = "%s\t%s" % (pops.strip(), rel_distance)
         ronas.append(local_rona)
         print(local_rona)
 
@@ -162,7 +161,8 @@ def calculate_rona(marker_name, covar_name, present_covar, future_covar,
 
         plt.show()
 
-    return [marker_name, corr_coef] + ronas
+    header = "%s\t%s" % (marker_name, corr_coef)
+    return [header] + ronas
 
 
 def mahalanobis_dist_calculator(x_coords, y_coords):
@@ -286,14 +286,15 @@ def main(params):
                                           arg.bayes_factor)
     al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
 
-    rona = {}
+    rona = defaultdict(list)
     for assoc in assocs:
         marker, covar = assoc
-        rona[covar] = calculate_rona(marker, covar,
-                                     present_covariates[int(covar) - 1],
-                                     future_covariates[int(covar) - 1],
-                                     al_freqs[marker],
-                                     arg.popnames_file, arg.plots, arg.outliers)
+        rona[covar] += calculate_rona(marker, covar,
+                                      present_covariates[int(covar) - 1],
+                                      future_covariates[int(covar) - 1],
+                                      al_freqs[marker],
+                                      arg.popnames_file, arg.plots,
+                                      arg.outliers)
 
 
 if __name__ == "__main__":
