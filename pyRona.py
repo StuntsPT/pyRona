@@ -28,11 +28,8 @@ class RonaClass:
     """
     Stores the RONA values for each covar
     """
-    names = []
     def __init__(self, covar):
         self.name = covar
-        RonaClass.names.append(self.name)
-
         self.pop_names = []
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
@@ -110,6 +107,7 @@ def baypass_pij_parser(pij_filename, associations):
         frequencies[key] = np.array(frequencies[key])
 
     return frequencies
+
 
 def popnames_parser(popnames_file):
     """
