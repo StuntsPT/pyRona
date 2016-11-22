@@ -17,6 +17,7 @@
 
 from collections import defaultdict
 from sys import argv
+from scipy import stats
 
 import argparse as ap
 import md_outiler_remover as mor
@@ -34,18 +35,26 @@ class RonaClass:
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
         self.avg_ronas = []
+        self.stdev_ronas = []
 
-    def averager(self):
-        list_of_lists = []
-        for v in self.pop_ronas.values():
-            list_of_lists.append(v)
+    def basic_stats(self):
+        """
+        Gets the average RONA and stdev per population for each associated
+        covariate. Stores the values in variables inside the class instance.
+        """
+        list_of_marker_values = []
+        if len(self.pop_ronas) > 1:
+            for marker_value in self.pop_ronas.values():
+                list_of_marker_values.append(marker_value)
 
-        list_of_lists = np.array(list_of_lists, dtype=float)
-        for i in np.nditer(list_of_lists, flags=["external_loop"], order ="F"):
-            print(len(i))
-            print(np.average(i))
-
-        return ""
+            list_of_marker_values = np.array(list_of_marker_values, dtype=float)
+            for i in np.nditer(list_of_marker_values, flags=["external_loop"],
+                               order="F"):
+                self.avg_ronas += [np.average(i)]
+                self.stdev_ronas += [stats.sem(i)]
+        else:
+            self.avg_ronas = [x for x in self.pop_ronas.values()][0]
+            self.stdev_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
 
 
 def parse_envfile(envfile_filename):
@@ -290,8 +299,9 @@ def main(params):
         ronas[covar] = rona
 
     for k, rona in ronas.items():
-        print(k)
-        rona.averager()
+        rona.basic_stats()
+        print(rona.avg_ronas)
+        print(rona.stdev_ronas)
 
 if __name__ == "__main__":
     main(argv[1:])
