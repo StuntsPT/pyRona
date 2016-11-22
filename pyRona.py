@@ -41,7 +41,9 @@ class RonaClass:
             list_of_lists.append(v)
 
         list_of_lists = np.array(list_of_lists, dtype=float)
-        print(list_of_lists)
+        for i in np.nditer(list_of_lists, flags=["external_loop"], order ="F"):
+            print(len(i))
+            print(np.average(i))
 
         return ""
 
