@@ -185,7 +185,7 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
     if plot is True:
         gp.draw_individual_plots(present_covar, future_covar, rona, marker_name,
-                              allele_freqs, fit_fn)
+                                 allele_freqs, fit_fn)
 
     header = "%s\t%s" % (marker_name, rona.corr_coef[marker_name])
     return [header] + ronas
@@ -243,7 +243,6 @@ def argument_parser(args):
                            required=False, default=True)
 
     arguments = parser.parse_args(args)
-
 
     return arguments
 
