@@ -17,12 +17,11 @@
 
 from collections import defaultdict
 from sys import argv
-from scipy import stats
 
 import argparse as ap
 import md_outiler_remover as mor
 import numpy as np
-import matplotlib.pyplot as plt
+import general_plotter as gp
 
 
 class RonaClass:
@@ -35,7 +34,8 @@ class RonaClass:
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
         self.avg_ronas = []
-        self.stdev_ronas = []
+        self.stderr_ronas = []
+        self.number_of_markers = 0
 
     def basic_stats(self):
         """
@@ -51,10 +51,16 @@ class RonaClass:
             for i in np.nditer(list_of_marker_values, flags=["external_loop"],
                                order="F"):
                 self.avg_ronas += [np.average(i)]
-                self.stdev_ronas += [stats.sem(i)]
+                self.stderr_ronas += [np.std(i)/np.sqrt(len(i))]
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
-            self.stdev_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
+            self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
+
+    def count_markers(self):
+        """
+        Counts the number of markers in the instance.
+        """
+        self.number_of_markers = len(self.pop_ronas)
 
 
 def parse_envfile(envfile_filename):
@@ -176,37 +182,10 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
-    #print(rona.pop_ronas[marker_name])
 
     if plot is True:
-        all_covars = np.append(present_covar, future_covar)
-
-        # Set-up the plot
-        plt.xlabel("Covariate %s" % rona.name)
-        plt.ylabel('Marker %s standardized allele freqs.' % marker_name)
-        plt.title('Linear regression plot')
-
-        plt.plot(present_covar, allele_freqs, 'bo')
-        plt.plot(future_covar, allele_freqs, 'go')
-        plt.plot(all_covars, fit_fn(all_covars), 'r--')
-
-        plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
-                 max(all_covars) + np.average(present_covar) * 0.1)
-        plt.ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
-                 max(allele_freqs) + max(allele_freqs) * 0.1)
-
-
-        # Annotation
-        for label, x, y in zip(rona.pop_names, present_covar, allele_freqs):
-            plt.annotate(label.strip(), xy=(x, y), xytext=(-9, 9),
-                         textcoords='offset points', ha='right',
-                         va='bottom', bbox=dict(boxstyle='round,pad=0.1',
-                                                fc='yellow',
-                                                alpha=0.3),
-                         arrowprops=dict(arrowstyle='->',
-                                         connectionstyle='arc3,rad=0'))
-
-        plt.show()
+        gp.draw_individual_plots(present_covar, future_covar, rona, marker_name,
+                              allele_freqs, fit_fn)
 
     header = "%s\t%s" % (marker_name, rona.corr_coef[marker_name])
     return [header] + ronas
@@ -300,8 +279,9 @@ def main(params):
 
     for k, rona in ronas.items():
         rona.basic_stats()
+        print(k)
         print(rona.avg_ronas)
-        print(rona.stdev_ronas)
+        print(rona.stderr_ronas)
 
 if __name__ == "__main__":
     main(argv[1:])
