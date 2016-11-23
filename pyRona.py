@@ -275,13 +275,16 @@ def main(params):
 
         ronas[covar] = rona
 
+    rlist = []
     for k, rona in ronas.items():
         rona.basic_stats()
-        if rona.name == "8":
+        if rona.name == "8" or rona.name == "10":
+            rlist.append(rona)
         # print(k)
         # print(rona.avg_ronas)
         # print(rona.stderr_ronas)
-            gp.draw_rona_plot(rona, 1)
+
+    gp.draw_rona_plot(rlist)
 
 if __name__ == "__main__":
     main(argv[1:])

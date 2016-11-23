@@ -17,6 +17,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+color_list = ['red', 'green', 'blue', 'cyan', 'magenta']
+
 
 def draw_individual_plots(present_covar, future_covar, rona, marker_name,
                           allele_freqs, fit_fn):
@@ -53,34 +55,34 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
     plt.show()
 
 
-def draw_rona_plot(rona, units):
+def draw_rona_plot(ronas):
     """
     Draws a RONA plot of the Nth most represented covariates.
     Plots the RONA+/-Stderr for each of the populations.
     """
     fig, ax = plt.subplots()
-    width = 0.35
-    ind = np.arange((len(rona.pop_names)))
+    width = 1 / (len(ronas) + 1)
 
-    # Set-up the plot
-    #plt.xlabel(rona.pop_names)
-    #plt.ylabel("RONA value, %s" % rona.count_markers)
-    #plt.title("RONA per population for the most represented %s covariates" %
-    #          units)
-
-    rects1 = ax.bar(ind, rona.avg_ronas, width,
-                    color='r', yerr=rona.stderr_ronas)
+    counter = 0
+    for rona in ronas:
+        ind = np.arange((len(rona.pop_names)))
+        rects = ax.bar(ind + width * counter, rona.avg_ronas, width,
+                        color=color_list[counter], yerr=rona.stderr_ronas,
+                        alpha=0.5, error_kw=dict(ecolor='gray'))
+        counter += 1
 
     # add some text for labels, title and axes ticks
     ax.set_ylabel('RONA')
-    ax.set_title("RONA per population for the most represented %s covariates" %
-              units)
+
+    # Define title:
+    if len(ronas) > 1:
+        title_msg = ("RONA per population for the most represented %s "
+                    "covariates" % len(ronas))
+    else:
+        title_msg = "RONA per population for the most represented covariate"
+
+    ax.set_title(title_msg)
     ax.set_xticks(ind + width)
     ax.set_xticklabels((rona.pop_names))
-
-
-    #plt.plot(range(len(rona.pop_names)), rona.avg_ronas, 'bo')
-    #plt.errorbar(range(len(rona.pop_names)), rona.avg_ronas, yerr=rona.stderr_ronas, fmt='bo')
-    #plt.plot(range(len(rona.pop_names)), rona.stderr_ronas, '--')
 
     plt.show()
