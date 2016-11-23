@@ -35,7 +35,6 @@ class RonaClass:
         self.corr_coef = {}
         self.avg_ronas = []
         self.stderr_ronas = []
-        self.number_of_markers = 0
 
     def basic_stats(self):
         """
@@ -60,7 +59,7 @@ class RonaClass:
         """
         Counts the number of markers in the instance.
         """
-        self.number_of_markers = len(self.pop_ronas)
+        return len(self.pop_ronas)
 
 
 def parse_envfile(envfile_filename):
@@ -278,9 +277,11 @@ def main(params):
 
     for k, rona in ronas.items():
         rona.basic_stats()
-        print(k)
-        print(rona.avg_ronas)
-        print(rona.stderr_ronas)
+        if rona.name == "8":
+        # print(k)
+        # print(rona.avg_ronas)
+        # print(rona.stderr_ronas)
+            gp.draw_rona_plot(rona, 1)
 
 if __name__ == "__main__":
     main(argv[1:])

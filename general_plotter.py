@@ -51,3 +51,36 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
                                      connectionstyle='arc3,rad=0'))
 
     plt.show()
+
+
+def draw_rona_plot(rona, units):
+    """
+    Draws a RONA plot of the Nth most represented covariates.
+    Plots the RONA+/-Stderr for each of the populations.
+    """
+    fig, ax = plt.subplots()
+    width = 0.35
+    ind = np.arange((len(rona.pop_names)))
+
+    # Set-up the plot
+    #plt.xlabel(rona.pop_names)
+    #plt.ylabel("RONA value, %s" % rona.count_markers)
+    #plt.title("RONA per population for the most represented %s covariates" %
+    #          units)
+
+    rects1 = ax.bar(ind, rona.avg_ronas, width,
+                    color='r', yerr=rona.stderr_ronas)
+
+    # add some text for labels, title and axes ticks
+    ax.set_ylabel('RONA')
+    ax.set_title("RONA per population for the most represented %s covariates" %
+              units)
+    ax.set_xticks(ind + width)
+    ax.set_xticklabels((rona.pop_names))
+
+
+    #plt.plot(range(len(rona.pop_names)), rona.avg_ronas, 'bo')
+    #plt.errorbar(range(len(rona.pop_names)), rona.avg_ronas, yerr=rona.stderr_ronas, fmt='bo')
+    #plt.plot(range(len(rona.pop_names)), rona.stderr_ronas, '--')
+
+    plt.show()
