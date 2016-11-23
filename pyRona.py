@@ -33,6 +33,7 @@ class RonaClass:
         self.pop_names = []
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
+
         self.avg_ronas = []
         self.stderr_ronas = []
 
@@ -275,16 +276,18 @@ def main(params):
 
         ronas[covar] = rona
 
-    rlist = []
+    sortable_representation = {}
     for k, rona in ronas.items():
         rona.basic_stats()
-        if rona.name == "8" or rona.name == "10":
-            rlist.append(rona)
-        # print(k)
-        # print(rona.avg_ronas)
-        # print(rona.stderr_ronas)
+        sortable_representation[k] = len(rona.pop_ronas)
 
-    gp.draw_rona_plot(rlist)
+    top_represented = sorted(sortable_representation,
+                             key=sortable_representation.get)[:3]
+    top_ronas = [ronas[x] for x in top_represented]
+
+
+    gp.draw_rona_plot(top_ronas)
+    # TODO: Remove covars 1,2 and 3 (immutable)
 
 if __name__ == "__main__":
     main(argv[1:])
