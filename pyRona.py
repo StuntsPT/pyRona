@@ -42,6 +42,7 @@ class RonaClass:
         Gets the average RONA and stdev per population for each associated
         covariate. Stores the values in variables inside the class instance.
         """
+        # TODO: weighted means.
         list_of_marker_values = []
         if len(self.pop_ronas) > 1:
             for marker_value in self.pop_ronas.values():
@@ -55,6 +56,7 @@ class RonaClass:
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
             self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
+
 
     def count_markers(self):
         """
