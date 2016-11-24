@@ -64,12 +64,18 @@ def draw_rona_plot(ronas):
     width = 1 / (len(ronas) + 1)
 
     counter = 0
+    axes = []
+    names = []
     for rona in ronas:
         ind = np.arange((len(rona.pop_names)))
         rects = ax.bar(ind + width * counter, rona.avg_ronas, width,
-                        color=color_list[counter], yerr=rona.stderr_ronas,
-                        alpha=0.5, error_kw=dict(ecolor='gray'))
+                       color=color_list[counter], yerr=rona.stderr_ronas,
+                       alpha=0.5, error_kw=dict(ecolor='gray'))
         counter += 1
+        print("Covar: " + rona.name)
+        print("Number of SNPs: " + str(len(rona.pop_ronas)))
+        axes.append(rects)
+        names.append(rona.name)
 
     # add some text for labels, title and axes ticks
     ax.set_ylabel('RONA')
@@ -83,6 +89,10 @@ def draw_rona_plot(ronas):
 
     ax.set_title(title_msg)
     ax.set_xticks(ind + width)
-    ax.set_xticklabels((rona.pop_names))
+    ax.set_xticklabels(rona.pop_names)
+
+
+    ax.legend(axes, names)
+
 
     plt.show()

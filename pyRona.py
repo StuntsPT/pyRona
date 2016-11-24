@@ -177,6 +177,9 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
         pres_distance = freq - pres_trendline_value
         fut_distance = freq - fut_trendline_value
         distance_diff = abs(pres_distance) - abs(fut_distance)
+
+        #distance_diff = abs(fut_distance)
+
         amplitude = max(allele_freqs) - min(allele_freqs)
         rel_distance = distance_diff / amplitude
 
@@ -276,18 +279,22 @@ def main(params):
 
         ronas[covar] = rona
 
+    # Delete immutable covariates:
+    del ronas["1"]
+    del ronas["2"]
+    del ronas["3"]
+
     sortable_representation = {}
     for k, rona in ronas.items():
         rona.basic_stats()
         sortable_representation[k] = len(rona.pop_ronas)
 
     top_represented = sorted(sortable_representation,
-                             key=sortable_representation.get)[:3]
+                             key=sortable_representation.get, reverse=True)[:3]
     top_ronas = [ronas[x] for x in top_represented]
 
 
     gp.draw_rona_plot(top_ronas)
-    # TODO: Remove covars 1,2 and 3 (immutable)
 
 if __name__ == "__main__":
     main(argv[1:])
