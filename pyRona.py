@@ -37,21 +37,28 @@ class RonaClass:
         self.avg_ronas = []
         self.stderr_ronas = []
 
-    def basic_stats(self):
+    def basic_stats(self, use_weights):
         """
         Gets the average RONA and stdev per population for each associated
         covariate. Stores the values in variables inside the class instance.
         """
-        # TODO: weighted means.
-        list_of_marker_values = []
         if len(self.pop_ronas) > 1:
-            for marker_value in self.pop_ronas.values():
-                list_of_marker_values.append(marker_value)
+            # Sort markers:
+            markers = sorted([x for x in self.corr_coef.keys()])
 
-            list_of_marker_values = np.array(list_of_marker_values, dtype=float)
+            list_of_marker_values = np.array([self.pop_ronas[x] for x in
+                                              markers],
+                                             dtype=float)
+            corr_weights = np.array([self.corr_coef[x] for x in markers],
+                                    dtype=float)
+
             for i in np.nditer(list_of_marker_values, flags=["external_loop"],
                                order="F"):
-                self.avg_ronas += [np.average(i)]
+                if use_weights is True:
+                    self.avg_ronas += [np.average(i, weights=corr_weights)]
+                else:
+                    self.avg_ronas += [np.average(i)]
+
                 self.stderr_ronas += [np.std(i)/np.sqrt(len(i))]
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
@@ -171,7 +178,7 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
                                               allele_freqs)[1, 0] ** 2
 
     for pres, fut, freq in zip(present_covar, future_covar, allele_freqs):
-
+        # TODO: Select plot type
         pres_trendline_value = fit_fn(pres)
         fut_trendline_value = fit_fn(fut)
 
@@ -245,6 +252,12 @@ def argument_parser(args):
                                 "plots to be drawn.",
                            required=False, default=True)
 
+    misc_opts.add_argument("-no-weighted-means", dest="use_weights",
+                           action='store_false',
+                           help="Pass this option if you don't want to use"
+                                "weighted means for RONA calculations.",
+                           required=False, default=True)
+
     arguments = parser.parse_args(args)
 
     return arguments
@@ -286,7 +299,7 @@ def main(params):
 
     sortable_representation = {}
     for k, rona in ronas.items():
-        rona.basic_stats()
+        rona.basic_stats(arg.use_weights)
         sortable_representation[k] = len(rona.pop_ronas)
 
     top_represented = sorted(sortable_representation,
