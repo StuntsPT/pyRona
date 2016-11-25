@@ -57,7 +57,6 @@ class RonaClass:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
             self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
 
-
     def count_markers(self):
         """
         Counts the number of markers in the instance.
@@ -88,7 +87,7 @@ def baypass_summary_beta2_parser(summary_filename, bf_treshold):
     [(marker, covariate), (marker, covariate)...]
     """
     summary = open(summary_filename, 'r')
-    summary.readline() # Skip header
+    summary.readline()  # Skip header
     associations = []
     for lines in summary:
         splitline = lines.strip().split()
@@ -180,13 +179,12 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
         fut_distance = freq - fut_trendline_value
         distance_diff = abs(pres_distance) - abs(fut_distance)
 
-        #distance_diff = abs(fut_distance)
+        # distance_diff = abs(fut_distance)
 
         amplitude = max(allele_freqs) - min(allele_freqs)
         rel_distance = distance_diff / amplitude
 
         rona.pop_ronas[marker_name] += [rel_distance]
-
 
     if plot is True:
         gp.draw_individual_plots(present_covar, future_covar, rona, marker_name,
@@ -295,8 +293,8 @@ def main(params):
                              key=sortable_representation.get, reverse=True)[:3]
     top_ronas = [ronas[x] for x in top_represented]
 
-
     gp.draw_rona_plot(top_ronas)
+
 
 if __name__ == "__main__":
     main(argv[1:])
