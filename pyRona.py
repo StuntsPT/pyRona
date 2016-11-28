@@ -194,7 +194,7 @@ def main(params):
     present_covariates = fp.parse_envfile(arg.present_covars_file)
     future_covariates = fp.parse_envfile(arg.future_covars_file)
     assocs = fp.baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
-                                          arg.bayes_factor)
+                                             arg.bayes_factor)
     al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
 
     ronas = {}
@@ -215,9 +215,8 @@ def main(params):
         ronas[covar] = rona
 
     # Delete immutable covariates:
-    del ronas["1"]
-    del ronas["2"]
-    del ronas["3"]
+    immutables = ["1", "2", "3"]
+    ronas = {key: ronas[key] for key in ronas if key not in immutables}
 
     sortable_representation = {}
     for k, rona in ronas.items():
