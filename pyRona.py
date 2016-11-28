@@ -79,9 +79,6 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
     given association.
     Also plots the associations if requested.
     """
-
-    ronas = []
-
     # Remove outliers
     if outliers != 0:
         outlier_pos = mor.md_remove_outliers(present_covar, allele_freqs,
@@ -121,9 +118,6 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
     if plot is True:
         gp.draw_individual_plots(present_covar, future_covar, rona, marker_name,
                                  allele_freqs, fit_fn)
-
-    header = "%s\t%s" % (marker_name, rona.corr_coef[marker_name])
-    return [header] + ronas
 
 
 def argument_parser(args):
