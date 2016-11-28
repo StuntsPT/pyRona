@@ -120,6 +120,28 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
                                  allele_freqs, fit_fn)
 
 
+def ronas_filterer(ronas, use_weights, num_covars):
+    """
+    Filters RONAS to remove immutable covars, and return only the top "n" most
+    represented covariables.
+    """
+    # Delete immutable covariates:
+    immutables = ("1", "2", "3")
+    ronas = {key: ronas[key] for key in ronas if key not in immutables}
+
+    sortable_representation = {}
+    for k, rona in ronas.items():
+        rona.basic_stats(use_weights)
+        sortable_representation[k] = len(rona.pop_ronas)
+
+    top_represented = sorted(sortable_representation,
+                             key=sortable_representation.get,
+                             reverse=True)[:num_covars]
+    top_ronas = [ronas[x] for x in top_represented]
+
+    return top_ronas
+
+
 def argument_parser(args):
     """
     Parses arguments and returns them in a neat variable.
@@ -223,21 +245,9 @@ def main(params):
 
         ronas[covar] = rona
 
-    # Delete immutable covariates:
-    immutables = ("1", "2", "3")
-    ronas = {key: ronas[key] for key in ronas if key not in immutables}
+    ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
-    sortable_representation = {}
-    for k, rona in ronas.items():
-        rona.basic_stats(arg.use_weights)
-        sortable_representation[k] = len(rona.pop_ronas)
-
-    top_represented = sorted(sortable_representation,
-                             key=sortable_representation.get,
-                             reverse=True)[:arg.num_covars]
-    top_ronas = [ronas[x] for x in top_represented]
-
-    gp.draw_rona_plot(top_ronas)
+    gp.draw_rona_plot(ronas)
 
 
 if __name__ == "__main__":
