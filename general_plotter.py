@@ -17,7 +17,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-color_list = ['red', 'green', 'blue', 'cyan', 'magenta']
+COLOR_LIST = ['red', 'green', 'blue', 'cyan', 'magenta']
 
 
 def draw_individual_plots(present_covar, future_covar, rona, marker_name,
@@ -40,7 +40,6 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
              max(all_covars) + np.average(present_covar) * 0.1)
     plt.ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
              max(allele_freqs) + max(allele_freqs) * 0.1)
-
 
     # Annotation
     for label, x, y in zip(rona.pop_names, present_covar, allele_freqs):
@@ -69,7 +68,7 @@ def draw_rona_plot(ronas):
     for rona in ronas:
         ind = np.arange((len(rona.pop_names)))
         rects = ax.bar(ind + width * counter, rona.avg_ronas, width,
-                       color=color_list[counter], yerr=rona.stderr_ronas,
+                       color=COLOR_LIST[counter], yerr=rona.stderr_ronas,
                        alpha=0.5, error_kw=dict(ecolor='gray'))
         counter += 1
         print("Covar: " + rona.name)
@@ -83,7 +82,7 @@ def draw_rona_plot(ronas):
     # Define title:
     if len(ronas) > 1:
         title_msg = ("RONA per population for the most represented %s "
-                    "covariates" % len(ronas))
+                     "covariates" % len(ronas))
     else:
         title_msg = "RONA per population for the most represented covariate"
 
@@ -94,8 +93,6 @@ def draw_rona_plot(ronas):
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
 
-
     ax.legend(axes, names, loc='center left', bbox_to_anchor=(1, 0.5))
-
 
     plt.show()
