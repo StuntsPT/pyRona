@@ -22,6 +22,7 @@ import argparse as ap
 import md_outiler_remover as mor
 import numpy as np
 import general_plotter as gp
+import file_parser as fp
 
 
 class RonaClass:
@@ -69,85 +70,6 @@ class RonaClass:
         Counts the number of markers in the instance.
         """
         return len(self.pop_ronas)
-
-
-def parse_envfile(envfile_filename):
-    """
-    Parses an ENVFILE (baypass) input file and returns a list of np arrays
-    (one per line)
-    """
-    envfile = open(envfile_filename, 'r')
-    covariates = []
-    for lines in envfile:
-        covariates.append(np.array([float(x) for x in lines.split()]))
-
-    envfile.close()
-
-    return covariates
-
-
-def baypass_summary_beta2_parser(summary_filename, bf_treshold):
-    """
-    Parses a baypass summary file to extract any significant associations
-    between a marker and a covariate.
-    Returns a list of associations tuples:
-    [(marker, covariate), (marker, covariate)...]
-    """
-    summary = open(summary_filename, 'r')
-    summary.readline()  # Skip header
-    associations = []
-    for lines in summary:
-        splitline = lines.strip().split()
-        marker_id = splitline[1]
-        covariate = splitline[0]
-        bf_value = float(splitline[4])
-        if bf_value >= float(bf_treshold):
-            associations.append((marker_id, covariate))
-
-    summary.close()
-
-    return associations
-
-
-def baypass_pij_parser(pij_filename, associations):
-    """
-    Parses a baypass pij file to extract standardized allelic frequencies.
-    Returns a dict with markers as keys and a np.array of allelic frequencies
-    as values:
-    {marker:np.array([freq_pop1, freq_pop2, ...])}
-    """
-    marker_list = [x for x, y in associations]
-    frequencies = defaultdict(list)
-
-    pij = open(pij_filename, 'r')
-    for lines in pij:
-        splitline = lines.strip().split()
-        if splitline[1] in marker_list:
-            frequencies[splitline[1]].append(float(splitline[4]))
-
-    pij.close()
-
-    # Make sure we have np.arrays for the freqencies
-    for key in frequencies.keys():
-        frequencies[key] = np.array(frequencies[key])
-
-    return frequencies
-
-
-def popnames_parser(popnames_file):
-    """
-    Parses a file with population names and returns a list with these names.
-    The order is the same as in the file.
-    """
-    popnames = []
-
-    popfile = open(popnames_file, 'r')
-    for lines in popfile:
-        popnames.append(lines.strip())
-
-    popfile.close()
-
-    return popnames
 
 
 def calculate_rona(marker_name, rona, present_covar, future_covar,
@@ -269,11 +191,11 @@ def main(params):
     functions of the program.
     """
     arg = argument_parser(params)
-    present_covariates = parse_envfile(arg.present_covars_file)
-    future_covariates = parse_envfile(arg.future_covars_file)
-    assocs = baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
+    present_covariates = fp.parse_envfile(arg.present_covars_file)
+    future_covariates = fp.parse_envfile(arg.future_covars_file)
+    assocs = fp.baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
                                           arg.bayes_factor)
-    al_freqs = baypass_pij_parser(arg.baypass_pij_file, assocs)
+    al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
 
     ronas = {}
     for assoc in assocs:
@@ -282,7 +204,7 @@ def main(params):
         # Instanciate class
         if covar not in ronas:
             rona = RonaClass(covar)
-            rona.pop_names = popnames_parser(arg.popnames_file)
+            rona.pop_names = fp.popnames_parser(arg.popnames_file)
         else:
             rona = ronas[covar]
 
