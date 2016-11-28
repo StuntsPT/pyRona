@@ -17,7 +17,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-COLOR_LIST = ['red', 'green', 'blue', 'cyan', 'magenta']
+COLOR_LIST = ['red', 'green', 'blue', 'cyan', 'magenta', 'black', 'orange',
+              'yellow']
 
 
 def draw_individual_plots(present_covar, future_covar, rona, marker_name,
