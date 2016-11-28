@@ -73,7 +73,7 @@ class RonaClass:
 
 
 def calculate_rona(marker_name, rona, present_covar, future_covar,
-                   allele_freqs, plot, outliers):
+                   allele_freqs, plot, outliers, rtype):
     """
     Calculates the "Risk of non adaptation" (RONA) of each popuation for a
     given association.
@@ -100,18 +100,21 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
                                               allele_freqs)[1, 0] ** 2
 
     for pres, fut, freq in zip(present_covar, future_covar, allele_freqs):
-        # TODO: Select plot type
-        pres_trendline_value = fit_fn(pres)
-        fut_trendline_value = fit_fn(fut)
 
-        pres_distance = freq - pres_trendline_value
-        fut_distance = freq - fut_trendline_value
+        pres_distance = freq - fit_fn(pres)
+        fut_distance = freq - fit_fn(fut)
         distance_diff = abs(pres_distance) - abs(fut_distance)
 
-        # distance_diff = abs(fut_distance)
-
         amplitude = max(allele_freqs) - min(allele_freqs)
-        rel_distance = distance_diff / amplitude
+
+        if rtype == "diff":
+            rel_distance = distance_diff / amplitude
+
+        elif rtype == "absdiff":
+            rel_distance = abs(distance_diff) / amplitude
+
+        elif rtype == "dist":
+            rel_distance = abs(fut_distance)
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
@@ -152,6 +155,14 @@ def argument_parser(args):
                                  "outlier and 2 removes **any** number of "
                                  "outliers that match the distance criteria.")
 
+    parameters.add_argument("-ronatype", dest="rtype", type=str,
+                            default="absdiff", required=False,
+                            choices=["diff", "absdiff", "dist"],
+                            help="Type of RONA to calculate. Default is "
+                                 "absolute difference as in Rellstab et al. "
+                                 "2016. Other options are 'difference' (not "
+                                 "abs) and 'distance' (future vs. trendline).")
+
     io_opts.add_argument("-pc", dest="present_covars_file", type=str,
                          required=True, help="File with Present environmental "
                                              "data.")
@@ -171,7 +182,7 @@ def argument_parser(args):
 
     misc_opts.add_argument("-no-plots", dest="plots", action='store_false',
                            help="Pass this option if you don't want "
-                                "plots to be drawn.",
+                                "individual regression plots to be drawn.",
                            required=False, default=True)
 
     misc_opts.add_argument("-no-weighted-means", dest="use_weights",
@@ -210,7 +221,7 @@ def main(params):
 
         calculate_rona(marker, rona, present_covariates[int(covar) - 1],
                        future_covariates[int(covar) - 1], al_freqs[marker],
-                       arg.plots, arg.outliers)
+                       arg.plots, arg.outliers, arg.rtype)
 
         ronas[covar] = rona
 
