@@ -91,8 +91,11 @@ def draw_rona_plot(ronas):
     ax.set_xticks(ind + width)
     ax.set_xticklabels(rona.pop_names)
 
+    box = ax.get_position()
+    ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
 
-    ax.legend(axes, names)
+
+    ax.legend(axes, names, loc='center left', bbox_to_anchor=(1, 0.5))
 
 
     plt.show()
