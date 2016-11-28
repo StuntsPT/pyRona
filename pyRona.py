@@ -247,6 +247,7 @@ def main(params):
 
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
+    # TODO: Add a function to output a results summary.
     gp.draw_rona_plot(ronas)
 
 
