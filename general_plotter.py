@@ -79,7 +79,7 @@ def draw_rona_plot(ronas):
 
     # Define title:
     if len(ronas) > 1:
-        title_msg = ("RONA per population for the most represented %s "
+        title_msg = ("Average RONA per population for the most represented %s "
                      "covariates" % len(ronas))
     else:
         title_msg = "RONA per population for the most represented covariate"

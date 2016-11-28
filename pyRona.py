@@ -142,6 +142,10 @@ def argument_parser(args):
                             help="Bayes factor treshold for considering "
                                  "associations.")
 
+    parameters.add_argument("-covars", dest="num_covars", type=int,
+                            default=3, required=False,
+                            help="Number of covars to calculate the RONA for.")
+
     parameters.add_argument("-outliers", dest="outliers", type=int, default=2,
                             required=False, choices=[0, 1, 2],
                             help="Number of outliers to remove. 0 does no "
@@ -229,7 +233,8 @@ def main(params):
         sortable_representation[k] = len(rona.pop_ronas)
 
     top_represented = sorted(sortable_representation,
-                             key=sortable_representation.get, reverse=True)[:3]
+                             key=sortable_representation.get,
+                             reverse=True)[:arg.num_covars]
     top_ronas = [ronas[x] for x in top_represented]
 
     gp.draw_rona_plot(top_ronas)
