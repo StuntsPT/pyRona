@@ -71,8 +71,6 @@ def draw_rona_plot(ronas):
                        color=COLOR_LIST[counter], yerr=rona.stderr_ronas,
                        alpha=0.5, error_kw=dict(ecolor='gray'))
         counter += 1
-        print("Covar: " + rona.name)
-        print("Number of SNPs: " + str(len(rona.pop_ronas)))
         axes.append(rects)
         names.append(rona.name)
 
