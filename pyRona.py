@@ -120,6 +120,26 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
                                  allele_freqs, fit_fn)
 
 
+def results_summary(ronas):
+    """
+    This function outputs a summary of the RONAS for each population and
+    covariate.
+    """
+    pop_names = ronas[0].pop_names
+    for i in range(len(pop_names)):
+        if i == 0:
+            print("Covars\t%s" % "\t".join([x.name for x in ronas]))
+        print("%s\t%s" % (pop_names[i], "\t".join([str(x.avg_ronas[i]) for x in
+                                                   ronas])))
+    print("Min R²\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
+                                    ronas]))
+
+    print("Max R²\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
+                                    ronas]))
+    print("Average R²\t%s" % "\t".join([str(np.mean(list(x.corr_coef.values())))
+                                        for x in ronas]))
+
+
 def ronas_filterer(ronas, use_weights, num_covars):
     """
     Filters RONAS to remove immutable covars, and return only the top "n" most
@@ -247,7 +267,7 @@ def main(params):
 
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
-    # TODO: Add a function to output a results summary.
+    results_summary(ronas)
     gp.draw_rona_plot(ronas)
 
 
