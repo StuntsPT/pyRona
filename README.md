@@ -1,5 +1,5 @@
 # pyRona
-A python implementation of "Risk of non Adaptation" method (with a bit of R too!)
+A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
 ## Baypass_workflow.R
 
@@ -15,3 +15,10 @@ workings of BayPass. Please give BayPass's manual (and paper) a through read
 before using this script.
 The script takes no arguments, but all the variables you should need to edit
 are presented at the start of the script, coupled with a short description.
+
+
+## pyRona.py
+
+This script is not yet properly documented since the implementation is still subject to change.
+For now, you can use the program with `-h` parameter for a list of options.
+Sorry about that.
