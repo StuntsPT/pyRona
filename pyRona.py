@@ -69,6 +69,7 @@ class RonaClass:
         """
         Counts the number of markers in the instance.
         """
+        # print(len(self.pop_ronas))
         return len(self.pop_ronas)
 
 
@@ -128,7 +129,9 @@ def results_summary(ronas):
     pop_names = ronas[0].pop_names
     for i in range(len(pop_names)):
         if i == 0:
-            print("Covars\t%s" % "\t".join([x.name for x in ronas]))
+            print("Covar\t%s" % "\t".join([x.name for x in ronas]))
+            print("#SNPs\t%s" % "\t".join([str(x.count_markers()) for x in
+                                           ronas]))
         print("%s\t%s" % (pop_names[i], "\t".join([str(x.avg_ronas[i]) for x in
                                                    ronas])))
     print("Min R²\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
