@@ -43,7 +43,7 @@ def baypass_summary_betai_parser(summary_filename, bf_treshold):
     """
     summary = open(summary_filename, 'r')
     header = summary.readline()  # Skip header and get BF column.
-    for identifier in ("eBPmc", "eBPis", "BF(dB)"):
+    for identifier in ("eBPmc", "BF(dB)"):
         try:
             bf_col = header.strip().split().index(identifier)
         except ValueError:
