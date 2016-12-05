@@ -34,7 +34,7 @@ def parse_envfile(envfile_filename):
     return covariates
 
 
-def baypass_summary_beta2_parser(summary_filename, bf_treshold):
+def baypass_summary_betai_parser(summary_filename, bf_treshold):
     """
     Parses a baypass summary file to extract any significant associations
     between a marker and a covariate.
@@ -42,13 +42,18 @@ def baypass_summary_beta2_parser(summary_filename, bf_treshold):
     [(marker, covariate), (marker, covariate)...]
     """
     summary = open(summary_filename, 'r')
-    summary.readline()  # Skip header
+    header = summary.readline()  # Skip header and get BF column.
+    for identifier in ("eBPmc", "eBPis", "BF(dB)"):
+        try:
+            bf_col = header.strip().split().index(identifier)
+        except ValueError:
+            pass
     associations = []
     for lines in summary:
         splitline = lines.strip().split()
         marker_id = splitline[1]
         covariate = splitline[0]
-        bf_value = float(splitline[4])
+        bf_value = float(splitline[bf_col])
         if bf_value >= float(bf_treshold):
             associations.append((marker_id, covariate))
 

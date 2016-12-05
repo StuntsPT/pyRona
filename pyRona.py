@@ -214,8 +214,8 @@ def argument_parser(args):
     io_opts.add_argument("-pop", dest="popnames_file", type=str,
                          required=True, help="File with population names.")
 
-    io_opts.add_argument("-beta", dest="baypass_summary_beta2_file", type=str,
-                         required=True, help="Baypass summary beta2 file.")
+    io_opts.add_argument("-beta", dest="baypass_summary_betai_file", type=str,
+                         required=True, help="Baypass summary betai file.")
 
     io_opts.add_argument("-pij", dest="baypass_pij_file", type=str,
                          required=True, help="Baypass pij file.")
@@ -244,7 +244,7 @@ def main(params):
     arg = argument_parser(params)
     present_covariates = fp.parse_envfile(arg.present_covars_file)
     future_covariates = fp.parse_envfile(arg.future_covars_file)
-    assocs = fp.baypass_summary_beta2_parser(arg.baypass_summary_beta2_file,
+    assocs = fp.baypass_summary_betai_parser(arg.baypass_summary_betai_file,
                                              arg.bayes_factor)
     al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
 
