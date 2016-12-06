@@ -87,7 +87,7 @@ def draw_rona_plot(ronas):
 
     ax.set_title(title_msg)
     ax.set_xticks(ind + width)
-    ax.set_xticklabels(rona.pop_names)
+    ax.set_xticklabels(rona.pop_names, rotation=45, va="top", ha="right")
 
     box = ax.get_position()
     ax.set_position([box.x0, box.y0, box.width * 0.9, box.height])
