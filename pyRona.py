@@ -29,9 +29,11 @@ class RonaClass:
     """
     Stores the RONA values for each covar
     """
+    POP_NAMES = []
+
     def __init__(self, covar):
         self.name = covar
-        self.pop_names = []
+        # self.pop_names = []
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
 
@@ -87,7 +89,9 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
         present_covar = np.delete(present_covar, outlier_pos)
         future_covar = np.delete(future_covar, outlier_pos)
         allele_freqs = np.delete(allele_freqs, outlier_pos)
-        rona.pop_names = np.delete(rona.pop_names, outlier_pos)
+        rona.pop_names = np.delete(RonaClass.POP_NAMES, outlier_pos)
+    else:
+        rona.pop_names = RonaClass.POP_NAMES
 
     # Calculate trendline:
     fit = np.polyfit(present_covar, allele_freqs, 1)
@@ -247,6 +251,7 @@ def main(params):
     arg = argument_parser(params)
     present_covariates = fp.parse_envfile(arg.present_covars_file)
     future_covariates = fp.parse_envfile(arg.future_covars_file)
+    RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
     assocs = fp.baypass_summary_betai_parser(arg.baypass_summary_betai_file,
                                              arg.bayes_factor)
     al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
@@ -258,7 +263,7 @@ def main(params):
         # Instanciate class
         if covar not in ronas:
             rona = RonaClass(covar)
-            rona.pop_names = fp.popnames_parser(arg.popnames_file)
+            # rona.pop_names = fp.popnames_parser(arg.popnames_file)
         else:
             rona = ronas[covar]
 
