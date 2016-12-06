@@ -70,7 +70,6 @@ class RonaClass:
         """
         Counts the number of markers in the instance.
         """
-        # print(len(self.pop_ronas))
         return len(self.pop_ronas)
 
 
