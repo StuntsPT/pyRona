@@ -141,6 +141,7 @@ def results_summary(ronas, use_weights):
 
     print("Max R²\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
                                     ronas]))
+
     if use_weights is True:
         means = [str(np.average(list(x.corr_coef.values()),
                      weights=list(x.corr_coef.values()))) for x in ronas]
