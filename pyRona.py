@@ -123,7 +123,7 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
                                  allele_freqs, fit_fn)
 
 
-def results_summary(ronas):
+def results_summary(ronas, use_weights):
     """
     This function outputs a summary of the RONAS for each population and
     covariate.
@@ -141,8 +141,12 @@ def results_summary(ronas):
 
     print("Max R²\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
                                     ronas]))
-    print("Average R²\t%s" % "\t".join([str(np.mean(list(x.corr_coef.values())))
-                                        for x in ronas]))
+    if use_weights is True:
+        means = [str(np.average(list(x.corr_coef.values()),
+                     weights=list(x.corr_coef.values()))) for x in ronas]
+    else:
+        means = [str(np.average(list(x.corr_coef.values()))) for x in ronas]
+    print("Average R²\t%s" % "\t".join(means))
 
 
 def ronas_filterer(ronas, use_weights, num_covars):
@@ -272,7 +276,7 @@ def main(params):
 
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
-    results_summary(ronas)
+    results_summary(ronas, arg.use_weights)
     gp.draw_rona_plot(ronas)
 
 
