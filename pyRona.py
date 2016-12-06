@@ -33,7 +33,6 @@ class RonaClass:
 
     def __init__(self, covar):
         self.name = covar
-        # self.pop_names = []
         self.pop_ronas = defaultdict(list)
         self.corr_coef = {}
 
@@ -263,7 +262,6 @@ def main(params):
         # Instanciate class
         if covar not in ronas:
             rona = RonaClass(covar)
-            # rona.pop_names = fp.popnames_parser(arg.popnames_file)
         else:
             rona = ronas[covar]
 
