@@ -144,7 +144,8 @@ def results_summary(ronas, use_weights):
 
     if use_weights is True:
         means = [str(np.average(list(x.corr_coef.values()),
-                     weights=list(x.corr_coef.values()))) for x in ronas]
+                                weights=list(x.corr_coef.values()))) for x in
+                 ronas]
     else:
         means = [str(np.average(list(x.corr_coef.values()))) for x in ronas]
     print("Average R²\t%s" % "\t".join(means))
@@ -156,8 +157,8 @@ def ronas_filterer(ronas, use_weights, num_covars):
     represented covariables.
     """
     # Delete immutable covariates:
-    immutables = ("1", "2", "3")
-    ronas = {key: ronas[key] for key in ronas if key not in immutables}
+    # immutables = ("1", "2", "3")
+    # ronas = {key: ronas[key] for key in ronas if key not in immutables}
 
     sortable_representation = {}
     for k, rona in ronas.items():
@@ -204,6 +205,13 @@ def argument_parser(args):
                                  "outier removal, 1 removes **at most** 1 "
                                  "outlier and 2 removes **any** number of "
                                  "outliers that match the distance criteria.")
+
+    parameters.add_argument("-immutables", dest="immutables", type=list,
+                            default=["1", "2", "3"], required=False,
+                            help="List of immutable covariates. These are "
+                                 "not even parsed from the betai file. By "
+                                 "default the first 3 covars are skipped. "
+                                 "You can enter any other values here.")
 
     parameters.add_argument("-ronatype", dest="rtype", type=str,
                             default="absdiff", required=False,
@@ -256,7 +264,7 @@ def main(params):
     future_covariates = fp.parse_envfile(arg.future_covars_file)
     RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
     assocs = fp.baypass_summary_betai_parser(arg.baypass_summary_betai_file,
-                                             arg.bayes_factor)
+                                             arg.bayes_factor, arg.immutables)
     al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
 
     ronas = {}

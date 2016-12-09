@@ -34,7 +34,7 @@ def parse_envfile(envfile_filename):
     return covariates
 
 
-def baypass_summary_betai_parser(summary_filename, bf_treshold):
+def baypass_summary_betai_parser(summary_filename, bf_treshold, immutables):
     """
     Parses a baypass summary file to extract any significant associations
     between a marker and a covariate.
@@ -51,11 +51,13 @@ def baypass_summary_betai_parser(summary_filename, bf_treshold):
     associations = []
     for lines in summary:
         splitline = lines.strip().split()
-        marker_id = splitline[1]
         covariate = splitline[0]
-        bf_value = float(splitline[bf_col])
-        if bf_value >= float(bf_treshold):
-            associations.append((marker_id, covariate))
+        # Remove "immutable" covariates (Lat, Long, Alt)
+        if covariate not in immutables:
+            marker_id = splitline[1]
+            bf_value = float(splitline[bf_col])
+            if bf_value >= float(bf_treshold):
+                associations.append((marker_id, covariate))
 
     summary.close()
 
