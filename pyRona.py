@@ -206,8 +206,8 @@ def argument_parser(args):
                                  "outlier and 2 removes **any** number of "
                                  "outliers that match the distance criteria.")
 
-    parameters.add_argument("-immutables", dest="immutables", type=list,
-                            default=["1", "2", "3"], required=False,
+    parameters.add_argument("-immutables", dest="immutables",
+                            default=["1", "2", "3"], required=False, nargs="+",
                             help="List of immutable covariates. These are "
                                  "not even parsed from the betai file. By "
                                  "default the first 3 covars are skipped. "
