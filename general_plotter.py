@@ -55,7 +55,7 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
     plt.show()
 
 
-def draw_rona_plot(ronas):
+def draw_rona_plot(ronas, outpath):
     """
     Draws a RONA plot of the Nth most represented covariates.
     Plots the RONA+/-Stderr for each of the populations.
@@ -94,4 +94,10 @@ def draw_rona_plot(ronas):
 
     ax.legend(axes, names, loc='center left', bbox_to_anchor=(1, 0.5))
 
-    plt.show()
+    #plt.tight_layout()
+    plt.gcf().subplots_adjust(bottom=0.18)
+    plt.gcf().subplots_adjust(right=0.85)
+
+    fig.savefig(outpath)
+
+    plt.close(fig)

@@ -238,6 +238,10 @@ def argument_parser(args):
     io_opts.add_argument("-pij", dest="baypass_pij_file", type=str,
                          required=True, help="Baypass pij file.")
 
+    io_opts.add_argument("-out", dest="outfile", type=str,
+                         required=True, help="Path to where RONA plot should "
+                                             "be saved.")
+
     misc_opts.add_argument("-no-plots", dest="plots", action='store_false',
                            help="Pass this option if you don't want "
                                 "individual regression plots to be drawn.",
@@ -286,7 +290,7 @@ def main(params):
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
     results_summary(ronas, arg.use_weights)
-    gp.draw_rona_plot(ronas)
+    gp.draw_rona_plot(ronas, arg.outfile)
 
 
 if __name__ == "__main__":
