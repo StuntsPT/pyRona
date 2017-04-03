@@ -136,11 +136,11 @@ def results_summary(ronas, use_weights):
                                            ronas]))
         print("%s\t%s" % (pop_names[i], "\t".join([str(x.avg_ronas[i]) for x in
                                                    ronas])))
-    print("Min R²\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
-                                    ronas]))
+    print("Min R^2\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
+                                     ronas]))
 
-    print("Max R²\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
-                                    ronas]))
+    print("Max R^2\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
+                                     ronas]))
 
     if use_weights is True:
         means = [str(np.average(list(x.corr_coef.values()),
@@ -148,7 +148,7 @@ def results_summary(ronas, use_weights):
                  ronas]
     else:
         means = [str(np.average(list(x.corr_coef.values()))) for x in ronas]
-    print("Average R²\t%s" % "\t".join(means))
+    print("Average R^2\t%s" % "\t".join(means))
 
 
 def ronas_filterer(ronas, use_weights, num_covars):
@@ -240,7 +240,8 @@ def argument_parser(args):
 
     io_opts.add_argument("-out", dest="outfile", type=str,
                          required=True, help="Path to where RONA plot should "
-                                             "be saved.")
+                                             "be saved. Supports PDF, SVG and "
+                                             "PNG extensions.")
 
     misc_opts.add_argument("-no-plots", dest="plots", action='store_false',
                            help="Pass this option if you don't want "
