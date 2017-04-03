@@ -14,8 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+
 
 COLOR_LIST = ['red', 'green', 'blue', 'cyan', 'magenta', 'black', 'orange',
               'yellow']
@@ -94,7 +97,7 @@ def draw_rona_plot(ronas, outpath):
 
     ax.legend(axes, names, loc='center left', bbox_to_anchor=(1, 0.5))
 
-    #plt.tight_layout()
+    # plt.tight_layout()
     plt.gcf().subplots_adjust(bottom=0.18)
     plt.gcf().subplots_adjust(right=0.85)
 
