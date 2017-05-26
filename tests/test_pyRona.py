@@ -160,9 +160,9 @@ def test_ronas_filterer():
     
     test_ronas_filtered = pr.ronas_filterer(ronas, True, 3)
 
-    assert ronas['15'] == test_ronas_filtered[0]
-    assert ronas['11'] == test_ronas_filtered[1]
-    assert ronas['14'] == test_ronas_filtered[2]
+    assert test_ronas_filtered[0] == ronas['15']
+    assert test_ronas_filtered[1] == ronas['11']
+    assert test_ronas_filtered[2] == ronas['14']
 
 def test_argument_parser():
     """
