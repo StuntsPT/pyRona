@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,10 +19,15 @@ from collections import defaultdict
 from sys import argv
 
 import argparse as ap
-import md_outiler_remover as mor
 import numpy as np
-import general_plotter as gp
-import file_parser as fp
+try:
+    import pyRona.md_outiler_remover as mor
+    import pyRona.plotters.general_plotter as gp
+    import pyRona.file_parser as fp
+except ImportError:
+    import md_outiler_remover as mor
+    import plotters.general_plotter as gp
+    import file_parser as fp
 
 
 class RonaClass:
@@ -259,12 +264,12 @@ def argument_parser(args):
     return arguments
 
 
-def main(params):
+def main():
     """
     Main function. Takes all the inputs as arguments and runs the remaining
     functions of the program.
     """
-    arg = argument_parser(params)
+    arg = argument_parser(argv[1:])
     present_covariates = fp.parse_envfile(arg.present_covars_file)
     future_covariates = fp.parse_envfile(arg.future_covars_file)
     RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
@@ -295,4 +300,4 @@ def main(params):
 
 
 if __name__ == "__main__":
-    main(argv[1:])
+    main()

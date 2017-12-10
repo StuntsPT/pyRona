@@ -40,7 +40,7 @@ URL = "https://github.com/StuntsPT/pyRona"
 setup(
     name="pyRona",
     version=VERSION,
-    packages=["pyrona",
+    packages=["pyRona",
               "pyRona.R",
               "pyRona.plotters"],
     install_requires=["numpy",
