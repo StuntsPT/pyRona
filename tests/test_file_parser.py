@@ -16,17 +16,17 @@
 
 import pytest
 import pickle
-import pyRona.pyRona.file_parser as fp
+import pyRona.file_parser as fp
 
 def test_parse_envfile():
     """
     Test the function parse_envfile of file_parser.py.
     """
 
-    test_parsed = fp.parse_envfile("tests/data/ENVFILE")
+    test_parsed = fp.parse_envfile("../tests/data/ENVFILE")
     test_parsed_list = [list(x) for x in test_parsed]
 
-    with open("tests/data/jar/file_parser.parse_envfile.pickle","rb") as f:
+    with open("../tests/data/jar/file_parser.parse_envfile.pickle","rb") as f:
         control_parsed = pickle.load(f)
 
     control_parsed_list = [list(x) for x in control_parsed]
@@ -38,9 +38,9 @@ def test_baypass_summary_betai_parser():
     Test the function baypass_summary_betai_parser of file_parser.py.
     """
 
-    test_betai = fp.baypass_summary_betai_parser("tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20, ["1", "2", "3"])
+    test_betai = fp.baypass_summary_betai_parser("../tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20, ["1", "2", "3"])
 
-    with open("tests/data/jar/file_parser.baypass_summary_betai_parser.pickle","rb") as f:
+    with open("../tests/data/jar/file_parser.baypass_summary_betai_parser.pickle","rb") as f:
         control_betai = pickle.load(f)
 
     assert test_betai == control_betai
@@ -50,9 +50,9 @@ def test_baypass_pij_parser():
     Test the function baypass_pij_parser of file_parser.py.
     """
 
-    test_pij = fp.baypass_pij_parser("tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out", fp.baypass_summary_betai_parser("tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20, ["1", "2", "3"]))
+    test_pij = fp.baypass_pij_parser("../tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out", fp.baypass_summary_betai_parser("../tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20, ["1", "2", "3"]))
 
-    with open("tests/data/jar/file_parser.baypass_pij_parser.pickle","rb") as f:
+    with open("../tests/data/jar/file_parser.baypass_pij_parser.pickle","rb") as f:
         control_pij = pickle.load(f)
 
     assert str(test_pij) == str(control_pij)
@@ -62,9 +62,9 @@ def test_popnames_parser():
     Test the function popnames_parser of file_parser.py.
     """
 
-    test_popname = fp.popnames_parser("tests/data/popnames_single_GEO.txt")
+    test_popname = fp.popnames_parser("../tests/data/popnames_single_GEO.txt")
 
-    with open("tests/data/jar/file_parser.popnames_parser.pickle","rb") as f:
+    with open("../tests/data/jar/file_parser.popnames_parser.pickle","rb") as f:
         control_popname = pickle.load(f)
 
     assert test_popname == control_popname

@@ -17,12 +17,12 @@
 import pytest
 import pickle
 import numpy as np
-import pyRona.pyRona.pyRona as pr
+import pyRona.pyRona as pr
 from collections import defaultdict
 
 # Initiatize the Rona class
 
-with open("tests/data/jar/file_parser.popnames_parser.pickle","rb") as f:
+with open("../tests/data/jar/file_parser.popnames_parser.pickle", "rb") as f:
     pr.RonaClass.POP_NAMES = pickle.load(f)
 
 ronas = {}
@@ -148,7 +148,7 @@ def test_results_summary():
 
     test_results_summary = pr.results_summary(top_ronas, True)
 
-    with open("tests/data/jar/pyRona.results_summary.pickle","rb") as f:
+    with open("../tests/data/jar/pyRona.results_summary.pickle","rb") as f:
             control_results_summary = pickle.load(f)
 
     assert test_results_summary == control_results_summary
@@ -169,10 +169,10 @@ def test_argument_parser():
     Test the function argument_parser of pyRona.py.
     """
 
-    args = ['-pc', 'tests/data/ENVFILE', '-fc', 'tests/data/ENVFILE_rpc85', '-pop', 'tests/data/popnames_single_GEO.txt', '-beta', 'tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', '-pij', 'tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', '-out', '/home/baptista/Music/LOL', '-bf', '20', '-outliers', '0']
+    args = ['-pc', '..tests/data/ENVFILE', '-fc', '..tests/data/ENVFILE_rpc85', '-pop', '..tests/data/popnames_single_GEO.txt', '-beta', '..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', '-pij', '..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', '-out', '/home/baptista/Music/LOL', '-bf', '20', '-outliers', '0']
 
     test_arguments = pr.argument_parser(args)
 
-    control_arguments = "Namespace(bayes_factor=20.0, baypass_pij_file='tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', baypass_summary_betai_file='tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', future_covars_file='tests/data/ENVFILE_rpc85', immutables=['1', '2', '3'], num_covars=3, outfile='/home/baptista/Music/LOL', outliers=0, plots=True, popnames_file='tests/data/popnames_single_GEO.txt', present_covars_file='tests/data/ENVFILE', rtype='absdiff', use_weights=True)"
+    control_arguments = "Namespace(bayes_factor=20.0, baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', baypass_summary_betai_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', future_covars_file='..tests/data/ENVFILE_rpc85', immutables=['1', '2', '3'], num_covars=3, outfile='/home/baptista/Music/LOL', outliers=0, plots=True, popnames_file='..tests/data/popnames_single_GEO.txt', present_covars_file='..tests/data/ENVFILE', rtype='absdiff', use_weights=True)"
 
     assert str(test_arguments) == control_arguments
