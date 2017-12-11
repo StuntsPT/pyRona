@@ -1,6 +1,8 @@
 # pyRona
 A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
+[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona)
+
 ## Baypass_workflow.R
 
 This script will automate the workflow for
