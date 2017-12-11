@@ -1,0 +1,19 @@
+language: python
+
+os:
+  - linux
+
+python:
+  - "3.5"
+
+install:
+  - pip install .
+
+# Run tests
+script:
+  - py.test tests/*.py -v
+
+# Other stuff
+notifications:
+  email:
+    - f.pinamartins@gmail.com
