@@ -21,13 +21,13 @@ from sys import argv
 import argparse as ap
 import numpy as np
 try:
-    import pyRona.md_outiler_remover as mor
-    import pyRona.plotters.general_plotter as gp
-    import pyRona.file_parser as fp
-except ImportError:
-    import md_outiler_remover as mor
+    import md_outlier_remover as mor
     import plotters.general_plotter as gp
     import file_parser as fp
+except ImportError:
+    import pyRona.md_outlier_remover as mor
+    import pyRona.plotters.general_plotter as gp
+    import pyRona.file_parser as fp
 
 
 class RonaClass:

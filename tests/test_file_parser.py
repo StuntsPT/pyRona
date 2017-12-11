@@ -16,7 +16,7 @@
 
 import pytest
 import pickle
-import pyRona.file_parser as fp
+import pyRona.pyRona.file_parser as fp
 
 def test_parse_envfile():
     """
@@ -28,9 +28,9 @@ def test_parse_envfile():
 
     with open("tests/data/jar/file_parser.parse_envfile.pickle","rb") as f:
         control_parsed = pickle.load(f)
-    
+
     control_parsed_list = [list(x) for x in control_parsed]
-        
+
     assert test_parsed_list == control_parsed_list
 
 def test_baypass_summary_betai_parser():
@@ -42,7 +42,7 @@ def test_baypass_summary_betai_parser():
 
     with open("tests/data/jar/file_parser.baypass_summary_betai_parser.pickle","rb") as f:
         control_betai = pickle.load(f)
-    
+
     assert test_betai == control_betai
 
 def test_baypass_pij_parser():
