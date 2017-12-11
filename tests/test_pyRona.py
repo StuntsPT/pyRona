@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-# Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# and Joao Baptista <baptista.joao33@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +30,7 @@ with open("../tests/data/jar/file_parser.popnames_parser.pickle", "rb") as f:
 ronas = {}
 
 rona = pr.RonaClass("5")
-rona_dict = {'558': [0.0014018084856003402, 0.00044007391611439851,
+RONA_DICT = {'558': [0.0014018084856003402, 0.00044007391611439851,
                      5.4391158171442511e-05, 0.00076889319051446367,
                      0.0012089671066288572, 0.0012905538438860258,
                      0.00044007391611439851, 0.00024723253714292048,
@@ -63,7 +64,7 @@ rona_dict = {'558': [0.0014018084856003402, 0.00044007391611439851,
                       0.010833592937406331, 0.0014346693533407616]}
 
 rona.pop_ronas = defaultdict(list)
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 rona.corr_coef = {'558': 0.00030210072963844631,
                   '917': 0.19358706622191832,
@@ -91,7 +92,7 @@ rona.stderr_ronas = [0.0061531608283148442, 0.0029980427796045179,
 ronas['5'] = rona
 
 rona = pr.RonaClass("11")
-rona_dict = {'109': [0.0088246354874106526, 0.027885848140217651,
+RONA_DICT = {'109': [0.0088246354874106526, 0.027885848140217651,
                      0.006249038485830795, 0.0075278627810403476,
                      0.0058167809170407035, 0.0081934496949213342,
                      0.0050195723213135417, 0.0068144134373971212,
@@ -157,7 +158,7 @@ rona_dict = {'109': [0.0088246354874106526, 0.027885848140217651,
                       0.055655611668973239, 0.058057644495825199]}
 
 rona.pop_ronas = defaultdict(list)
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 
 rona.corr_coef = {'109': 0.0006640909658998809,
@@ -188,7 +189,7 @@ rona.stderr_ronas = [0.013313151175645535, 0.049792720537769092,
 ronas['11'] = rona
 
 rona = pr.RonaClass("12")
-rona_dict = {'649': [0.086850728432886104, 0.080731124560793566,
+RONA_DICT = {'649': [0.086850728432886104, 0.080731124560793566,
                      0.064680192750292742, 0.076100475402105461,
                      0.059230618499232099, 0.068328131798133768,
                      0.048807935505400434, 0.072467425901398486,
@@ -214,7 +215,7 @@ rona_dict = {'649': [0.086850728432886104, 0.080731124560793566,
                      0.082473872891072414, 0.089146758970440956]}
 
 rona.pop_ronas = defaultdict(list)
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 
 rona.corr_coef = {'649': 0.016349693873427815,
@@ -241,7 +242,7 @@ rona.stderr_ronas = [0.018819322196863317, 0.022048199697093925,
 ronas['12'] = rona
 
 rona = pr.RonaClass("14")
-rona_dict = {'250': [0.024094829252647242, 0.0080535780488881388,
+RONA_DICT = {'250': [0.024094829252647242, 0.0080535780488881388,
                      0.00036906740649573545, 0.0092266851623922785,
                      0.027535064720339297, 0.0066629847851275648,
                      0.00036906740649569203, 0.0014630886471793769,
@@ -284,7 +285,7 @@ rona_dict = {'250': [0.024094829252647242, 0.0080535780488881388,
 
 rona.pop_ronas = defaultdict(list)
 
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 
 rona.corr_coef = {'250': 0.0040724658723727027,
@@ -313,7 +314,7 @@ rona.stderr_ronas = [0.017357739754244265, 0.0058017390535247491,
 ronas['14'] = rona
 
 rona = pr.RonaClass("15")
-rona_dict = {'63': [0.0041548828836814834, 0.028923691147344867,
+RONA_DICT = {'63': [0.0041548828836814834, 0.028923691147344867,
                     0.0049573280758087529, 0.0051534813449954668, 0.0,
                     0.038838347298962475, 0.0011947517305006977,
                     0.012286327497238353, 0.005349634614182113,
@@ -468,7 +469,7 @@ rona_dict = {'63': [0.0041548828836814834, 0.028923691147344867,
 
 rona.pop_ronas = defaultdict(list)
 
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 
 rona.corr_coef = {'63': 0.0077456870585954412,
@@ -512,7 +513,7 @@ rona.stderr_ronas = [0.0012326560237869524, 0.0083588763235082613,
 ronas['15'] = rona
 
 rona = pr.RonaClass("16")
-rona_dict = {'589': [0.019747076205946928, 0.051413558770438496,
+RONA_DICT = {'589': [0.019747076205946928, 0.051413558770438496,
                      0.086015417527705862, 0.035580317488192736,
                      0.00097845873092532458, 0.099802790554380544,
                      0.08992925245140708, 0.053788472527463597,
@@ -523,7 +524,7 @@ rona_dict = {'589': [0.019747076205946928, 0.051413558770438496,
 
 rona.pop_ronas = defaultdict(list)
 
-for k, v in rona_dict.items():
+for k, v in RONA_DICT.items():
     rona.pop_ronas[k] = v
 
 rona.corr_coef = {'589': 0.17658228323645278}
@@ -618,8 +619,8 @@ def test_calculate_rona():
 
     control_pop_rona = defaultdict(list)
 
-    for k, v in control_pop_rona_dict.items():
-        control_pop_rona[k] = v
+    for key, value in control_pop_rona_dict.items():
+        control_pop_rona[key] = value
 
     assert test_rona.pop_ronas == control_pop_rona
 
@@ -631,12 +632,12 @@ def test_results_summary():
 
     top_ronas = [ronas['15'], ronas['11'], ronas['14']]
 
-    test_results_summary = pr.results_summary(top_ronas, True)
+    test_res_summary = pr.results_summary(top_ronas, True)
 
     with open("../tests/data/jar/pyRona.results_summary.pickle", "rb") as fle:
         control_results_summary = pickle.load(fle)
 
-    assert test_results_summary == control_results_summary
+    assert test_res_summary == control_results_summary
 
 
 def test_ronas_filterer():
