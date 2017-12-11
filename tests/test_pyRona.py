@@ -21,6 +21,7 @@ import numpy as np
 import pyRona.pyRona as pr
 
 import pytest
+assert pytest  # Hacky solution to stop the linters from complaining
 
 # Initiatize the Rona class
 
