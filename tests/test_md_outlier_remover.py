@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
-# and Joao Baptista <>
+# and Joao Baptista <baptista.joao33@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,9 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
-import pytest
 import numpy as np
 import pyRona.md_outlier_remover as mor
+
+import pytest
+assert pytest  # Hacky solution to stop the linters from complaining
 
 
 def test_mhbs_dist_calculator():
