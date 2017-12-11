@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-# Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# and Joao Baptista <baptista.joao33@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
