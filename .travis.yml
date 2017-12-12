@@ -9,7 +9,7 @@ python:
   - "3.6"
 
 install:
-  - pip install numpy==1.13.3 --upgrade
+  - pip install pytest --upgrade
   - pip install .
 
 # Run tests
