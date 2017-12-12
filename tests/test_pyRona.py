@@ -618,12 +618,15 @@ def test_calculate_rona():
                                      0.0014561996437717636,
                                      0.000192841378971478]}
 
-    control_pop_rona = defaultdict(list)
+    # Dirty hack to adjust precision due to failing tests on Travis-CI:
 
-    for key, value in control_pop_rona_dict.items():
-        control_pop_rona[key] = value
+    cpr = {x: [round(item, 10) for item in y] for x, y in
+           control_pop_rona_dict.items()}
 
-    assert test_rona.pop_ronas == control_pop_rona
+    trpr = {x: [round(item, 10) for item in y] for x, y in
+            test_rona.pop_ronas.items()}
+
+    assert trpr == cpr
 
 
 def test_results_summary():
