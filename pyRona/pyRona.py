@@ -66,7 +66,7 @@ class RonaClass:
                 else:
                     self.avg_ronas += [np.average(i)]
 
-                self.stderr_ronas += [np.std(i)/np.sqrt(len(i))]
+                self.stderr_ronas += [np.std(i) / np.sqrt(len(i))]
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
             self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
@@ -124,8 +124,8 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
         rona.pop_ronas[marker_name] += [rel_distance]
 
     if plot is True:
-        gp.draw_individual_plots(present_covar, future_covar, rona, marker_name,
-                                 allele_freqs, fit_fn)
+        gp.draw_individual_plots(present_covar, future_covar, rona,
+                                 marker_name, allele_freqs, fit_fn)
 
 
 def results_summary(ronas, use_weights):
