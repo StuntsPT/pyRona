@@ -47,7 +47,7 @@ def md_remove_outliers(x_coords, y_coords, outliers):
     http://kldavenport.com/mahalanobis-distance-and-outliers/
     """
     mahalanobis_dists = mahalanobis_dist_calculator(x_coords, y_coords)
-    threshold = np.mean(mahalanobis_dists) * 1.5 # adjust 1.5 accordingly
+    threshold = np.mean(mahalanobis_dists) * 1.5  # adjust 1.5 accordingly
 
     # Single or no outliers approach
     if outliers == 1:
@@ -64,6 +64,6 @@ def md_remove_outliers(x_coords, y_coords, outliers):
                 n_x.append(x_coords[i])
                 n_y.append(y_coords[i])
             else:
-                outlier_indeces.append(i) # position of removed pair
+                outlier_indeces.append(i)  # position of removed pair
 
     return np.array(outlier_indeces)
