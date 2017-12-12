@@ -619,7 +619,6 @@ def test_calculate_rona():
                                      0.000192841378971478]}
 
     # Dirty hack to adjust precision due to failing tests on Travis-CI:
-
     cpr = {x: [round(item, 10) for item in y] for x, y in
            control_pop_rona_dict.items()}
 
