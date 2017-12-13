@@ -52,7 +52,8 @@ class RonaClass:
         """
         if len(self.pop_ronas) > 1:
             # Sort markers:
-            markers = sorted([x for x in self.corr_coef.keys()])
+            # markers = sorted([x for x in self.corr_coef.keys()])
+            markers = sorted(list(self.corr_coef.keys()))
 
             list_of_marker_values = np.array([self.pop_ronas[x] for x in
                                               markers],
@@ -135,13 +136,12 @@ def results_summary(ronas, use_weights):
     covariate.
     """
     pop_names = ronas[0].pop_names
-    for i in range(len(pop_names)):
+    for i, j in enumerate(pop_names):
         if i == 0:
             print("Covar\t%s" % "\t".join([x.name for x in ronas]))
             print("#SNPs\t%s" % "\t".join([str(x.count_markers()) for x in
                                            ronas]))
-        print("%s\t%s" % (pop_names[i], "\t".join([str(x.avg_ronas[i]) for x in
-                                                   ronas])))
+        print("%s\t%s" % (j, "\t".join([str(x.avg_ronas[i]) for x in ronas])))
     print("Min R^2\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
                                      ronas]))
 
