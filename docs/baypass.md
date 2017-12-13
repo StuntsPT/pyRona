@@ -18,4 +18,4 @@ are presented at the start of the script, coupled with a short description.
 
 ### Variables
 
-**Under construction**
+In the beginning of the script there are several line with empty variables. You should fill in the correct values for your case in order to use the script. Each option is pretty much self documented with both an explanation of what is expected and an example.
