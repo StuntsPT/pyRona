@@ -3,6 +3,7 @@ site_name: pyRona Manual'
 pages:
     - 'Introduction': 'index.md'
     - 'Installation & dependencies': 'install.md'
+    - 'Method description': 'description.md'
     - 'Usage': 'usage.md'
         - 'Wrapping BayPass': 'baypass.md'
     - 'Output': 'output.md'
