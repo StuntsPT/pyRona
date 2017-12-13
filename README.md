@@ -1,21 +1,21 @@
 # pyRona
 A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
-[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona)
+[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest)
 
 
 ## pyRona manual
 
-*pyRona* is not yet fully documented, but you can find the manual [here](STUB).
+*pyRona* is not yet fully documented, but you can find the manual [here](http://pyrona.readthedocs.io/en/latest/).
 
 
 ## Baypass_workflow.R
 
-If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](STUB). You can find the script [here](https://github.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
+If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/baypass/). You can find the script [here](https://github.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
 
 ## Installation
 
-Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the command line. For more information, and platform specific instructions, please consult the [relevant manual section](STUB).
+Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the command line. For more information, and platform specific instructions, please consult the [relevant manual section](http://pyrona.readthedocs.io/en/latest/install/).
 
 ## License
 
