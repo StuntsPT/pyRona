@@ -1,0 +1,11 @@
+site_name: pyRona Manual'
+#site_favicon: 'assets/Icon.png'
+pages:
+    - 'Introduction': 'index.md'
+    - 'Installation & dependencies': 'install.md'
+    - 'Usage': 'usage.md'
+        - 'Wrapping BayPass': 'baypass.md'
+    - 'Output': 'output.md'
+    - 'Citation': 'citation.md'
+    - 'Future Plans': 'future.md'
+    - 'FAQ': 'faq.md'
