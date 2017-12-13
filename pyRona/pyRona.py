@@ -184,7 +184,12 @@ def main():
     Main function. Takes all the inputs as arguments and runs the remaining
     functions of the program.
     """
-    arg = argument_parser(argv[1:])
+    if len(argv) < 2:
+        arg_list = ["-h"]
+    else:
+        arg_list = argv[1:]
+
+    arg = argument_parser(arg_list)
     present_covariates = fp.parse_envfile(arg.present_covars_file)
     future_covariates = fp.parse_envfile(arg.future_covars_file)
     RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
