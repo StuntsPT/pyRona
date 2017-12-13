@@ -26,4 +26,5 @@ For now, you can use the program with `-h` parameter for a list of options.
 Sorry about that.
 
 ## License
+
 *pyRona* is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0-standalone.html).
