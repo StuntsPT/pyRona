@@ -4,7 +4,9 @@ If you use *pyRona*, please cite:
 
 **Add zenodo link here**
 
-Full paper soon.
+(Full paper soon)
+
+And [Rellstab et al. 2016](doi.wiley.com/10.1111/mec.13889).
 
 If you used [BayPass](http://www1.montpellier.inra.fr/CBGP/software/baypass/), please cite:
 
