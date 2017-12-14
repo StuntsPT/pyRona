@@ -15,8 +15,7 @@
 ## Changes made in version 0.1.3
 
 * Autosave plots instead of interactive (which allows for a lot better automation)
-* Bugfix with arg.immutables argument.
-
+* Bugfix with `arg.immutables` argument.
 
 ---
 
