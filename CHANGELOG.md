@@ -8,7 +8,7 @@
 * [Pypi submission](https://pypi.python.org/pypi/pyRona/)
 * Adds unit tests
 * Travis-CI integration
-* Propper documentation is started
+* Proper documentation is started
 
 ---
 
