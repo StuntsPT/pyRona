@@ -1,7 +1,5 @@
 # Output
 
-## **Under construction**
-
 *pyRona* outputs a summary of the calculated RONA values as a table (tab separated) into STDOUT.
 
 ```
@@ -35,4 +33,4 @@ Additionally, these values are also plotted as a PDF as in the example below:
 
 Furthermore, *pyRona* can also output the individual plot for each marker and environmental variable, as in the example below:
 
-![individual_RONA_plot_example](assets/individual_RONA_example.png) 
+![individual_RONA_plot_example](assets/individual_RONA_example.png)
