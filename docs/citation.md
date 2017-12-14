@@ -2,7 +2,7 @@
 
 If you use *pyRona*, please cite:
 
-**Add zenodo link here**
+[![DOI](https://zenodo.org/badge/73514698.svg)](https://zenodo.org/badge/latestdoi/73514698)
 
 (Full paper soon)
 

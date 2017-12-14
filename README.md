@@ -1,7 +1,7 @@
 # pyRona
 A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
-[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/pyRona.svg)](https://badge.fury.io/py/pyRona)
+[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/pyRona.svg)](https://badge.fury.io/py/pyRona) [![DOI](https://zenodo.org/badge/73514698.svg)](https://zenodo.org/badge/latestdoi/73514698)
 
 
 ## pyRona manual
@@ -13,9 +13,11 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 
 If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/baypass/). You can find the script [here](https://github.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
 
+
 ## Installation
 
 Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the command line. For more information, and platform specific instructions, please consult the [relevant manual section](http://pyrona.readthedocs.io/en/latest/install/).
+
 
 ## License
 
