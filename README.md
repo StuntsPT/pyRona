@@ -1,7 +1,7 @@
 # pyRona
 A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
-[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/pyRona.svg)](https://badge.fury.io/py/pyRona)
 
 
 ## pyRona manual
