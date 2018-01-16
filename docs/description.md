@@ -47,3 +47,17 @@ The average absolute difference between AAF<sub>present</sub> and AAF<sub>future
 ![RONA formula](assets/RONA_formula.png)
 
 ![RONA explained frame 4](assets/RONA_frames/RONA_generic_plot_4.png)
+
+## Implementation in *pyRona*
+
+The RONA method as implemented in *pyRona* is not performed exactly as the original from [Rellstab et al. 2016](doi.wiley.com/10.1111/mec.13889).
+
+Instead of relying on LFFM like the original, *pyRona* is instead prepared to get association data from the software [*Baypass*](http://www1.montpellier.inra.fr/CBGP/software/baypass/). The method can be red about in [Gautier 2015](https://www.ncbi.nlm.nih.gov/pubmed/26482796). Being able to use output from LFMM is also in the [future plans](https://github.com/StuntsPT/pyRona/issues/7).
+
+This means the instead of using allele frequencies, *pyRona* uses the normalized allele frequencies outputted by *Baypass*. This is in our opinion superior to using the allele frequencies directly, since it removes any potential effect of population structuring.
+
+Instead of ranking the environmental factors by *p*-value of the difference teste between present and future values, *pyRona* will calculate the RONA value for the "N" environmental variables ranked by the number of associated loci. By default "N" is 3, but *pyRona* can take any user provided value.
+
+*pyRona* offers an option to remove outliers before calculating the regression. This removal uses the ["Mahalanobis distance"](https://en.wikipedia.org/wiki/Mahalanobis_distance) to remove 0, 1 or "all" the outliers in the data. By default, no outlier removal is performed.
+
+Finally, similar to the original method, *pyRona* provides an average RONA value for each selected environmental variable, but unlike the the original method,our implementation will calculate the average RONA weighted by the regression R² value. This means that associations with a lower regression coefficient will contribute less to the final RONA value than those with higher R² values.
