@@ -6,6 +6,7 @@ This section describes how the *Risk of non-adaptedness* (RONA) method works, an
 ## Requirements
 
 The RONA method requires a matrix of set grouped individuals characterized for three different components:
+
 * Genetic information (in this case, allele frequencies across a set of loci)
 * Current environmental data
 * Future predictions of the provided environmental variables
