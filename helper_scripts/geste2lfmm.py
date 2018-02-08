@@ -36,16 +36,16 @@ def parse_geste(infile_name):
         line = line.split()
         try:
             int(line[0])
-        except (ValueError):  # In case it's a new section
+        except ValueError:  # In case it's a new section
             if line[0].startswith(pop_starter):
                 popname = "Pop %s" % line[0].strip().replace(pop_starter, "")
                 pop_freqs[popname] = []
             continue
-        except (IndexError):  # In case it's an empty line
+        except IndexError:  # In case it's an empty line
             continue
         try:
             ref_frequency = round(int(line[3]) / int(line[1]), 3)
-        except(ZeroDivisionError):
+        except ZeroDivisionError:
             ref_frequency = 9
         pop_freqs[popname].append(ref_frequency)
 
@@ -66,5 +66,5 @@ def write_lfmm(pop_freqs, lfmm_filename):
 
 if __name__ == "__main__":
     from sys import argv
-    pop_freqs = parse_geste(argv[1])
-    write_lfmm(pop_freqs, argv[2])
+    POP_FREQS = parse_geste(argv[1])
+    write_lfmm(POP_FREQS, argv[2])
