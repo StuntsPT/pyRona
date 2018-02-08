@@ -19,6 +19,7 @@ from collections import defaultdict
 import numpy as np
 
 
+# Common functions to Baypass & LFMM:
 def parse_envfile(envfile_filename):
     """
     Parses an ENVFILE (baypass) input file and returns a list of np arrays
@@ -34,6 +35,23 @@ def parse_envfile(envfile_filename):
     return covariates
 
 
+def popnames_parser(popnames_file):
+    """
+    Parses a file with population names and returns a list with these names.
+    The order is the same as in the file.
+    """
+    popnames = []
+
+    popfile = open(popnames_file, 'r')
+    for lines in popfile:
+        popnames.append(lines.strip())
+
+    popfile.close()
+
+    return popnames
+
+
+# Baypass excusive functions
 def baypass_summary_betai_parser(summary_filename, bf_treshold, immutables):
     """
     Parses a baypass summary file to extract any significant associations
@@ -89,17 +107,25 @@ def baypass_pij_parser(pij_filename, associations):
     return frequencies
 
 
-def popnames_parser(popnames_file):
+# LFMM exclusive functions
+def parse_allele_freqs(allele_freqs_file, associations):
     """
-    Parses a file with population names and returns a list with these names.
-    The order is the same as in the file.
+    Parses a file that contains allelic frequencies (likely to be the LFMM
+    input file).
+    Returns a dict with markers as keys and a np.array of allelic frequencies
+    as values:
+    {marker:np.array([freq_pop1, freq_pop2, ...])}
     """
-    popnames = []
+    # TODO: find a suitable input file and write a parser for it
+    print("")
 
-    popfile = open(popnames_file, 'r')
-    for lines in popfile:
-        popnames.append(lines.strip())
 
-    popfile.close()
-
-    return popnames
+def lfmm_results_parser(lfmm_results_filename, assoc_treshold, immutables):
+    """
+    Parses a lfmm results file to extract any significant associations
+    between a marker and a covariate.
+    Returns a list of associations tuples:
+    [(marker, covariate), (marker, covariate)...]
+    """
+    # TODO: find a suitable input file and write a parser for it
+    print("")
