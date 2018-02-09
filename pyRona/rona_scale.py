@@ -19,7 +19,6 @@
 from sys import argv
 import matplotlib.pyplot as plt
 import matplotlib.colors
-import numpy as np
 
 
 def input_parser(values_filename):
@@ -48,14 +47,14 @@ def values_to_color_scale(ronas):
     cmap = plt.cm.Wistia
     norm = matplotlib.colors.Normalize(vmin=min(vals), vmax=max(vals))
 
-    fig, ax = plt.subplots()
-    ax.bar(range(len(locs)), vals, color=cmap(norm(vals)))
-    ax.set_xticks(range(len(locs)))
-    ax.set_xticklabels(locs, rotation=90)
+    fig, axe = plt.subplots()
+    axe.bar(range(len(locs)), vals, color=cmap(norm(vals)))
+    axe.set_xticks(range(len(locs)))
+    axe.set_xticklabels(locs, rotation=90)
 
-    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
-    sm.set_array([])
-    fig.colorbar(sm)
+    scm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    scm.set_array([])
+    fig.colorbar(scm)
 
     plt.show()
 
