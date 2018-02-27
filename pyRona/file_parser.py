@@ -110,14 +110,24 @@ def baypass_pij_parser(pij_filename, associations):
 # LFMM exclusive functions
 def parse_allele_freqs(allele_freqs_file, associations):
     """
-    Parses a file that contains allelic frequencies (likely to be the LFMM
-    input file).
+    Parses a file that contains allelic frequencies (in this case, the LFMM
+    input file). Uses the associations list to filter which frequencies get
+    returned.
     Returns a dict with markers as keys and a np.array of allelic frequencies
     as values:
     {marker:np.array([freq_pop1, freq_pop2, ...])}
+    Only markers with significant associations are placed in the dict.
     """
-    # TODO: find a suitable input file and write a parser for it
-    print("")
+    marker_list = [x for x, y in associations]
+    freqs_array = np.genfromtxt(allele_freqs_file, delimiter="\t")
+    marker = 0
+    frequencies = {}
+    for snp in freqs_array.T:
+        marker += 1
+        if str(marker) in marker_list:
+            frequencies[str(marker)] = snp
+
+    return frequencies
 
 
 def lfmm_results_parser(lfmm_results_filename, assoc_treshold, immutables):
@@ -128,4 +138,8 @@ def lfmm_results_parser(lfmm_results_filename, assoc_treshold, immutables):
     [(marker, covariate), (marker, covariate)...]
     """
     # TODO: find a suitable input file and write a parser for it
+    print("")
+
+
+if __name__ == "__main__":
     print("")
