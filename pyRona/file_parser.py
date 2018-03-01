@@ -130,16 +130,37 @@ def parse_allele_freqs(allele_freqs_file, associations):
     return frequencies
 
 
-def lfmm_results_parser(lfmm_results_filename, assoc_treshold, immutables):
+def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
     """
     Parses a lfmm results file to extract any significant associations
     between a marker and a covariate.
     Returns a list of associations tuples:
     [(marker, covariate), (marker, covariate)...]
     """
-    # TODO: find a suitable input file and write a parser for it
-    print("")
+    associations = []
+    snp = 0
+    imut_indeces = [int(x) for x in immutables]
+    results = open(lfmm_results_filename, "r")
+    for lines in results:
+        snp += 1
+        lines = [float(x) for x in lines.split(",")]
+        try:
+            snp_assocs = [(str(snp), i) for i in line_index
+                          if lines[i] < assoc_threshold]
+        except NameError:
+            line_index = list(range(len(lines)))
+            for index in sorted(imut_indeces, reverse=True):
+                del line_index[index]
+            snp_assocs = [(str(snp), i) for i in line_index
+                          if lines[i] < assoc_threshold]
+
+        associations += snp_assocs
+
+    results.close()
+
+    print(len(associations))
+    return associations
 
 
 if __name__ == "__main__":
-    print("")
+    lfmm_results_parser("/home/francisco/pvalues.csv", 0.05, [1, 2, 3])
