@@ -60,8 +60,11 @@ def write_lfmm(pop_freqs, lfmm_filename):
     file.
     """
     outfile = open(lfmm_filename, 'w')
-    for freqs in pop_freqs.values():
-        outfile.write("\t".join(map(str, freqs)) + "\n")
+    for name, freq in pop_freqs.items():
+        outfile.write(name + "\t")
+        outfile.write("\t".join(map(str, freq)) + "\n")
+
+    outfile.close()
 
 
 if __name__ == "__main__":
