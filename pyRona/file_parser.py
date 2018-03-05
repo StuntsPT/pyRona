@@ -16,6 +16,7 @@
 
 
 from collections import defaultdict
+from collections import OrderedDict
 import numpy as np
 
 
@@ -158,9 +159,73 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
 
     results.close()
 
-    print(len(associations))
     return associations
 
 
+def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations):
+    """
+    Parses a LFMM input file and an evironemtal variables file to group
+    the allele frequencies into "populations".
+    The enviromental file should have the population names in the first
+    column.
+    Returns a dict with markers as keys and a np.array of allelic frequencies
+    as values:
+    {marker:np.array([freq_pop1, freq_pop2, ...])}
+    """
+    def _process_alleles(allele_matrix, indices):
+        """
+        Turns allele counts int allele frequencies.
+        """
+        frequencies = []
+        allele_matrix = list(allele_matrix)
+
+        absolutes = []
+        startindex = 0
+        for i in indices:
+            alleles = allele_matrix[startindex:i + 1]
+            absolutes.append(alleles)
+            al_count = len(alleles)
+            total = (al_count - alleles.count(9)) * 2
+            try:
+                freq = sum([0 if x == 9 else x for x in alleles]) / total
+            except ZeroDivisionError:
+                print("coco")
+                freq = np.nan
+
+            frequencies.append(freq)
+            startindex = i + 1
+
+        return frequencies
+
+    env_vars = open(env_filename, "r")
+    pops = []
+    indices = []
+    for lines in env_vars:
+        popname = lines.split()[0]
+        try:
+            if popname != pops[-1]:
+                indices.append(len(pops) - 1)
+        except IndexError:
+            pass
+        pops.append(popname)
+    indices.append(len(pops) - 1)
+
+    env_vars.close()
+
+    # collapsed_pops = list(OrderedDict.fromkeys(pops))
+
+    id_freqs = {}
+    lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=int)
+    snp_num = 0
+
+    for snp in lfmm.T:
+        snp_num += 1
+        if snp_num in associations:
+            id_freqs[str(snp_num)] = np.array(_process_alleles(snp, indices))
+
+    print(id_freqs)
+    return id_freqs
+
+
 if __name__ == "__main__":
-    lfmm_results_parser("/home/francisco/pvalues.csv", 0.05, [1, 2, 3])
+    pass
