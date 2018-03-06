@@ -189,7 +189,6 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations):
             try:
                 freq = sum([0 if x == 9 else x for x in alleles]) / total
             except ZeroDivisionError:
-                print("coco")
                 freq = np.nan
 
             frequencies.append(freq)
