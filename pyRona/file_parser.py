@@ -222,7 +222,6 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations):
         if snp_num in associations:
             id_freqs[str(snp_num)] = np.array(_process_alleles(snp, indices))
 
-    print(id_freqs)
     return id_freqs
 
 
