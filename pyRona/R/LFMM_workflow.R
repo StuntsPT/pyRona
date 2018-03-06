@@ -1,0 +1,120 @@
+#!/usr/bin/Rscript
+
+## Load required libraries
+if (!require("lfmm")) install.packages("lfmm")
+library("lfmm")
+if (!require("LEA")) {source("https://bioconductor.org/biocLite.R"); biocLite("LEA")}
+library("LEA")
+
+## Set variables:
+# Path to vcf file to convert to lfmm eg. "~/qsuber_GEO.vcf"
+original_vcf = ""
+
+# Path to the converted lfmm file eg. "~/qsuber_GEO.lfmm"
+target_lfmm = ""
+
+# Number of "K" to use. You should run the PCA first and then define this number
+# eg. 5
+PCA_points = 5
+
+# Path to file with environmental variables. The first column should be the name
+# of the "population" each sample belongs to. Eg. "~/env_names.txt"
+ENV_FILE = ""
+
+# Calibration type to use for LFMM tests. Valid values are "gif" or "median+MAD"
+CALIBRATION = "gif"
+
+# Estimate type to use - valid values are "ridge" or "lasso"
+ESTIMATE = "ridge"
+
+# Path to file where the association table will be written to.
+# Each column represents a covariate and each line represents a marker.
+# Eg. "~/associations.csv"
+ASSOCIATION_TABLE = ""
+
+## Functions
+
+# Converts a VCF file to LFMM format
+convert_file = function(original_vcf, target_lfmm) {
+    vcf2lfmm(original_vcf, target_lfmm)
+}
+
+
+# Performs a preliminary PCA analysis. Use it to determine the best "K"
+preliminary_pca = function(lfmm_file, PCA_points) {
+    genetic_data = read.lfmm(lfmm_file)
+
+    pc <- prcomp(genetic_data)
+    plot(pc$sdev[1:20]^2, xlab = 'PC', ylab = "Variance explained")
+    points(PCA_points, pc$sdev[PCA_points]^2, type="h", lwd=3, col="blue")
+
+    return(genetic_data)
+}
+
+
+# LFMM estimates
+lfmm_estimates = function(env_file,
+                          geno_data,
+                          PCA_points,
+                          calibration,
+                          estimate) {
+
+    env_vars = read.csv(env_file, sep="\t", header=FALSE)[,-1]
+
+    # Fit an LFMM, i.e, compute B, U, V estimates
+    if (estimate == "ridge") {
+        mod.lfmm <- lfmm_ridge(Y = geno_data,
+                               X = env_vars,
+                               K = PCA_points)
+    } else if (estimate == "lasso") {
+        mod.lfmm <- lfmm_lasso(Y = geno_data,
+                               X = env_vars,
+                               K = PCA_points,
+                               nozero.prop = 0.01)
+    } else {
+        stop("This script only supports 'ridge' or 'lasso' estimates.")
+    }
+
+    # Performs association testing using the fitted model:
+    pv <- lfmm_test(Y = geno_data,
+                    X = env_vars,
+                    lfmm = mod.lfmm,
+                    calibrate = calibration)
+
+    pvalues <- pv$calibrated.pvalue
+
+    return(pvalues)
+}
+
+
+# Draw a QQ-plot
+draw_qq_plot = function(pvalues) {
+    qqplot(rexp(length(pvalues), rate=log(10)),
+           -log10(pvalues), xlab="Expected quantile",
+           pch = 19, cex = .4)
+    abline(0,1)
+}
+
+
+# Write down the assocaitions table
+write_associations_table = function(assoc_table, pvalues){
+    write.table(x=pvalues,
+                col.names=FALSE,
+                row.names=F,
+                sep=",",
+                file=assoc_table)
+}
+
+## Function invocation
+convert_file(original_vcf, target_lfmm)
+genetic_data = preliminary_pca(target_lfmm, PCA_points)
+
+pvalues = lfmm_estimates(ENV_FILE,
+                         genetic_data,
+                         PCA_points,
+                         CALIBRATION,
+                         ESTIMATE)
+
+draw_qq_plot(pvalues)
+
+write_associations_table(ASSOCIATION_TABLE, pvalues)
