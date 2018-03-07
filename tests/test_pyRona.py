@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
 # and Joao Baptista <baptista.joao33@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
@@ -675,7 +675,7 @@ def test_argument_parser():
         " baypass_summary_betai_file="
         "'..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out',"
         " future_covars_file='..tests/data/ENVFILE_rpc85', immutables=['1',"
-        " '2', '3'], main_op='baypass', num_covars=3,"
+        " '2', '3'], upstream='baypass', num_covars=3,"
         " outfile='/home/baptista/Music/LOL',"
         " outliers=0, plots=True,"
         " popnames_file='..tests/data/popnames_single_GEO.txt',"

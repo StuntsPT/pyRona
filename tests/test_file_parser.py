@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
 # and Joao Baptista <baptista.joao33@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
@@ -23,15 +23,15 @@ import pytest
 assert pytest  # Hacky solution to stop the linters from complaining
 
 
-def test_parse_envfile():
+def test_parse_baypass_envfile():
     """
-    Test the function parse_envfile of file_parser.py.
+    Test the function parse_baypass_envfile of file_parser.py.
     """
 
-    test_parsed = fp.parse_envfile("../tests/data/ENVFILE")
+    test_parsed = fp.parse_baypass_envfile("../tests/data/ENVFILE")
     test_parsed_list = [list(x) for x in test_parsed]
 
-    with open("../tests/data/jar/file_parser.parse_envfile.pickle",
+    with open("../tests/data/jar/file_parser.parse_baypass_envfile.pickle",
               "rb") as fle:
         control_parsed = pickle.load(fle)
 
