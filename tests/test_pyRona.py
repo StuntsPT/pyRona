@@ -660,7 +660,8 @@ def test_argument_parser():
     Test the function argument_parser of pyRona.py.
     """
 
-    args = ['-pc', '..tests/data/ENVFILE', '-fc', '..tests/data/ENVFILE_rpc85',
+    args = ['baypass', '-pc', '..tests/data/ENVFILE', '-fc',
+            '..tests/data/ENVFILE_rpc85',
             '-pop', '..tests/data/popnames_single_GEO.txt', '-beta',
             '..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', '-pij',
             '..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', '-out',
@@ -669,12 +670,13 @@ def test_argument_parser():
     test_arguments = pr.argument_parser(args)
 
     control_arguments = (
-        "Namespace(bayes_factor=20.0,"
-        " baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out',"
+        "Namespace(bayes_factor=20.0, "
+        "baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out',"
         " baypass_summary_betai_file="
         "'..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out',"
         " future_covars_file='..tests/data/ENVFILE_rpc85', immutables=['1',"
-        " '2', '3'], num_covars=3, outfile='/home/baptista/Music/LOL',"
+        " '2', '3'], main_op='baypass', num_covars=3,"
+        " outfile='/home/baptista/Music/LOL',"
         " outliers=0, plots=True,"
         " popnames_file='..tests/data/popnames_single_GEO.txt',"
         " present_covars_file='..tests/data/ENVFILE', rtype='absdiff',"
