@@ -675,11 +675,11 @@ def test_argument_parser():
         " baypass_summary_betai_file="
         "'..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out',"
         " future_covars_file='..tests/data/ENVFILE_rpc85', immutables=['1',"
-        " '2', '3'], upstream='baypass', num_covars=3,"
+        " '2', '3'], num_covars=3,"
         " outfile='/home/baptista/Music/LOL',"
         " outliers=0, plots=True,"
         " popnames_file='..tests/data/popnames_single_GEO.txt',"
         " present_covars_file='..tests/data/ENVFILE', rtype='absdiff',"
-        " use_weights=True)")
+        " upstream='baypass', use_weights=True)")
 
     assert str(test_arguments) == control_arguments
