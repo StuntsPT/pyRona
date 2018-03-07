@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2017-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ def argument_parser(args):
                                prog="pyRona",
                                formatter_class=ap.HelpFormatter)
 
-    subparsers = parser.add_subparsers(dest='main_op')
+    subparsers = parser.add_subparsers(dest='upstream')
     baypass_parser = subparsers.add_parser('baypass',
                                            help="Process Baypass results")
     lfmm_parser = subparsers.add_parser('lfmm',

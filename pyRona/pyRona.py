@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016-2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -190,12 +190,26 @@ def main():
         arg_list = argv[1:]
 
     arg = argument_parser(arg_list)
-    present_covariates = fp.parse_envfile(arg.present_covars_file)
-    future_covariates = fp.parse_envfile(arg.future_covars_file)
-    RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
-    assocs = fp.baypass_summary_betai_parser(arg.baypass_summary_betai_file,
-                                             arg.bayes_factor, arg.immutables)
-    al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
+
+    if arg.upstream == "baypass":
+        present_covariates = fp.parse_baypass_envfile(arg.present_covars_file)
+        future_covariates = fp.parse_baypass_envfile(arg.future_covars_file)
+        RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
+        assocs = fp.baypass_summary_betai_parser(
+            arg.baypass_summary_betai_file,
+            arg.bayes_factor, arg.immutables)
+        al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
+    elif arg.upstream == "lfmm":
+        present_covariates = fp.parse_lfmm_envfile(arg.present_covars_file)
+        future_covariates = fp.parse_lfmm_envfile(arg.future_covars_file)
+        assocs = fp.lfmm_results_parser(arg.lfmm_assoc_file,
+                                        arg.p_thres,
+                                        arg.immutables)
+        RonaClass.POP_NAMES, al_freqs = fp.lfmm_to_pop_allele_freqs(
+            arg.allele_freqs_file,
+            arg.present_covars_file,
+            assocs,
+            popnames=True)
 
     ronas = {}
     for assoc in assocs:
@@ -208,7 +222,8 @@ def main():
             rona = ronas[covar]
 
         calculate_rona(marker, rona, present_covariates[int(covar) - 1],
-                       future_covariates[int(covar) - 1], al_freqs[marker],
+                       future_covariates[int(covar) - 1],
+                       al_freqs[marker],
                        arg.plots, arg.outliers, arg.rtype)
 
         ronas[covar] = rona

@@ -20,8 +20,8 @@ from collections import OrderedDict
 import numpy as np
 
 
-# Common functions to Baypass & LFMM:
-def parse_envfile(envfile_filename):
+# Baypass exclusive functions
+def parse_baypass_envfile(envfile_filename):
     """
     Parses an ENVFILE (baypass) input file and returns a list of np arrays
     (one per line)
@@ -39,7 +39,7 @@ def parse_envfile(envfile_filename):
 def popnames_parser(popnames_file):
     """
     Parses a file with population names and returns a list with these names.
-    The order is the same as in the file.
+    The order must be the same as in the baypass input files (geno and env).
     """
     popnames = []
 
@@ -52,13 +52,12 @@ def popnames_parser(popnames_file):
     return popnames
 
 
-# Baypass excusive functions
 def baypass_summary_betai_parser(summary_filename, bf_treshold, immutables):
     """
     Parses a baypass summary file to extract any significant associations
     between a marker and a covariate.
     Returns a list of associations tuples:
-    [(marker, covariate), (marker, covariate)...]
+    [('marker', 'covariate'), ('marker', 'covariate')...]
     """
     summary = open(summary_filename, 'r')
     header = summary.readline()  # Skip header and get BF column.
@@ -136,7 +135,7 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
     Parses a lfmm results file to extract any significant associations
     between a marker and a covariate.
     Returns a list of associations tuples:
-    [(marker, covariate), (marker, covariate)...]
+    [('marker', 'covariate'), ('marker', 'covariate')...]
     """
     associations = []
     snp = 0
@@ -146,13 +145,13 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
         snp += 1
         lines = [float(x) for x in lines.split(",")]
         try:
-            snp_assocs = [(str(snp), i) for i in line_index
+            snp_assocs = [(str(snp), str(i)) for i in line_index
                           if lines[i] < assoc_threshold]
         except NameError:
             line_index = list(range(len(lines)))
             for index in sorted(imut_indeces, reverse=True):
                 del line_index[index]
-            snp_assocs = [(str(snp), i) for i in line_index
+            snp_assocs = [(str(snp), str(i)) for i in line_index
                           if lines[i] < assoc_threshold]
 
         associations += snp_assocs
@@ -162,7 +161,8 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
     return associations
 
 
-def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations):
+def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
+                             popnames=False):
     """
     Parses a LFMM input file and an evironemtal variables file to group
     the allele frequencies into "populations".
@@ -211,18 +211,50 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations):
 
     env_vars.close()
 
-    # collapsed_pops = list(OrderedDict.fromkeys(pops))
+    collapsed_pops = list(OrderedDict.fromkeys(pops))
 
     id_freqs = {}
     lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=int)
     snp_num = 0
+
+    print(associations)
+    # TODO: Associations is a tuple of marker and covar. The below loop should be looking only for the SNP numbers and not the whole tuple.
 
     for snp in lfmm.T:
         snp_num += 1
         if snp_num in associations:
             id_freqs[str(snp_num)] = np.array(_process_alleles(snp, indices))
 
-    return id_freqs
+    print(id_freqs)
+    if popnames:
+        return collapsed_pops, id_freqs
+    else:
+        return id_freqs
+
+
+def parse_lfmm_envfile(envfile_filename):
+    """
+    Parses an ENVFILE (lfmm) input file and returns a list of np arrays
+    (one per line). Covariate values are averaged per "population".
+    """
+    envfile = open(envfile_filename, 'r')
+
+    env_data = {}
+    for lines in envfile:
+        lines = lines.strip().split()
+        if lines[0] not in env_data:
+            env_data[lines[0]] = np.array([float(x) for x in lines[1:]])
+        else:
+            env_data[lines[0]] = np.vstack((env_data[lines[0]],
+                                            np.array([float(x) for x in
+                                                      lines[1:]])))
+
+    envfile.close()
+
+    covariates = []
+    for pop in env_data.values():
+        covariates.append(np.array([np.average(x) for x in pop.T]))
+    return covariates
 
 
 if __name__ == "__main__":
