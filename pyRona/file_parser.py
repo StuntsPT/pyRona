@@ -230,7 +230,6 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
             else:
                 id_freqs[str(snp_num)] = np.array(snp_data)
 
-
     if popnames:
         return collapsed_pops, id_freqs
     else:
@@ -259,7 +258,8 @@ def parse_lfmm_envfile(envfile_filename):
     covariates = []
     for pop in env_data.values():
         covariates.append(np.array([np.average(x) for x in pop.T]))
-    return covariates
+    covariates = np.array(covariates)
+    return list(covariates.T)
 
 
 if __name__ == "__main__":
