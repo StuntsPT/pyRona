@@ -190,6 +190,7 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
                 freq = sum([0 if x == 9 else x for x in alleles]) / total
             except ZeroDivisionError:
                 freq = np.nan
+                return None
 
             frequencies.append(freq)
             startindex = i + 1
@@ -217,15 +218,19 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
     lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=int)
     snp_num = 0
 
-    print(associations)
-    # TODO: Associations is a tuple of marker and covar. The below loop should be looking only for the SNP numbers and not the whole tuple.
+    markers, covars = zip(*associations)
+    markers = set(markers)
 
     for snp in lfmm.T:
         snp_num += 1
-        if snp_num in associations:
-            id_freqs[str(snp_num)] = np.array(_process_alleles(snp, indices))
+        if str(snp_num) in markers:
+            snp_data = _process_alleles(snp, indices)
+            if snp_data is None:
+                id_freqs[str(snp_num)] = None
+            else:
+                id_freqs[str(snp_num)] = np.array(snp_data)
 
-    print(id_freqs)
+
     if popnames:
         return collapsed_pops, id_freqs
     else:

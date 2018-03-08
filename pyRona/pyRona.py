@@ -212,6 +212,7 @@ def main():
             popnames=True)
 
     ronas = {}
+    missing = []
     for assoc in assocs:
         marker, covar = assoc
 
@@ -221,12 +222,21 @@ def main():
         else:
             rona = ronas[covar]
 
-        calculate_rona(marker, rona, present_covariates[int(covar) - 1],
-                       future_covariates[int(covar) - 1],
-                       al_freqs[marker],
-                       arg.plots, arg.outliers, arg.rtype)
+        try:
+            calculate_rona(marker, rona, present_covariates[int(covar) - 1],
+                           future_covariates[int(covar) - 1],
+                           al_freqs[marker],
+                           arg.plots, arg.outliers, arg.rtype)
+        except TypeError:
+            missing.append(marker)
 
         ronas[covar] = rona
+
+    if missing != []:
+        missing = sorted(list(set(missing)))
+        print("These markers were composed fo entirely missing data for one "
+              "or more 'populations', and were, thus, skipped:")
+        print(str(missing))
 
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
