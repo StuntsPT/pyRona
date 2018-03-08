@@ -74,6 +74,7 @@ lfmm_estimates = function(env_file,
                           estimate) {
 
     env_vars = read.csv(env_file, sep="\t", header=FALSE)[,-1]
+    env_vars = scale(env_vars)
 
     # Fit an LFMM, i.e, compute B, U, V estimates
     if (estimate == "ridge") {
