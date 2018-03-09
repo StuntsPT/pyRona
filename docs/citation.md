@@ -1,10 +1,8 @@
 # Citation
 
-If you use *pyRona*, please cite:
+If you use *pyRona*, please cite our pre-print:
 
-[![DOI](https://zenodo.org/badge/73514698.svg)](https://zenodo.org/badge/latestdoi/73514698)
-
-(Full paper soon)
+[New insights on adaptation and population structure of cork oak using genotyping by sequencing](https://doi.org/10.1101/263160)
 
 And [Rellstab et al. 2016](doi.wiley.com/10.1111/mec.13889).
 

@@ -21,6 +21,11 @@ If you came here looking for a way to automate the *BayPass* analysis, you shoul
 Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the command line. For more information, and platform specific instructions, please consult the [relevant manual section](http://pyrona.readthedocs.io/en/latest/install/).
 
 
+## Citation
+
+If you use `pyRona` please cite our pre-print: [New insights on adaptation and population structure of cork oak using genotyping by sequencing](https://doi.org/10.1101/263160)
+
+
 ## License
 
 *pyRona* is licensed under the [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0-standalone.html).
