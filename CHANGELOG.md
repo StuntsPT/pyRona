@@ -1,10 +1,16 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.1
+
+* Corrects a bug in the installation of the R script `LFMM_workflow.R`
+* Better PEP8 conformance
+
+---
 
 ## Changes made in version 0.3.0
 
-* `pyRona` can now use LFMM results as an input to calculate RONA.
-    * The test suite was also increased to match the changes.
+* `pyRona` can now use LFMM results as an input to calculate RONA
+    * The test suite was also increased to match the changes
 
 ---
 

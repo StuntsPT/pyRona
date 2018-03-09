@@ -33,7 +33,7 @@ if sys.version_info.major < 3:
 
 
 # Set some variables (PKGBUILD inspired)
-VERSION = "0.3.0"
+VERSION = "0.3.1"
 URL = "https://github.com/StuntsPT/pyRona"
 
 
@@ -61,7 +61,8 @@ setup(
                  "Programming Language :: Python :: 3.4",
                  "Programming Language :: Python :: 3.5",
                  "Programming Language :: Python :: 3.6"],
-    data_files=[("bin", ["pyRona/R/Baypass_workflow.R"])],
+    data_files=[("bin", ["pyRona/R/Baypass_workflow.R",
+                         "pyRona/R/LFMM_workflow.R"])],
     entry_points={
         "console_scripts": [
             "pyRona = pyRona.pyRona:main",
