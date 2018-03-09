@@ -26,6 +26,7 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 * [Method description](description.md)
 * [Usage](usage.md)
   * [Wrapping BayPass](baypass.md)
+  * [Wrapping LFMM](lfmm.md)
 * [Output](output.md)
 * [Citation](citation.md)
 * [Future Plans](future.md)

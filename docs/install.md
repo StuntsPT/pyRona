@@ -30,7 +30,7 @@ Due to the way different Operating Systems handle dependencies specific instruct
 
 ## Important note
 
-Note that *pyRona* will also automatically install an *R* script called `Baypass_workflow.R` under `~/.local/bin` that can be used to automate the usage of the software *BayPass*, whose output can be used as input for *pyRona*. For more information on this script, please see the [baypass section](baypass.md).
+Note that *pyRona* will also automatically install two *R* scripts called `Baypass_workflow.R` and `LFMM_workflow.R` under `~/.local/bin` that can be used to automate the usage of the upstream software *BayPass* and *LFMM*, whose output can be used as input for *pyRona*. For more information on these scripts, please see the [baypass](baypass.md) and [LFMM](lfmm.md) sections.
 
 
 ## Alternative methods (AKA 'expert mode')
