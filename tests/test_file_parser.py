@@ -97,3 +97,37 @@ def test_lfmm_res_parser():
         control_pvalues = pickle.load(fle)
 
     assert str(lfmm_results) == str(control_pvalues)
+
+
+def test_lfmm_to_pop_allele_freqs():
+    """
+    Test the function lfmm_to_pop_allele_freqs of file_parser.py.
+    """
+    with open("../tests/data/jar/file_parser.lfmm_results_parser.pickle",
+              "rb") as fle:
+        associations = pickle.load(fle)
+
+    popnames = ['Algeria', 'Catalonia', 'Corsica', 'Haza_de_Lino', 'Kenitra',
+                'Landes', 'Monchique', 'Puglia', 'Sardinia', 'Sicilia',
+                'Sintra', 'Taza', 'Toledo', 'Tuscany', 'Tunisia', 'Var']
+
+    with open("../tests/data/jar/LFMM_al_freqs.pickle",
+              "rb") as fle:
+        frequencies = pickle.load(fle)
+
+    id_freqs = fp.lfmm_to_pop_allele_freqs(
+        "../tests/data/Qsuber.lfmm",
+        "../tests/data/LFMM_covars.txt",
+        associations,
+        False)
+
+    assert str(id_freqs) == str(frequencies)
+
+    pops, id_freqs = fp.lfmm_to_pop_allele_freqs(
+        "../tests/data/Qsuber.lfmm",
+        "../tests/data/LFMM_covars.txt",
+        associations,
+        True)
+
+    assert str(pops) == str(popnames)
+    assert str(id_freqs) == str(frequencies)
