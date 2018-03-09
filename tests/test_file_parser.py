@@ -27,7 +27,6 @@ def test_parse_baypass_envfile():
     """
     Test the function parse_baypass_envfile of file_parser.py.
     """
-
     test_parsed = fp.parse_baypass_envfile("../tests/data/ENVFILE")
     test_parsed_list = [list(x) for x in test_parsed]
 
@@ -40,11 +39,23 @@ def test_parse_baypass_envfile():
     assert test_parsed_list == control_parsed_list
 
 
+def test_popnames_parser():
+    """
+    Test the function popnames_parser of file_parser.py.
+    """
+    test_popname = fp.popnames_parser("../tests/data/popnames_single_GEO.txt")
+
+    with open("../tests/data/jar/"
+              "file_parser.popnames_parser.pickle", "rb") as fle:
+        control_popname = pickle.load(fle)
+
+    assert test_popname == control_popname
+
+
 def test_baypass_s_b_p():
     """
     Test the function baypass_summary_betai_parser of file_parser.py.
     """
-
     test_betai = fp.baypass_summary_betai_parser(
         "../tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20,
         ["1", "2", "3"])
@@ -60,7 +71,6 @@ def test_baypass_pij_parser():
     """
     Test the function baypass_pij_parser of file_parser.py.
     """
-
     test_pij = fp.baypass_pij_parser(
         "../tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out",
         fp.baypass_summary_betai_parser(
@@ -74,15 +84,16 @@ def test_baypass_pij_parser():
     assert str(test_pij) == str(control_pij)
 
 
-def test_popnames_parser():
+def test_lfmm_res_parser():
     """
-    Test the function popnames_parser of file_parser.py.
+    Test the function lfmm_results_parser of file_parser.py.
     """
+    lfmm_results = fp.lfmm_results_parser(
+        "../tests/data/Qsuber_lfmm_results.csv",
+        0.01,
+        ["1", "2", "3"])
+    with open("../tests/data/jar/file_parser.lfmm_results_parser.pickle",
+              "rb") as fle:
+        control_pvalues = pickle.load(fle)
 
-    test_popname = fp.popnames_parser("../tests/data/popnames_single_GEO.txt")
-
-    with open("../tests/data/jar/"
-              "file_parser.popnames_parser.pickle", "rb") as fle:
-        control_popname = pickle.load(fle)
-
-    assert test_popname == control_popname
+    assert str(lfmm_results) == str(control_pvalues)
