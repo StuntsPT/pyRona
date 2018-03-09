@@ -12,6 +12,7 @@ install:
   - pip install .
   # Install codacy to push coverage info
   - pip install codacy-coverage
+  - pip install coverage
 
 script:
   # Run tests
