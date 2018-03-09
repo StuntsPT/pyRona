@@ -21,7 +21,7 @@ script:
   - coverage erase
   - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP_26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm
   - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  #- python-codacy-coverage -r coverage.xml
 
 # Other stuff
 notifications:
