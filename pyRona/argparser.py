@@ -145,7 +145,7 @@ def argument_parser(args):
                               help="LFMM associations file.")
 
     lfmm_io_opts.add_argument("-geno", dest="allele_freqs_file", type=str,
-                              required=True, help="Baypass pij file.")
+                              required=True, help="LFMM input file.")
 
     arguments = parser.parse_args(args)
 
