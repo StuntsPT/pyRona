@@ -131,3 +131,15 @@ def test_lfmm_to_pop_allele_freqs():
 
     assert str(pops) == str(popnames)
     assert str(id_freqs) == str(frequencies)
+
+
+def test_parse_lfmm_envfile():
+    """
+    Test the function parse_lfmm_envfile of file_parser.py.
+    """
+    envdata = fp.parse_lfmm_envfile("../tests/data/LFMM_covars.txt")
+
+    with open("../tests/data/jar/LFMM_envdata.pickle", "rb") as fle:
+        control_envdata = pickle.load(fle)
+
+    assert str(envdata) == str(control_envdata)
