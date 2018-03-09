@@ -16,7 +16,7 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 ## Where to get it
 
 * Source code - [pyRona on github](https://github.com/StuntsPT/pyRona)
-* Source distribution on pypi - [Sturcture_threader on Pypi](https://pypi.python.org/pypi/pyRona/)
+* Source distribution on pypi - [pyRona on Pypi](https://pypi.python.org/pypi/pyRona/)
     * You can easily install *pyRona* by issuing the command `pip3 install pyRona`
 
 
