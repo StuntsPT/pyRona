@@ -196,7 +196,7 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
     lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=int)
     snp_num = 0
 
-    markers, covars = zip(*associations)
+    markers, _ = zip(*associations)
     markers = set(markers)
 
     for snp in lfmm.T:
