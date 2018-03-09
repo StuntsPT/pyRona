@@ -2,6 +2,7 @@
 A python implementation of "Risk of non Adaptedness" method (with a bit of R too!)
 
 [![Build Status](https://travis-ci.org/StuntsPT/pyRona.svg?branch=master)](https://travis-ci.org/StuntsPT/pyRona) [![Documentation Status](https://readthedocs.org/projects/pyrona/badge/?version=latest)](http://pyrona.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://badge.fury.io/py/pyRona.svg)](https://badge.fury.io/py/pyRona) [![DOI](https://zenodo.org/badge/73514698.svg)](https://zenodo.org/badge/latestdoi/73514698)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e7952d390d4644d1aae482f94d340695)](https://www.codacy.com/app/f.pinamartins/pyRona?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=StuntsPT/pyRona&amp;utm_campaign=Badge_Grade)
 
 
 ## pyRona manual
