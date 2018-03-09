@@ -32,9 +32,9 @@ def mahalanobis_dist_calculator(x_coords, y_coords):
     diff_xy = np.transpose([x_diff, y_diff])
 
     mh_dist = []
-    for i in range(len(diff_xy)):
-        mh_dist.append(np.sqrt(np.dot(np.dot(np.transpose(diff_xy[i]),
-                                             inv_covariance_xy), diff_xy[i])))
+    for _, item in enumerate(diff_xy):
+        mh_dist.append(np.sqrt(np.dot(np.dot(np.transpose(item),
+                                             inv_covariance_xy), item)))
 
     return mh_dist
 
@@ -59,8 +59,8 @@ def md_remove_outliers(x_coords, y_coords, outliers):
     # Multiple outlier approach
     elif outliers == 2:
         n_x, n_y, outlier_indeces = [], [], []
-        for i in range(len(mahalanobis_dists)):
-            if mahalanobis_dists[i] <= threshold:
+        for i, item in enumerate(mahalanobis_dists):
+            if item <= threshold:
                 n_x.append(x_coords[i])
                 n_y.append(y_coords[i])
             else:
