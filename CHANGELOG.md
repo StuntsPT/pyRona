@@ -1,6 +1,13 @@
 # *pyRona* changelog
 
 
+## Changes made in version 0.3.0
+
+* `pyRona` can now use LFMM results as an input to calculate RONA.
+    * The test suite was also increased to match the changes.
+
+---
+
 ## Changes made in version 0.2.0
 
 * Major code re-organization
