@@ -21,8 +21,10 @@ script:
   - coverage erase
   - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm
   - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out
-  - coverage xml
-  #- python-codacy-coverage -r coverage.xml
+
+after_success:
+#- coverage xml
+#- python-codacy-coverage -r coverage.xml
 
 # Other stuff
 notifications:
