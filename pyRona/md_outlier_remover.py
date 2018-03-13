@@ -39,7 +39,7 @@ def mahalanobis_dist_calculator(x_coords, y_coords):
     return mh_dist
 
 
-def md_remove_outliers(x_coords, y_coords, outliers):
+def md_remove_outliers(x_coords, y_coords):
     """
     Removes outliers based on Mahalanobis Distance.
     Takes 2 np.array([]) as input which are used to calculate the MD distance.
@@ -50,20 +50,20 @@ def md_remove_outliers(x_coords, y_coords, outliers):
     threshold = np.mean(mahalanobis_dists) * 1.5  # adjust 1.5 accordingly
 
     # Single or no outliers approach
-    if outliers == 1:
-        if max(mahalanobis_dists) >= threshold:
-            outlier_indeces = [mahalanobis_dists.index(max(mahalanobis_dists))]
-        else:
-            outlier_indeces = []
+    # if outliers == 1:
+    if max(mahalanobis_dists) >= threshold:
+        outlier_indeces = [mahalanobis_dists.index(max(mahalanobis_dists))]
+    else:
+        outlier_indeces = []
 
-    # Multiple outlier approach
-    elif outliers == 2:
-        n_x, n_y, outlier_indeces = [], [], []
-        for i, item in enumerate(mahalanobis_dists):
-            if item <= threshold:
-                n_x.append(x_coords[i])
-                n_y.append(y_coords[i])
-            else:
-                outlier_indeces.append(i)  # position of removed pair
+    # # Multiple outlier approach
+    # elif outliers == 2:
+    #     n_x, n_y, outlier_indeces = [], [], []
+    #     for i, item in enumerate(mahalanobis_dists):
+    #         if item <= threshold:
+    #             n_x.append(x_coords[i])
+    #             n_y.append(y_coords[i])
+    #         else:
+    #             outlier_indeces.append(i)  # position of removed pair
 
     return np.array(outlier_indeces)

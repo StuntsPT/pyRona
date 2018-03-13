@@ -52,7 +52,6 @@ class RonaClass:
         """
         if len(self.pop_ronas) > 1:
             # Sort markers:
-            # markers = sorted([x for x in self.corr_coef.keys()])
             markers = sorted(list(self.corr_coef.keys()))
 
             list_of_marker_values = np.array([self.pop_ronas[x] for x in
@@ -61,14 +60,20 @@ class RonaClass:
             corr_weights = np.array([self.corr_coef[x] for x in markers],
                                     dtype=float)
 
-            for i in np.nditer(list_of_marker_values, flags=["external_loop"],
-                               order="F"):
+            for i in list_of_marker_values.T:
+                not_nans = ~np.isnan(i)
                 if use_weights is True:
-                    self.avg_ronas += [np.average(i, weights=corr_weights)]
+                    if True in not_nans:
+                        self.avg_ronas += [np.average(i[not_nans],
+                                                      weights=corr_weights
+                                                      [not_nans])]
+                    else:
+                        self.avg_ronas += [np.nan]
                 else:
-                    self.avg_ronas += [np.average(i)]
+                    self.avg_ronas += [np.average(i[not_nans])]
 
-                self.stderr_ronas += [np.std(i) / np.sqrt(len(i))]
+                self.stderr_ronas += [np.std(i[not_nans]) /
+                                      np.sqrt(len(i[not_nans]))]
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
             self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
@@ -88,23 +93,25 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
     Also plots the associations if requested.
     """
     # Remove outliers
-    if outliers != 0:
-        outlier_pos = mor.md_remove_outliers(present_covar, allele_freqs,
-                                             outliers)
-        present_covar = np.delete(present_covar, outlier_pos)
-        future_covar = np.delete(future_covar, outlier_pos)
-        allele_freqs = np.delete(allele_freqs, outlier_pos)
+    if outliers is True:
+        outlier_pos = mor.md_remove_outliers(present_covar, allele_freqs)
+        for i in outlier_pos:
+            present_covar[i] = np.nan
+            future_covar[i] = np.nan
+            allele_freqs[i] = np.nan
+
         rona.pop_names = np.delete(RonaClass.POP_NAMES, outlier_pos)
     else:
         rona.pop_names = RonaClass.POP_NAMES
 
     # Calculate trendline:
-    fit = np.polyfit(present_covar, allele_freqs, 1)
+    not_nan = ~np.isnan(present_covar)
+    fit = np.polyfit(present_covar[not_nan], allele_freqs[not_nan], 1)
     fit_fn = np.poly1d(fit)
 
     # Get R²:
-    rona.corr_coef[marker_name] = np.corrcoef(present_covar,
-                                              allele_freqs)[1, 0] ** 2
+    rona.corr_coef[marker_name] = np.corrcoef(present_covar[not_nan],
+                                              allele_freqs[not_nan])[1, 0] ** 2
 
     for pres, fut, freq in zip(present_covar, future_covar, allele_freqs):
 
@@ -125,6 +132,7 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
+    # TODO: There is still an error when using LFMM with outliers.
     if plot is True:
         gp.draw_individual_plots(present_covar, future_covar, rona,
                                  marker_name, allele_freqs, fit_fn)
