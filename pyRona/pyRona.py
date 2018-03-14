@@ -132,7 +132,6 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
-    # TODO: There is still an error when using LFMM with outliers.
     if plot is True:
         gp.draw_individual_plots(present_covar, future_covar, rona,
                                  marker_name, allele_freqs, fit_fn)
@@ -150,18 +149,21 @@ def results_summary(ronas, use_weights):
             print("#SNPs\t%s" % "\t".join([str(x.count_markers()) for x in
                                            ronas]))
         print("%s\t%s" % (j, "\t".join([str(x.avg_ronas[i]) for x in ronas])))
-    print("Min R^2\t%s" % "\t".join([str(min(x.corr_coef.values())) for x in
-                                     ronas]))
 
-    print("Max R^2\t%s" % "\t".join([str(max(x.corr_coef.values())) for x in
-                                     ronas]))
+    print("Min R^2\t%s" %
+          "\t".join([str(np.nanmin(list(x.corr_coef.values()))) for x in
+                     ronas]))
 
-    if use_weights is True:
-        means = [str(np.average(list(x.corr_coef.values()),
-                                weights=list(x.corr_coef.values()))) for x in
-                 ronas]
-    else:
-        means = [str(np.average(list(x.corr_coef.values()))) for x in ronas]
+    print("Max R^2\t%s" %
+          "\t".join([str(np.nanmax(list(x.corr_coef.values()))) for x in
+                     ronas]))
+
+    # if use_weights is True:
+    #     means = [str(np.average(list(x.corr_coef.values()),
+    #                             weights=list(x.corr_coef.values()))) for x in
+    #              ronas]
+    # else:
+    means = [str(np.nanmean(list(x.corr_coef.values()))) for x in ronas]
     print("Average R^2\t%s" % "\t".join(means))
 
 
@@ -170,10 +172,6 @@ def ronas_filterer(ronas, use_weights, num_covars):
     Filters RONAS to remove immutable covars, and return only the top "n" most
     represented covariables.
     """
-    # Delete immutable covariates:
-    # immutables = ("1", "2", "3")
-    # ronas = {key: ronas[key] for key in ronas if key not in immutables}
-
     sortable_representation = {}
     for k, rona in ronas.items():
         rona.basic_stats(use_weights)

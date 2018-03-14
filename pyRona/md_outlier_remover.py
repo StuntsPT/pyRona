@@ -24,7 +24,10 @@ def mahalanobis_dist_calculator(x_coords, y_coords):
     Returns a list with the MD distances between every xy point.
     http://kldavenport.com/mahalanobis-distance-and-outliers/
     """
+    print(x_coords)
+    print(y_coords)
     covariance_xy = np.cov(x_coords, y_coords, rowvar=0)
+    print(covariance_xy)
     inv_covariance_xy = np.linalg.inv(covariance_xy)
     xy_mean = np.mean(x_coords), np.mean(y_coords)
     x_diff = np.array([x_i - xy_mean[0] for x_i in x_coords])
