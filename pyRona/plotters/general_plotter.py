@@ -40,8 +40,8 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
     plt.plot(future_covar, allele_freqs, 'go')
     plt.plot(all_covars, fit_fn(all_covars), 'r--')
 
-    plt.xlim(min(all_covars) - np.average(present_covar) * 0.1,
-             max(all_covars) + np.average(present_covar) * 0.1)
+    plt.xlim(min(all_covars) - np.nanmean(present_covar) * 0.1,
+             max(all_covars) + np.nanmean(present_covar) * 0.1)
     plt.ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
              max(allele_freqs) + max(allele_freqs) * 0.1)
 
