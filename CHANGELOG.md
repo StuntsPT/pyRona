@@ -1,5 +1,13 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.2
+
+* Corrects a bug in when using outliers
+* Better PEP8 conformance
+* Implements automated test coverage measurements
+
+---
+
 ## Changes made in version 0.3.1
 
 * Corrects a bug in the installation of the R script `LFMM_workflow.R`

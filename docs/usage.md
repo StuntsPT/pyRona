@@ -32,7 +32,7 @@ This section describes how to use *pyRona*. All options as of version 0.2.0 are 
     - *pyRona* requires some parameters to be set in order to perform the analysis. These are:
         - Common options to both *Baypass* and *LFMM*:
             - `-covars`: [**optional**] Number of covars to calculate the RONA for (default: 3)
-            - `-outliers`: [**optional**] Number of outliers to remove - "0" skips outlier removal, "1" removes a maximum of 1 outlier (if there is one), "2" removes any number of markers considered outliers (default: 2)
+            - `-remove-outliers`: [**optional**] Pass this option if you want to *pyRona* to calculate the regression trend-line *after* removing any coordinates considered outliers
             - `-immutables`: Covariates to skip from the environmental variables file. Useful to skip variables that are the same in te present covars and future covars file, such as latitude (default: 1 2 3)
             - `-ronatype`: Defines the RONA is calculated. `absdiff` performs calculations as described in Rellstab et al. 2016 - using the absolute value of the differences, `diff` uses the differences without modulus, and `dist` accounts simply for the distance between the future condition and the trendline (default: `absdiff`)
         - *Baypass* specific options:
