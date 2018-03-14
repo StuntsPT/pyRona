@@ -49,13 +49,13 @@ def argument_parser(args):
                                 help="Number of covars to calculate the RONA "
                                 "for. Default is 3.")
 
-        parameters.add_argument("-outliers", dest="outliers", type=int,
-                                default=0, required=False, choices=[0, 1, 2],
-                                help="Number of outliers to remove. 0 does "
-                                     "no outier removal, 1 removes **at "
-                                     " most** 1 outlier and 2 removes "
-                                     "**any** number of outliers that match "
-                                     "the distance criteria.")
+        parameters.add_argument("-remove-outliers", dest="outliers",
+                                action='store_true',
+                                default=False, required=False,
+                                help="Set this option to remove outliers "
+                                     "from the RONA ananlysis. This is "
+                                     "not really recommended and is here "
+                                     "for historical purposes.")
 
         parameters.add_argument("-immutables", dest="immutables",
                                 default=["1", "2", "3"], required=False,

@@ -168,7 +168,6 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
                 freq = sum([0 if x == 9 else x for x in alleles]) / total
             except ZeroDivisionError:
                 freq = np.nan
-                return None
 
             frequencies.append(freq)
             startindex = i + 1
@@ -241,4 +240,12 @@ def parse_lfmm_envfile(envfile_filename):
 
 
 if __name__ == "__main__":
-    pass
+    import pickle
+    with open("tests/data/jar/file_parser.lfmm_results_parser.pickle",
+                  "rb") as fle:
+            associations = pickle.load(fle)
+    ids = lfmm_to_pop_allele_freqs("tests/data/Qsuber.lfmm", "tests/data/LFMM_covars.txt", associations,
+                                 popnames=False)
+    f = open("/tmp/a.pickle", "wb")
+    pickle.dump(ids, f)
+    f.close()

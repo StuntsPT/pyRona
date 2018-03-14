@@ -59,7 +59,7 @@ def test_md_remove_outliers():
                          0.15150419, -0.31698508, 0.4346372, 0.13334157,
                          -0.20163875, 0.8946341, -0.38784942, -0.55615943])
 
-    test_removed = mor.md_remove_outliers(x_coords, y_coords, 1)
+    test_removed = mor.md_remove_outliers(x_coords, y_coords)
 
     control_removed = np.array([13])
 
