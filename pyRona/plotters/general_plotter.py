@@ -25,37 +25,44 @@ COLOR_LIST = ['red', 'green', 'blue', 'cyan', 'magenta', 'black', 'orange',
 
 
 def draw_individual_plots(present_covar, future_covar, rona, marker_name,
-                          allele_freqs, fit_fn):
+                          allele_freqs, fit_fn, outpath):
     """
     Draws an individual marker vs covar plot.
     """
     all_covars = np.append(present_covar, future_covar)
 
+    fig, axes = plt.subplots()
     # Set-up the plot
-    plt.xlabel("Covariate %s" % rona.name)
-    plt.ylabel('Marker %s standardized allele freqs.' % marker_name)
-    plt.title('Linear regression plot')
+    axes.set_xlabel("Covariate %s" % rona.name)
+    axes.set_ylabel('Marker %s standardized allele freqs.' % marker_name)
+    axes.set_title('Linear regression plot')
 
-    plt.plot(present_covar, allele_freqs, 'bo')
-    plt.plot(future_covar, allele_freqs, 'go')
-    plt.plot(all_covars, fit_fn(all_covars), 'r--')
+    axes.plot(present_covar, allele_freqs, 'bo')
+    axes.plot(future_covar, allele_freqs, 'go')
+    axes.plot(all_covars, fit_fn(all_covars), 'r--')
 
-    plt.xlim(min(all_covars) - np.nanmean(present_covar) * 0.1,
-             max(all_covars) + np.nanmean(present_covar) * 0.1)
-    plt.ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
-             max(allele_freqs) + max(allele_freqs) * 0.1)
+    axes.set_xlim(min(all_covars) - np.nanmean(present_covar) * 0.1,
+                  max(all_covars) + np.nanmean(present_covar) * 0.1)
+    axes.set_ylim(min(allele_freqs) - min(allele_freqs) * 0.1,
+                  max(allele_freqs) + max(allele_freqs) * 0.1)
 
     # Annotation
     for label, x, y in zip(rona.pop_names, present_covar, allele_freqs):
-        plt.annotate(label.strip(), xy=(x, y), xytext=(-9, 9),
-                     textcoords='offset points', ha='right',
-                     va='bottom', bbox=dict(boxstyle='round,pad=0.1',
-                                            fc='yellow',
-                                            alpha=0.3),
-                     arrowprops=dict(arrowstyle='->',
-                                     connectionstyle='arc3,rad=0'))
+        axes.annotate(label.strip(), xy=(x, y), xytext=(-9, 9),
+                      textcoords='offset points', ha='right',
+                      va='bottom', bbox=dict(boxstyle='round,pad=0.1',
+                                             fc='yellow',
+                                             alpha=0.3),
+                      arrowprops=dict(arrowstyle='->',
+                                      connectionstyle='arc3,rad=0'))
 
-    plt.show()
+    # Set outpath
+    # print("%s/Cov%s_Mrk%s.pdf" % outpath, rona.name, marker_name)
+    full_outpath = outpath + "/Cov" + rona.name + "_Mrk" + marker_name + ".pdf"
+    # full_outpath = "%s/Cov%s_Mrk%s.pdf" % outpath, rona.name, marker_name
+    # Draw the plot
+    fig.savefig(full_outpath)
+    plt.close(fig)
 
 
 def draw_rona_plot(ronas, outpath):

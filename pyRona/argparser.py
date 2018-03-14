@@ -89,12 +89,11 @@ def argument_parser(args):
                                                  "PDF, SVG and PNG "
                                                  "extensions.")
 
-        misc_opts.add_argument("-no-plots", dest="plots",
-                               action='store_false',
-                               help="Pass this option if you don't want "
-                                    "individual regression plots to be "
-                                    "drawn.",
-                               required=False, default=True)
+        misc_opts.add_argument("-draw-ind-plots", dest="plots",
+                               default=None, required=False, type=str,
+                               help="Path to where individual plots should be "
+                                    "saved. Omitting this parameter will "
+                                    "cause individual plots not to be drawn.")
 
         misc_opts.add_argument("-no-weighted-means", dest="use_weights",
                                action='store_false',

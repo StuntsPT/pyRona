@@ -132,9 +132,9 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
 
         rona.pop_ronas[marker_name] += [rel_distance]
 
-    if plot is True:
+    if plot is not None:
         gp.draw_individual_plots(present_covar, future_covar, rona,
-                                 marker_name, allele_freqs, fit_fn)
+                                 marker_name, allele_freqs, fit_fn, plot)
 
 
 def results_summary(ronas, use_weights):
