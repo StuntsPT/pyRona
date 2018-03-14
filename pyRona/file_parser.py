@@ -237,15 +237,3 @@ def parse_lfmm_envfile(envfile_filename):
         covariates.append(np.array([np.average(x) for x in pop.T]))
     covariates = np.array(covariates)
     return list(covariates.T)
-
-
-if __name__ == "__main__":
-    import pickle
-    with open("tests/data/jar/file_parser.lfmm_results_parser.pickle",
-                  "rb") as fle:
-            associations = pickle.load(fle)
-    ids = lfmm_to_pop_allele_freqs("tests/data/Qsuber.lfmm", "tests/data/LFMM_covars.txt", associations,
-                                 popnames=False)
-    f = open("/tmp/a.pickle", "wb")
-    pickle.dump(ids, f)
-    f.close()
