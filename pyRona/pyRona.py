@@ -238,12 +238,6 @@ def main():
 
         ronas[covar] = rona
 
-    if missing != []:
-        missing = sorted(list(set(missing)))
-        print("These markers were composed fo entirely missing data for one "
-              "or more 'populations', and were, thus, skipped:")
-        print(str(missing))
-
     ronas = ronas_filterer(ronas, arg.use_weights, arg.num_covars)
 
     results_summary(ronas, arg.use_weights)
