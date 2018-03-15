@@ -665,7 +665,8 @@ def test_argument_parser():
             '-pop', '..tests/data/popnames_single_GEO.txt', '-beta',
             '..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out', '-pij',
             '..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out', '-out',
-            '/home/baptista/Music/LOL', '-bf', '20', '-remove-outliers']
+            '/home/baptista/Music/LOL', '-bf', '20', '-remove-outliers',
+            '-draw-ind-plots', '/tmp/indplots']
 
     test_arguments = pr.argument_parser(args)
 
@@ -677,7 +678,7 @@ def test_argument_parser():
         " future_covars_file='..tests/data/ENVFILE_rpc85', immutables=['1',"
         " '2', '3'], num_covars=3,"
         " outfile='/home/baptista/Music/LOL',"
-        " outliers=True, plots=True,"
+        " outliers=True, plots='/tmp/indplots',"
         " popnames_file='..tests/data/popnames_single_GEO.txt',"
         " present_covars_file='..tests/data/ENVFILE', rtype='absdiff',"
         " upstream='baypass', use_weights=True)")
