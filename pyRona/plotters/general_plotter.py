@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,9 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
+from os import path
 import numpy as np
 import matplotlib
-from os import path
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
