@@ -57,9 +57,8 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
                                       connectionstyle='arc3,rad=0'))
 
     # Set outpath
-    # print("%s/Cov%s_Mrk%s.pdf" % outpath, rona.name, marker_name)
-    full_outpath = outpath + "/Cov" + rona.name + "_Mrk" + marker_name + ".pdf"
-    # full_outpath = "%s/Cov%s_Mrk%s.pdf" % outpath, rona.name, marker_name
+    full_outpath = "%s/Cov%s_Mrk%s.pdf" % (outpath, rona.name, marker_name)
+
     # Draw the plot
     fig.savefig(full_outpath)
     plt.close(fig)
