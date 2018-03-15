@@ -218,7 +218,6 @@ def main():
             popnames=True)
 
     ronas = {}
-    missing = []
     for assoc in assocs:
         marker, covar = assoc
 
@@ -228,13 +227,10 @@ def main():
         else:
             rona = ronas[covar]
 
-        try:
-            calculate_rona(marker, rona, present_covariates[int(covar) - 1],
-                           future_covariates[int(covar) - 1],
-                           al_freqs[marker],
-                           arg.plots, arg.outliers, arg.rtype)
-        except TypeError:
-            missing.append(marker)
+        calculate_rona(marker, rona, present_covariates[int(covar) - 1],
+                       future_covariates[int(covar) - 1],
+                       al_freqs[marker],
+                       arg.plots, arg.outliers, arg.rtype)
 
         ronas[covar] = rona
 
