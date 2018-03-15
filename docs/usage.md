@@ -1,6 +1,6 @@
 # Usage
 
-This section describes how to use *pyRona*. All options as of version 0.2.0 are described here.
+This section describes how to use *pyRona*. All options as of version 0.3.3 are described here.
 
 ## Parameters
 
@@ -42,7 +42,7 @@ This section describes how to use *pyRona*. All options as of version 0.2.0 are 
 
 * Other options (**all optional**)
     - *pyRona* allows for setting some further miscellaneous options:
-        - `-no-plots`: Do not draw the individual regression plots. This is the default, and you should set it to "0" or "False" to draw the individual plots
+        - `draw-ind-plots`: Passing this options with a path to a directory will cause *pyRona* to draw each individual "covar-marker" plot. If it is omitted, no individual plots are drawn.
         - `-no-weighted-means`: Set this option to "1" or "True" if you wish to use *means* instead of *weighted means* for the RONA calculation
 
 

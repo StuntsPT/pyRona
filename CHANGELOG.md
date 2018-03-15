@@ -1,5 +1,12 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.3
+
+* Better handling of individual plots
+* Better PEP8 conformance
+
+---
+
 ## Changes made in version 0.3.2
 
 * Corrects a bug in when using outliers
