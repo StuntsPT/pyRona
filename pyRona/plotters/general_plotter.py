@@ -16,6 +16,7 @@
 
 import numpy as np
 import matplotlib
+from os import path
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
@@ -57,7 +58,11 @@ def draw_individual_plots(present_covar, future_covar, rona, marker_name,
                                       connectionstyle='arc3,rad=0'))
 
     # Set outpath
-    full_outpath = "%s/Cov%s_Mrk%s.pdf" % (outpath, rona.name, marker_name)
+    filename = "Cov{}_Mrk{}.pdf".format(rona.name, marker_name)
+    if path.isdir(outpath):
+        full_outpath = path.join(outpath, filename)
+    else:
+        exit("ERROR: '-draw-ind-plots' option must point to a directory!")
 
     # Draw the plot
     fig.savefig(full_outpath)
