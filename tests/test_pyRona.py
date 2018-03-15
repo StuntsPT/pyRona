@@ -578,7 +578,7 @@ def test_count_markers():
     assert test_nr == control_nr
 
 
-def test_calculate_rona():
+def test_calculate_rona(tmpdir):
     """
     Test the function calculate_rona of pyRona.py.
     """
@@ -594,7 +594,7 @@ def test_calculate_rona():
                         -0.00115721, 0.29038402, -0.31815359, 0.23805522,
                         0.15150419, -0.31698508, 0.4346372, 0.13334157,
                         -0.20163875, 0.8946341, -0.38784942, -0.55615943])
-    plot = True
+    plot = tmpdir.mkdir("ind_plots")
     outlier = 0
     rtype = "absdiff"
 
