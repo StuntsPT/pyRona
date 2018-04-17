@@ -14,10 +14,10 @@ Due to the way different Operating Systems handle dependencies specific instruct
 
 ### MacOS
 
-1. Install python 3. MacOS comes with python 2.7 installed by default, (Mac OSX versions before "Sierra" does not have any version of python installed) but in order to run *pyRona* you will need python 3.4 or above. You can [follow this comprehensive guide to do it](http://python-guide-pt-br.readthedocs.io/en/latest/starting/install3/osx/).
+1. Install python 3. MacOS comes with python 2.7 installed by default, (Mac OSX versions before "Sierra" does not have any version of python installed) but in order to run *pyRona* you will need python 3.4 or above. You can [follow this comprehensive guide to do it](http://docs.python-guide.org/en/latest/starting/install3/osx/).
 2. Install `pip`. `pip` is a [package manager for python](https://en.wikipedia.org/wiki/Pip_(package_manager)). You can use the guide from step 1 to install it on your system.
 3. Install *pyRona*. Now that you have python 3 and `pip` installed, installing *pyRona* is just one terminal command away: `pip3 install pyRona --user`. The `--user` option installs the software to a local directory, ensuring you do not need administration privileges to perform the installation.
-4. Using *pyRona*. Running the command from step 3 will install the program to `~/Library/Python/[PYTHON_VERSION]/bin` (where `PYTHON_VERSION` is the version of python you used, eg. `3.6`). You can either run it by calling it directly `~/Library/Python/[PYTHON_VERSION]/bin/pyRona` or by adding the location `~/Library/Python/[PYTHON_VERSION]/bin` to your shell `$PATH` ([here is a good guide on how to do it](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path))and just calling `pyRona`.
+4. Using *pyRona*. Running the command from step 3 will install the program to `~/Library/Python/[PYTHON_VERSION]/bin` (where `PYTHON_VERSION` is the version of python you used, eg. `3.6`). You can either run it by calling it directly `~/Library/Python/[PYTHON_VERSION]/bin/pyRona` or by adding the location `~/Library/Python/[PYTHON_VERSION]/bin` to your shell `$PATH` ([here is a good guide on how to do it](https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path)) and just calling `pyRona`.
 
 
 ### Windows
