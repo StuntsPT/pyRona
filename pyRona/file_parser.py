@@ -192,7 +192,7 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
     collapsed_pops = list(OrderedDict.fromkeys(pops))
 
     id_freqs = {}
-    lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=int)
+    lfmm = np.genfromtxt(lfmm_filename, delimiter=" ", dtype=float)
     snp_num = 0
 
     markers, _ = zip(*associations)
