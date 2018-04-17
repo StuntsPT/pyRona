@@ -72,8 +72,8 @@ class RonaClass:
                 else:
                     self.avg_ronas += [np.average(i[not_nans])]
 
-                self.stderr_ronas += [np.std(i[not_nans]) /
-                                      np.sqrt(len(i[not_nans]))]
+                self.stderr_ronas += [np.std(i[not_nans])
+                                      / np.sqrt(len(i[not_nans]))]
         else:
             self.avg_ronas = [x for x in self.pop_ronas.values()][0]
             self.stderr_ronas = [0.0] * len(list(self.pop_ronas.values())[0])
