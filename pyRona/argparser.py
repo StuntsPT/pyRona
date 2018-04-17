@@ -62,7 +62,8 @@ def argument_parser(args):
                                 nargs="+",
                                 help="List of immutable covariates. These "
                                      "are not even parsed from the betai "
-                                     "file. By default the first 3 covars "
+                                     "or p-values file. "
+                                     "By default the first 3 covars "
                                      "are skipped. You can enter any other "
                                      "values here.")
 
