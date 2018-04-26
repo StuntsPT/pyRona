@@ -19,10 +19,10 @@ script:
   - py.test tests/*.py -v
   # Coverage runs
   - coverage erase
-  - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm
-  - coverage run --branch -a pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -remove-outliers
-  - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out
-  - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -remove-outliers
+  - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -immutables 1 2 3
+  - coverage run --branch -a pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -remove-outliers -immutables 1 2 3
+  - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -immutables 1 2 3
+  - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -remove-outliers -immutables 1 2 3
 
 after_success:
 - coverage xml
