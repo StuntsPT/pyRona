@@ -58,14 +58,15 @@ def argument_parser(args):
                                      "for historical purposes.")
 
         parameters.add_argument("-immutables", dest="immutables",
-                                default=["1", "2", "3"], required=False,
+                                default=[], required=False,
                                 nargs="+",
                                 help="List of immutable covariates. These "
                                      "are not even parsed from the betai "
-                                     "or p-values file. "
-                                     "By default the first 3 covars "
-                                     "are skipped. You can enter any other "
-                                     "values here.")
+                                     "or p-values file. By default no covars "
+                                     "are skipped. You can enter any number of "
+                                     "column numbers, separated by spaces. "
+                                     "eg.:`-immutables 1 2 3` to skip columns "
+                                     "1, 2 and 3.")
 
         parameters.add_argument("-ronatype", dest="rtype", type=str,
                                 default="absdiff", required=False,
