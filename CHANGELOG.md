@@ -1,5 +1,14 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.4
+
+* *Immutables* option is no longer on by default
+* Improved help text of the *immutables* option
+* Improved handling of LFMM population data (as opposed to individual data)
+* Tests altered to conform to new options
+
+---
+
 ## Changes made in version 0.3.3
 
 * Better handling of individual plots
