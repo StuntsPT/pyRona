@@ -38,20 +38,16 @@ max_lat = max_lat + abs(max_lat * hpad)
 min_lat = np.min(env_data[1])
 min_lat = min_lat - abs(min_lat * hpad)
 
-ax = plt.axes(projection=ccrs.PlateCarree())
-ax.stock_img()
-ax.coastlines()
-
-fig = plt.figure(figsize=(12, 12), facecolor="none")
-ax  = plt.axes(projection=ccrs.Robinson())
-
-    # make the map global rather than have it zoom in to
-    # the extents of any plotted data
+fig = plt.figure(figsize=(22, 12), facecolor="none")
+ax = plt.axes(projection=ccrs.Robinson())
 
 ax.set_extent([min_lat, max_lat, min_lon, max_lon])
 
 ax.coastlines(resolution='50m')
+max_rona = 0.35
+cbat = np.arange(max_rona, 0, -0.01).reshape(int(max_rona * 100), 1)
+im = ax.imshow(cbat, cmap='gist_earth')
 
-ax.pcolormesh()
+plt.colorbar(im, ax=ax, label='RONA')
 
 fig.savefig("/tmp/aa.png")
