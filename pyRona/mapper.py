@@ -16,20 +16,27 @@
 
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+from file_parser import parse_lfmm_envfile
+import numpy as np
 
 
-def coordinate_parser(envfile_path):
-    """
-    Parses an envfile and extracts the coordinates.
-    Returns a dict with the location as key and a tuple with (lat, long) as the
-     values
-    """
-    envfile = open(envfile_path, "r")
-    coords_data = {}
-    for lines in envfile:
-        lines = lines.split()[:3]
-        coords_data[lines[0]] = tuple(lines[2:])
-        
+env_data = parse_lfmm_envfile("tests/data/LFMM_covars.txt")
+
+# Define padding for the map edges
+hpad = 0.10
+vpad = 0.10
+
+# Get map edges
+max_lon = np.max(env_data[0])
+max_lon = max_lon + abs(max_lon * vpad)
+min_lon = np.min(env_data[0])
+min_lon = min_lon - abs(min_lon * vpad)
+
+
+max_lat = np.max(env_data[1])
+max_lat = max_lat + abs(max_lat * hpad)
+min_lat = np.min(env_data[1])
+min_lat = min_lat - abs(min_lat * hpad)
 
 ax = plt.axes(projection=ccrs.PlateCarree())
 ax.stock_img()
@@ -41,10 +48,10 @@ ax  = plt.axes(projection=ccrs.Robinson())
     # make the map global rather than have it zoom in to
     # the extents of any plotted data
 
-ax.set_extent([-20, 38, 30, 52])
+ax.set_extent([min_lat, max_lat, min_lon, max_lon])
 
 ax.coastlines(resolution='50m')
-#ax.stock_img()
 
+ax.pcolormesh()
 
 fig.savefig("/tmp/aa.png")
