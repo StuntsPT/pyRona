@@ -23,11 +23,13 @@ try:
     import md_outlier_remover as mor
     import plotters.general_plotter as gp
     import file_parser as fp
+    import mapper
     from argparser import argument_parser
 except ImportError:
     import pyRona.md_outlier_remover as mor
     import pyRona.plotters.general_plotter as gp
     import pyRona.file_parser as fp
+    import pyRona.mapper
     from pyRona.argparser import argument_parser
 
 
@@ -238,6 +240,10 @@ def main():
 
     results_summary(ronas, arg.use_weights)
     gp.draw_rona_plot(ronas, arg.outfile)
+
+    if arg.map_filename is not None:
+        mapper.map_plotter(ronas, present_covariates[1], present_covariates[0],
+                           arg.map_filename)
 
 
 if __name__ == "__main__":

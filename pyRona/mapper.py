@@ -14,52 +14,68 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
+
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
-from file_parser import parse_lfmm_envfile
 import numpy as np
 
 
-env_data = parse_lfmm_envfile("tests/data/LFMM_covars.txt")
+def map_plotter(ronas, latitudes, longitudes, out_filename):
+    """
+    Plots a map with each sampling site coloured per its averag RONA value
+    """
+    def _define_map_edges(latitudes, longitudes, padding=0.10):
+        """
+        Defines the edges of the map to be drawn.
+        Takes a list of latitudes and longitudes as input and returns the map
+         edges
+        """
+        # Define padding for the map edges
+        hpad = padding
+        vpad = padding
 
-# Define padding for the map edges
-hpad = 0.10
-vpad = 0.10
+        # Get map edges
+        max_lon = np.max(longitudes)
+        max_lon = max_lon + abs(max_lon * vpad)
+        min_lon = np.min(longitudes)
+        min_lon = min_lon - abs(min_lon * vpad)
 
-# Get map edges
-max_lon = np.max(env_data[0])
-max_lon = max_lon + abs(max_lon * vpad)
-min_lon = np.min(env_data[0])
-min_lon = min_lon - abs(min_lon * vpad)
+        max_lat = np.max(latitudes)
+        max_lat = max_lat + abs(max_lat * hpad)
+        min_lat = np.min(latitudes)
+        min_lat = min_lat - abs(min_lat * hpad)
 
+        return([min_lat, max_lat, min_lon, max_lon])
 
-max_lat = np.max(env_data[1])
-max_lat = max_lat + abs(max_lat * hpad)
-min_lat = np.min(env_data[1])
-min_lat = min_lat - abs(min_lat * hpad)
+    max_ronas = []
+    pop_names = ronas[0].pop_names
+    for i, _ in enumerate(pop_names):
+        max_ronas += [max([x.avg_ronas[i] for x in ronas])]
 
-fig = plt.figure(figsize=(22, 12), facecolor="none")
-ax = plt.axes(projection=ccrs.Robinson())
+    fig = plt.figure(figsize=(22, 12), facecolor="none")
+    map_area = plt.axes(projection=ccrs.Robinson())
 
-ax.set_extent([min_lat, max_lat, min_lon, max_lon])
+    map_edges = _define_map_edges(latitudes, longitudes)
 
-cfeature.BORDERS.scale = "50m"
+    map_area.set_extent(map_edges)
+    map_area.coastlines(resolution='50m')
+    cfeature.BORDERS.scale = "50m"
+    map_area.add_feature(cfeature.BORDERS)
 
-ax.coastlines(resolution='50m')
-ax.add_feature(cfeature.BORDERS)
-max_rona = 0.35
-cbat = np.arange(max_rona, 0, -0.01).reshape(int(max_rona * 100), 1)
-im = ax.imshow(cbat, cmap='gist_earth')
+    dotplot = plt.scatter(latitudes, longitudes, c=max_ronas, s=700, vmin=0,
+                          vmax=max(max_ronas), transform=ccrs.PlateCarree(),
+                          cmap='autumn_r', zorder=2)
 
-# Plot dots
-ax.plot(8.8, 40.0, 'bo', markersize=22, transform=ccrs.PlateCarree())
-ax.plot(-8.4, 40.0, 'bo', markersize=22, transform=ccrs.Geodetic())
+    for i, txt in enumerate(pop_names):
+        map_area.annotate(txt, (latitudes[i], longitudes[i]))
 
-plt.colorbar(im, ax=ax, label='RONA')
+    sidebar = fig.colorbar(dotplot)
+    sidebar.ax.tick_params(labelsize=20)
+    sidebar.set_label(label='RONA', size=30, weight='bold')
 
-fig.savefig("/tmp/aa.png")
+    fig.savefig(out_filename)
 
-# TODO: Sample the dot colour from the colourbar
 # TODO: Eventually make an interpolation
-# TODO: Paint the sea
+# TODO: Annotate the dots with the names (https://stackoverflow.com/questions/14432557/matplotlib-scatter-plot-with-different-text-at-each-data-point#14434334)

@@ -91,6 +91,12 @@ def argument_parser(args):
                                                  "PDF, SVG and PNG "
                                                  "extensions.")
 
+        io_opts.add_argument("-map", dest="map_filename", type=str,
+                             required=False, default=None,
+                             help="Provide a path here if you want to draw "
+                             "a map plot of your samples. The extension will "
+                             "determine the file type (png, svg or pdf).")
+
         misc_opts.add_argument("-draw-ind-plots", dest="plots",
                                default=None, required=False, type=str,
                                help="Path to where individual plots should be "
