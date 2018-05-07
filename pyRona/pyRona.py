@@ -22,14 +22,14 @@ import numpy as np
 try:
     import md_outlier_remover as mor
     import plotters.general_plotter as gp
+    import plotters.map_plotter as mapper
     import file_parser as fp
-    import mapper
     from argparser import argument_parser
 except ImportError:
     import pyRona.md_outlier_remover as mor
     import pyRona.plotters.general_plotter as gp
+    import pyRona.plotters.map_plotter as mapper
     import pyRona.file_parser as fp
-    import pyRona.mapper
     from pyRona.argparser import argument_parser
 
 
