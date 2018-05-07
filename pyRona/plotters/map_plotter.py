@@ -14,8 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
-from collections import OrderedDict
-
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
