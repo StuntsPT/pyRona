@@ -10,7 +10,7 @@ python:
 
 install:
   # Install cython
-  - pip installl cython
+  - pip install cython
   # Install pyRona
   - pip install .
   # Install codacy to push coverage info
