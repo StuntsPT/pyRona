@@ -10,7 +10,7 @@ python:
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install -y libproj9
+  - sudo apt-get install -y libproj-dev
 
 install:
   # Install cython
