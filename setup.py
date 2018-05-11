@@ -43,8 +43,7 @@ setup(
     packages=["pyRona",
               "pyRona.plotters"],
     install_requires=["numpy",
-                      "matplotlib",
-                      "cartopy"],
+                      "matplotlib"],
     description=('A python implementation of "Risk of non Adaptedness"'
                  'method (with a bit of R too!)'),
     url=URL,

@@ -14,8 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with pyRona.  If not, see <http://www.gnu.org/licenses/>.
 
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
+try:
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+except ImportError:
+    print("Error importing 'Cartopy'. Please look at pyRona's manual for "
+          "information on how to install it on your system. Map plotting was "
+          "not performed.")
+    quit()
 import matplotlib.pyplot as plt
 import numpy as np
 
