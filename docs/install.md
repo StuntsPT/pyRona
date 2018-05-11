@@ -41,3 +41,37 @@ downloading one of the releases), and placing the contents of the directory
 Another alternative, is the `setup.py` method. This can be used either by running `python3 setup.py install` (or even
 better, `pip3 install .`) from the distribution's root directory (where
 `setup.py` is located).
+
+
+## Installing cartopy
+
+*pyRona* requires the [cartopy](http://scitools.org.uk/cartopy/) library to draw RONA maps. It is optional and the module will only be required if you specifically ask *pyRona* to draw a map.
+Below are instructions on how to get it to run on three different Operating Systems. After running them, *pyRona* should be able to draw RONA maps using the `-map` argument.
+
+### GNU/Linux
+
+Under GNU/Linux OSes, `cartopy` requires the `proj4` and `geos` libraries. On Ubuntu and Debian based OSes, you can install it using the following command:
+
+```
+sudo apt-get install libproj-dev libgeos-dev
+```
+
+Then you can proceed to install `cartopy` and its dependencies `scipy` and `cython`:
+
+```
+pip install cartopy scipy cython --user
+```
+
+
+### Windows
+
+Under Windows OSes, you can install the unofficial `cartopy` binaries, which can be found [here](https://www.lfd.uci.edu/~gohlke/pythonlibs/#cartopy).
+You should still install `scipy` and `cython` via `pip`:
+
+```
+C:\Python3.6\python.exe -m pip install scipy cython
+```
+
+### MacOS
+
+Installing `cartopy` under OSX does not seem to be an easy task. I really would appreciate some help here. The `pip` parts should be similar to those of GNU/Linux, but getting `proj4` and `geos` libraries installed might prove trickier.
