@@ -20,6 +20,8 @@ install:
   # Install codacy to push coverage info
   - pip install codacy-coverage
   - pip install coverage
+  # Install scipy
+  - pip install scipy
 
 script:
   # Run tests
