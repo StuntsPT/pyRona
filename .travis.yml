@@ -22,6 +22,8 @@ install:
   - pip install coverage
   # Install scipy
   - pip install scipy
+  # Install latest numpy
+  - pip install numpy
 
 script:
   # Run tests
