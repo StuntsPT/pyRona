@@ -17,6 +17,7 @@
 try:
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
+    from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 except ImportError:
     print("Error importing 'Cartopy'. Please look at pyRona's manual for "
           "information on how to install it on your system. Map plotting was "
@@ -59,7 +60,7 @@ def map_plotter(ronas, latitudes, longitudes, out_filename):
         max_ronas += [max([x.avg_ronas[i] for x in ronas])]
 
     fig = plt.figure(figsize=(22, 12), facecolor="none")
-    map_area = plt.axes(projection=ccrs.Robinson())
+    map_area = plt.axes(projection=ccrs.PlateCarree())
 
     map_edges = _define_map_edges(latitudes, longitudes)
 
@@ -68,18 +69,45 @@ def map_plotter(ronas, latitudes, longitudes, out_filename):
     cfeature.BORDERS.scale = "50m"
     map_area.add_feature(cfeature.BORDERS)
 
-    dotplot = plt.scatter(latitudes, longitudes, c=max_ronas, s=700, vmin=0,
-                          vmax=max(max_ronas), transform=ccrs.PlateCarree(),
-                          cmap='autumn_r', zorder=2)
+    # Draw sampling sites
+    dotplot = map_area.scatter(latitudes, longitudes, c=max_ronas, s=700,
+                               vmin=0, vmax=max(max_ronas),
+                               transform=ccrs.PlateCarree(),
+                               cmap='autumn_r', zorder=2)
 
-    for i, txt in enumerate(pop_names):
-        map_area.annotate(txt, (latitudes[i], longitudes[i]))
+    # Label the locations
+    for label, x, y in zip(pop_names, latitudes, longitudes):
+        map_area.annotate(label.strip().replace("_", " "), xy=(x, y),
+                          xytext=(0, -28), textcoords='offset points',
+                          ha='center', va='bottom', fontsize=13,
+                          bbox=dict(boxstyle='round,pad=0.1',
+                                    fc='lightgrey', edgecolor="none"))
 
+    # Control x and y ticks
+    gridlines = map_area.gridlines(draw_labels=True)
+    gridlines.xlines = False
+    gridlines.ylines = False
+    gridlines.ylabels_right = False
+    gridlines.xlabels_top = False
+    gridlines.xformatter = LONGITUDE_FORMATTER
+    gridlines.yformatter = LATITUDE_FORMATTER
+    gridlines.xlabel_style = {'size': 22}
+    gridlines.ylabel_style = {'size': 22}
+
+    # Control x and y labels
+    map_area.text(-0.10, 0.55, 'Latitude', va='bottom', ha='center',
+                  rotation='vertical', rotation_mode='anchor',
+                  transform=map_area.transAxes, fontsize=28)
+    map_area.text(0.5, -0.12, 'Longitude', va='bottom', ha='center',
+                  rotation='horizontal', rotation_mode='anchor',
+                  transform=map_area.transAxes, fontsize=28)
+
+    # Sidebar settings
     sidebar = fig.colorbar(dotplot)
     sidebar.ax.tick_params(labelsize=20)
     sidebar.set_label(label='RONA', size=30, weight='bold')
 
+    # Save the map
     fig.savefig(out_filename)
 
 # TODO: Eventually make an interpolation
-# TODO: Annotate the dots with the names (https://stackoverflow.com/questions/14432557/matplotlib-scatter-plot-with-different-text-at-each-data-point#14434334)
