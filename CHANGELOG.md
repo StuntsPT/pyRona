@@ -1,5 +1,16 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.5
+
+* Adds a new feature: RONA maps
+    * To use it, just add the option `-map` with a path to where you want to save the map, such as `~/my_RONA_map.png`
+    * In order to use this feature, the dependency [cartopy](http://scitools.org.uk/cartopy/) is required.
+    * The [manual](http://pyrona.readthedocs.io/en/latest/install/) now contains instructions on installing `cartopy` depending on your OS
+        * Instructions for OSX are still missing. Help, anyone?
+    * For now, the options assumes that the first variable in the environmental file is "Longitude" and the second one is "Latitude"
+    
+---
+
 ## Changes made in version 0.3.4
 
 * *Immutables* option is no longer on by default
