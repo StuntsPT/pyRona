@@ -19,9 +19,10 @@ try:
     import cartopy.feature as cfeature
     from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 except ImportError:
-    print("Error importing 'Cartopy'. Please look at pyRona's manual for "
-          "information on how to install it on your system. Map plotting was "
-          "not performed.")
+    print("\nError importing 'Cartopy'. Please look at pyRona's manual"
+          "(http://pyrona.readthedocs.io/en/latest/install/installing-cartopy)"
+          " for information on how to install it on your system. Map plotting"
+          " was **not** performed.")
     quit()
 import matplotlib.pyplot as plt
 import numpy as np
