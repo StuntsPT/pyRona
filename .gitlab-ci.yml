@@ -1,0 +1,66 @@
+stages:
+  - tests
+  - deployment
+
+image: ubuntu:16.04
+
+# Change pip's cache directory to be inside the project directory since we can
+# only cache local items.
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache"
+
+# Pip's cache doesn't store the python packages
+# https://pip.pypa.io/en/stable/reference/pip_install/#caching
+#
+# If you want to also cache the installed packages, you have to install
+# them in a virtualenv and cache it as well.
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+tests:
+    stage: tests
+    script:
+      - apt-get -qq update
+      - apt-get install -y libproj-dev libgeos-dev
+      - apt-get install -y python3 python3-pip
+      - python3 -V
+      - pip3 install virtualenv
+      - virtualenv venv
+      - source venv/bin/activate
+      # Get pip packages
+      - pip3 install cython
+      - pip3 install codacy-coverage
+      - pip3 install coverage
+      - pip3 install scipy
+      - pip3 install numpy
+      - pip3 install pytest
+      # Install pyRona
+      - pip3 install .
+      # Run unit tests
+      - pytest tests/*.py -v
+      # Coverage runs
+      - coverage erase
+      - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -immutables 1 2 3
+      - coverage run --branch -a pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -remove-outliers -immutables 1 2 3
+      - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -immutables 1 2 3
+      - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -remove-outliers -immutables 1 2 3 -map ./map.png
+      # Generate & upload coveragre report
+      - coverage xml
+      - coverage report
+      - python-codacy-coverage -r coverage.xml
+    coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
+
+deployment:
+    stage: deployment
+    script:
+        - python -V
+        - pip install virtualenv
+        - virtualenv venv
+        - source venv/bin/activate
+        - pip install twine
+        - python setup.py sdist
+        - twine upload dist/* -u Stunts -p $pypi_password
+    only:
+        - master  # Make sure this only happens in `master`
