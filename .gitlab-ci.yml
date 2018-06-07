@@ -2,7 +2,7 @@ stages:
   - tests
   - deployment
 
-image: ubuntu:16.04
+image: ubuntu:18.04
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
