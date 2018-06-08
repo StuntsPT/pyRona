@@ -15,7 +15,7 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 
 ## Where to get it
 
-* Source code - [pyRona on github](https://github.com/StuntsPT/pyRona)
+* Source code - [pyRona on gitlab](https://gitlab.com/StuntsPT/pyRona)
 * Source distribution on pypi - [pyRona on Pypi](https://pypi.python.org/pypi/pyRona/)
     * You can easily install *pyRona* by issuing the command `pip3 install pyRona`
 
@@ -36,7 +36,7 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 ## Bug reporting
 
 Found a bug or would like a feature added? Or maybe drop some feedback?
-Just [open a new issue](https://github.com/StuntsPT/pyRona/issues/new).
+Just [open a new issue](https://gitlab.com/StuntsPT/pyRona/issues/new).
 
 
 ## License

@@ -13,7 +13,7 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 
 ## Baypass_workflow.R
 
-If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/baypass/). You can find the script [here](https://github.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
+If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/baypass/). You can find the script [here](https://gitlab.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
 
 
 ## Installation
