@@ -23,7 +23,7 @@ tests:
     stage: tests
     script:
       - apt-get -qq update
-      - apt-get install -y libproj-dev libgeos-dev libproj12 libgeos-c1v5
+      - apt-get install -y libproj-dev libgeos-dev libproj12 libgeos-c1v5 python3-cartopy
       - apt-get install -y python3 python3-pip
       - apt-get install -y git
       - python3 -V
@@ -37,7 +37,7 @@ tests:
       - pip3 install scipy
       - pip3 install numpy
       - pip3 install pytest
-      - pip3 install cartopy
+      # - pip3 install cartopy
       # Install pyRona
       - pip3 install .
       # Run unit tests
