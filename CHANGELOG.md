@@ -1,5 +1,13 @@
 # *pyRona* changelog
 
+
+## Changes made in version 0.3.7
+
+### New features
+* Adds infrastructure to use Gitlab's CI server parallel to Travis CI.
+
+---
+
 ## Changes made in version 0.3.6
 
 * Fixed a broken help link
