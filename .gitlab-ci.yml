@@ -23,7 +23,7 @@ tests:
     stage: tests
     script:
       - apt-get -qq update
-      - apt-get install -y libproj-dev libgeos-dev
+      - apt-get install -y libproj-dev libgeos-dev libproj12 libgeos-c1v5
       - apt-get install -y python3 python3-pip
       - apt-get install -y git
       - python3 -V
