@@ -25,6 +25,7 @@ tests:
       - apt-get -qq update
       - apt-get install -y libproj-dev libgeos-dev
       - apt-get install -y python3 python3-pip
+      - apt-get install -y git
       - python3 -V
       - pip3 install virtualenv
       - virtualenv venv
@@ -36,16 +37,17 @@ tests:
       - pip3 install scipy
       - pip3 install numpy
       - pip3 install pytest
+      - pip3 install cartopy
       # Install pyRona
       - pip3 install .
       # Run unit tests
       - pytest tests/*.py -v
       # Coverage runs
       - coverage erase
-      - coverage run --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -immutables 1 2 3
-      - coverage run --branch -a pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -remove-outliers -immutables 1 2 3
-      - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -immutables 1 2 3
-      - coverage run --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -remove-outliers -immutables 1 2 3 -map ./map.png
+      - coverage run --source=pyRona --branch pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -immutables 1 2 3
+      - coverage run --source=pyRona --branch -a pyRona/pyRona.py lfmm -pc tests/data/LFMM_covars.txt -fc tests/data/LFMM_RCP26_covars.txt -out a.pdf -P 0.01 -assoc tests/data/Qsuber_lfmm_results.csv -geno tests/data/Qsuber.lfmm -remove-outliers -immutables 1 2 3
+      - coverage run--source=pyRona  --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -immutables 1 2 3
+      - coverage run --source=pyRona --branch -a  pyRona/pyRona.py baypass -pc tests/data/ENVFILE -fc tests/data/ENVFILE_rpc26 -out b.pdf -bf 15 -pop tests/data/popnames_single_GEO.txt -beta tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out -pij tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out -remove-outliers -immutables 1 2 3 -map ./map.png
       # Generate & upload coveragre report
       - coverage xml
       - coverage report
