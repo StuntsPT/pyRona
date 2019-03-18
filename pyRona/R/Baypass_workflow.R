@@ -17,7 +17,7 @@
 require(corrplot)
 require(ape)
 require(mvtnorm)
-require(giegen)
+require(geigen)
 
 
 ## Source the baypass R functions
