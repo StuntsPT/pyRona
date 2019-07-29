@@ -9,6 +9,7 @@ pages:
     - 'Installation & dependencies': 'install.md'
     - 'Method description': 'description.md'
     - 'Usage': 'usage.md'
+    - 'Wrappers':
         - 'Wrapping BayPass': 'baypass.md'
         - 'Wrapping LFMM': 'lfmm.md'
     - 'Output': 'output.md'
