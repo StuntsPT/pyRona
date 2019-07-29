@@ -1,5 +1,9 @@
 site_name: pyRona Manual'
 #site_favicon: 'assets/Icon.png'
+site_author: Francisco Pina-Martins
+repo_url: https://gitlab.com/StuntsPT/pyrona
+edit_uri: tree/master/docs
+
 pages:
     - 'Introduction': 'index.md'
     - 'Installation & dependencies': 'install.md'
@@ -11,3 +15,4 @@ pages:
     - 'Citation': 'citation.md'
     - 'Future Plans': 'future.md'
     - 'FAQ': 'faq.md'
+theme: readthedocs
