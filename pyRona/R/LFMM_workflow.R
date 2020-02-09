@@ -17,7 +17,8 @@
 ## Load required libraries
 if (!require("lfmm")) install.packages("lfmm")
 library("lfmm")
-if (!require("LEA")) {source("https://bioconductor.org/biocLite.R"); biocLite("LEA")}
+if (!require("LEA")) {install.packages("BiocManager");
+                      BiocManager::install("LEA", update=F)}
 library("LEA")
 
 ## Set variables:
