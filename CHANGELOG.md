@@ -1,5 +1,11 @@
 # *pyRona* changelog
 
+## Changes made in version 0.3.8
+
+### Updates
+* Changes the Bioconductor install method to the current one
+
+---
 
 ## Changes made in version 0.3.7
 

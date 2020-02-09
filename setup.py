@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2017 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2017-2020 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ if sys.version_info.major < 3:
 
 
 # Set some variables (PKGBUILD inspired)
-VERSION = "0.3.7"
+VERSION = "0.3.8"
 URL = "https://gitlab.com/StuntsPT/pyRona"
 
 
@@ -60,7 +60,9 @@ setup(
                  "Programming Language :: Python :: 3 :: Only",
                  "Programming Language :: Python :: 3.4",
                  "Programming Language :: Python :: 3.5",
-                 "Programming Language :: Python :: 3.6"],
+                 "Programming Language :: Python :: 3.6",
+                 "Programming Language :: Python :: 3.7",
+                 "Programming Language :: Python :: 3.8"],
     data_files=[("bin", ["pyRona/R/Baypass_workflow.R",
                          "pyRona/R/LFMM_workflow.R"])],
     entry_points={
