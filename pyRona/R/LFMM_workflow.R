@@ -31,6 +31,14 @@ target_lfmm = ""
 # Number of "K" to use. You should run the PCA first and then define this number
 # eg. 5
 PCA_points = 5
+PCA_points = "estimate"
+
+if (PCA_points == "estimate") {
+    if (!require("nFactors")) install.packages("lfmm")
+    library("nFactors")
+    PCA_points = as.numeric(as.character(nFactors::nCng(pc$sdev^2, cor=F, details=F)$nFactors))
+    print(PCA_points)
+}
 
 # Path to file with environmental variables. The first column should be the name
 # of the "population" each sample belongs to. Eg. "~/env_names.txt"
