@@ -17,9 +17,13 @@
 ## Load required libraries
 if (!require("lfmm")) install.packages("lfmm")
 library("lfmm")
+
 if (!require("LEA")) {install.packages("BiocManager");
                       BiocManager::install("LEA", update=F)}
 library("LEA")
+
+if (!require("nFactors")) install.packages("nFactors")
+library("nFactors")
 
 ## Set variables:
 # Path to vcf file to convert to lfmm eg. "~/qsuber_GEO.vcf"
@@ -31,13 +35,6 @@ target_lfmm = ""
 # Number of "K" to use. You should run the PCA first and then define this number
 # eg. 5
 PCA_points = 5
-
-if (PCA_points == "estimate") {
-    if (!require("nFactors")) install.packages("lfmm")
-    library("nFactors")
-    PCA_points = as.numeric(as.character(nFactors::nCng(pc$sdev^2, cor=F, details=F)$nFactors))
-    print(PCA_points)
-}
 
 # Path to file with environmental variables. The first column should be the name
 # of the "population" each sample belongs to. Eg. "~/env_names.txt"
@@ -63,14 +60,16 @@ convert_file = function(original_vcf, target_lfmm) {
 
 
 # Performs a preliminary PCA analysis. Use it to determine the best "K"
-preliminary_pca = function(lfmm_file, PCA_points) {
-    genetic_data = read.lfmm(lfmm_file)
+preliminary_pca = function(genetic_data, PCA_points) {
 
     pc <- prcomp(genetic_data)
+    if (PCA_points == "estimate") {
+        PCA_points = as.numeric(as.character(nFactors::nCng(pc$sdev^2, cor=F, details=F)$nFactors))
+    }
     plot(pc$sdev[1:20]^2, xlab = 'PC', ylab = "Variance explained")
     points(PCA_points, pc$sdev[PCA_points]^2, type="h", lwd=3, col="blue")
 
-    return(genetic_data)
+    return(PCA_points)
 }
 
 
@@ -130,7 +129,9 @@ write_associations_table = function(assoc_table, pvalues){
 
 ## Function invocation
 convert_file(original_vcf, target_lfmm)
-genetic_data = preliminary_pca(target_lfmm, PCA_points)
+genetic_data = read.lfmm(target_lfmm)
+
+PCA_points = preliminary_pca(genetic_data, PCA_points)
 
 pvalues = lfmm_estimates(ENV_FILE,
                          genetic_data,
