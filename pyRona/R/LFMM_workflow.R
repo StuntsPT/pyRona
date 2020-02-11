@@ -31,7 +31,6 @@ target_lfmm = ""
 # Number of "K" to use. You should run the PCA first and then define this number
 # eg. 5
 PCA_points = 5
-PCA_points = "estimate"
 
 if (PCA_points == "estimate") {
     if (!require("nFactors")) install.packages("lfmm")
