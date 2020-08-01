@@ -33,7 +33,7 @@ if sys.version_info.major < 3:
 
 
 # Set some variables (PKGBUILD inspired)
-VERSION = "0.3.8"
+VERSION = "0.4.0"
 URL = "https://gitlab.com/StuntsPT/pyRona"
 
 
