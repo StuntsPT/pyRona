@@ -1,5 +1,12 @@
 # *pyRona* changelog
 
+## Changes made in version 0.4.0
+
+### Updates
+* Adds a new workflow script to be able to use lfmm2
+
+---
+
 ## Changes made in version 0.3.8
 
 ### Updates
