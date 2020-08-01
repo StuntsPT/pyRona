@@ -1,5 +1,12 @@
 # *pyRona* changelog
 
+## Changes made in version 0.4.1
+
+### Updates
+* Corrects a bug introduced by changes in numpy 1.19.0
+
+---
+
 ## Changes made in version 0.4.0
 
 ### Updates
