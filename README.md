@@ -16,6 +16,11 @@ A python implementation of "Risk of non Adaptedness" method (with a bit of R too
 If you came here looking for a way to automate the *BayPass* analysis, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/baypass/). You can find the script [here](https://gitlab.com/StuntsPT/pyRona/blob/master/pyRona/R/Baypass_workflow.R).
 
 
+## LFMM and LFMM2 helper scripts
+
+If you came here looking for a way to automate *LFMM*/*LFMM2* analysws, you should be especially interested in it's [manual section](http://pyrona.readthedocs.io/en/latest/lfmm/). You can find the scripts for both *LFMM* and *LFMM2* [here](https://gitlab.com/StuntsPT/pyRona/blob/master/pyRona/R/).
+
+
 ## Installation
 
 Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the command line. For more information, and platform specific instructions, please consult the [relevant manual section](http://pyrona.readthedocs.io/en/latest/install/).
