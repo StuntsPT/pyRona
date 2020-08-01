@@ -95,6 +95,7 @@ def calculate_rona(marker_name, rona, present_covar, future_covar,
     # Remove outliers
     if outliers is True:
         outlier_pos = mor.md_remove_outliers(present_covar, allele_freqs)
+        outlier_pos = np.array(outlier_pos, dtype='int')
         for i in outlier_pos:
             present_covar[i] = np.nan
             future_covar[i] = np.nan
