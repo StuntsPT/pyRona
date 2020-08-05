@@ -1,5 +1,12 @@
 # *pyRona* changelog
 
+## Changes made in version 0.4.2
+
+### Updates
+* Minor improvements to LFMM2_Workflow.R
+
+---
+
 ## Changes made in version 0.4.1
 
 ### Updates
