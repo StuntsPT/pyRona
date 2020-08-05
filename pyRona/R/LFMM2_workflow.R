@@ -77,13 +77,14 @@ lfmm_estimates = function(env_file,
 
     env_file = env_file_compat(env_file)
 
-    mod = lfmm2(input=genetic_data,
+    mod = lfmm2(input=geno_data,
                 env=env_file,
                 K=PCA_points)
     
     pv <- lfmm2.test(object=mod,
-                     input=genetic_data,
-                     env=env_file, linear = TRUE)
+                     input=geno_data,
+                     env=env_file,
+		     linear = TRUE)
     
     pvalues <- t(pv$pvalues)
 
@@ -120,7 +121,7 @@ write_associations_table = function(assoc_table, pvalues){
 }
 
 ## Function invocation
-#convert_file(original_vcf, target_lfmm)
+convert_file(original_vcf, target_lfmm)
 genetic_data = read.lfmm(target_lfmm)
 
 PCA_points = preliminary_pca(genetic_data, PCA_points)
