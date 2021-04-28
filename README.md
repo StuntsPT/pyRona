@@ -28,7 +28,7 @@ Installing *pyRona* can be as simple as typing `pip3 install pyRona` from the co
 
 ## Citation
 
-If you use `pyRona` please cite our pre-print: [New insights on adaptation and population structure of cork oak using genotyping by sequencing](https://doi.org/10.1101/263160)
+If you use `pyRona` please cite our ~~pre-print: [New insights on adaptation and population structure of cork oak using genotyping by sequencing](https://doi.org/10.1101/263160)~~ paper: [New insights into adaptation and population structure of cork oak using genotyping by sequencing](https://onlinelibrary.wiley.com/doi/abs/10.1111/gcb.14497)
 
 
 ## License
