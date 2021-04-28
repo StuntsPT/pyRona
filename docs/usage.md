@@ -20,7 +20,7 @@ This section describes how to use *pyRona*. All options as of version 0.3.3 are 
             - `-pc`: File containing current environmental variables, formatted as per the upstream program input (*Baypass* or *LFMM*)
             - `-fc`: File containing future environmental variables, formatted as per the upstream program input (*Baypass* or *LFMM*)
             - `-out`: File where the plot will be saved. This option is extension aware, and entering the extension as "PDF", "SVG" or "PNG", will make *pyRona* save the plot in the respective format
-            - `-map`: File where a RONA map will be saved. This options is also extension aware. In order to draw the map, `cartopy` must be installed on your system (see [Installation](install.md)) `-map` assumes that the first variable in the environmental file is "Longitude" and the second one is "Latitude"
+            - `-map`: File where a RONA map will be saved. This options is also extension aware. In order to draw the map, `cartopy` must be installed on your system (see [Installation](install.md)) `-map` assumes that the first variable in the environmental file is "Latitude" and the second one is "Longitude"
         - *Baypass* specific options:
             - `-pop`: File with names of populations (one population per line)
             - `-beta`: *BayPass* output "summary_betai"

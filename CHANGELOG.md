@@ -48,7 +48,7 @@
     * In order to use this feature, the dependency [cartopy](http://scitools.org.uk/cartopy/) is required.
     * The [manual](http://pyrona.readthedocs.io/en/latest/install/) now contains instructions on installing `cartopy` depending on your OS
         * Instructions for OSX are still missing. Help, anyone?
-    * For now, the options assumes that the first variable in the environmental file is "Longitude" and the second one is "Latitude"
+    * For now, the options assumes that the first variable in the environmental file is "Latitude" and the second one is "Longitude"
 
 ---
 
