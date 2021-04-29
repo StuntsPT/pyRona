@@ -1,5 +1,15 @@
 # *pyRona* changelog
 
+## Changes made in version 0.4.3
+
+### Bug fixes
+* Fixed a bug with delimiters on LFMM input files (files using tab as a delimiter would cause python tracebacks). A big thank you to Gabriele Nocchi for finding it!
+
+### Documentation Updates
+* Corrected a switched "Latitude" and "Longitude" information in the manual. Once more, big thank you Gabriele Nocchi for spotting it and reporting!
+
+---
+
 ## Changes made in version 0.4.2
 
 ### Updates
