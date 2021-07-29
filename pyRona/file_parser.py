@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2021 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -117,20 +117,14 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
     """
     associations = []
     snp = 0
-    imut_indeces = [int(x) for x in immutables]
+    imut_indeces = [int(x) - 1 for x in immutables]
     results = open(lfmm_results_filename, "r")
-    for lines in results:
-        snp += 1
-        lines = [float(x) for x in lines.split(",")]
-        try:
-            snp_assocs = [(str(snp), str(i)) for i in line_index
-                          if lines[i] < assoc_threshold]
-        except NameError:
-            line_index = list(range(len(lines)))
-            for index in sorted(imut_indeces, reverse=True):
-                del line_index[index]
-            snp_assocs = [(str(snp), str(i)) for i in line_index
-                          if lines[i] < assoc_threshold]
+    for snp, line in enumerate(results):
+
+        line = [float(y) for x, y in enumerate(line.split(","))
+                if x not in imut_indeces]
+        snp_assocs = [(str(snp + 1), str(i)) for i, j in enumerate(line)
+                      if j < assoc_threshold]
 
         associations += snp_assocs
 
