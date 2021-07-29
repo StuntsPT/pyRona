@@ -207,7 +207,7 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
         return id_freqs
 
 
-def parse_lfmm_envfile(envfile_filename):
+def parse_lfmm_envfile(envfile_filename, immutables):
     """
     Parses an ENVFILE (lfmm) input file and returns a list of np arrays
     (one per line). Covariate values are averaged per "population".
@@ -216,7 +216,8 @@ def parse_lfmm_envfile(envfile_filename):
 
     env_data = {}
     for lines in envfile:
-        lines = lines.strip().split()
+        lines = [y for x, y in enumerate(lines.strip().split())
+                 if x not in [int(x) for x in immutables]]
         if lines[0] not in env_data:
             env_data[lines[0]] = np.array([float(x) for x in lines[1:]])
         else:

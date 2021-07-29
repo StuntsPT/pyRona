@@ -207,8 +207,10 @@ def main():
             arg.bayes_factor, arg.immutables)
         al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
     elif arg.upstream == "lfmm":
-        present_covariates = fp.parse_lfmm_envfile(arg.present_covars_file)
-        future_covariates = fp.parse_lfmm_envfile(arg.future_covars_file)
+        present_covariates = fp.parse_lfmm_envfile(arg.present_covars_file,
+                                                   arg.immutables)
+        future_covariates = fp.parse_lfmm_envfile(arg.future_covars_file,
+                                                  arg.immutables)
         assocs = fp.lfmm_results_parser(arg.lfmm_assoc_file,
                                         arg.p_thres,
                                         arg.immutables)
@@ -228,8 +230,8 @@ def main():
         else:
             rona = ronas[covar]
 
-        calculate_rona(marker, rona, present_covariates[int(covar) - 1],
-                       future_covariates[int(covar) - 1],
+        calculate_rona(marker, rona, present_covariates[int(covar)],
+                       future_covariates[int(covar)],
                        al_freqs[marker],
                        arg.plots, arg.outliers, arg.rtype)
 
