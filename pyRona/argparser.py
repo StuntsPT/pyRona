@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2017-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2017-2021 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -96,6 +96,10 @@ def argument_parser(args):
                              help="Provide a path here if you want to draw "
                              "a map plot of your samples. The extension will "
                              "determine the file type (png, svg or pdf).")
+
+        io_opts.add_argument("-covar_names", dest="covar_names_file", type=str,
+                             default=None,
+                             help="File with covariates' names.")
 
         misc_opts.add_argument("-draw-ind-plots", dest="plots",
                                default=None, required=False, type=str,

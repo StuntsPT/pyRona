@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# Copyright 2016-2018 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2016-2021 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -200,25 +200,39 @@ def main():
 
     if arg.upstream == "baypass":
         present_covariates = fp.parse_baypass_envfile(arg.present_covars_file)
+        if arg.covar_names_file is None:
+            covar_names = [str(x + 1) for x in range(present_covariates.shape[1])]
+        else:
+            covar_names = fp.popnames_parser(arg.covar_names_file)
         future_covariates = fp.parse_baypass_envfile(arg.future_covars_file)
         RonaClass.POP_NAMES = fp.popnames_parser(arg.popnames_file)
         assocs = fp.baypass_summary_betai_parser(
             arg.baypass_summary_betai_file,
-            arg.bayes_factor, arg.immutables)
+            arg.bayes_factor, arg.immutables,
+            covar_names)
         al_freqs = fp.baypass_pij_parser(arg.baypass_pij_file, assocs)
     elif arg.upstream == "lfmm":
-        present_covariates = fp.parse_lfmm_envfile(arg.present_covars_file,
-                                                   arg.immutables)
-        future_covariates = fp.parse_lfmm_envfile(arg.future_covars_file,
-                                                  arg.immutables)
+        present_covariates = fp.parse_lfmm_envfile(arg.present_covars_file)
+        if arg.covar_names_file is None:
+            covar_names = [str(x + 1) for x in range(present_covariates.shape[1])]
+        else:
+            covar_names = fp.popnames_parser(arg.covar_names_file)
+        future_covariates = fp.parse_lfmm_envfile(arg.future_covars_file)
         assocs = fp.lfmm_results_parser(arg.lfmm_assoc_file,
                                         arg.p_thres,
-                                        arg.immutables)
+                                        arg.immutables,
+                                        covar_names)
         RonaClass.POP_NAMES, al_freqs = fp.lfmm_to_pop_allele_freqs(
             arg.allele_freqs_file,
             arg.present_covars_file,
             assocs,
             popnames=True)
+
+
+    present_covariates = np.core.records.fromarrays(present_covariates,
+                                                    names=covar_names)
+    future_covariates = np.core.records.fromarrays(future_covariates,
+                                                   names=covar_names)
 
     ronas = {}
     for assoc in assocs:
@@ -230,8 +244,8 @@ def main():
         else:
             rona = ronas[covar]
 
-        calculate_rona(marker, rona, present_covariates[int(covar)],
-                       future_covariates[int(covar)],
+        calculate_rona(marker, rona,
+                       present_covariates[covar], future_covariates[covar],
                        al_freqs[marker],
                        arg.plots, arg.outliers, arg.rtype)
 

@@ -26,12 +26,11 @@ def parse_baypass_envfile(envfile_filename):
     Parses an ENVFILE (baypass) input file and returns a list of np arrays
     (one per line)
     """
-    envfile = open(envfile_filename, 'r')
-    covariates = []
-    for lines in envfile:
-        covariates.append(np.array([float(x) for x in lines.split()]))
+    covariates = np.genfromtxt(envfile_filename, delimiter='\t')
+    #if names is None:
+        #names = [str(x + 1) for x in range(covariates.shape[1])]
 
-    envfile.close()
+    #covariates = np.core.records.fromarrays(covariates, names=names)
 
     return covariates
 
@@ -52,7 +51,8 @@ def popnames_parser(popnames_file):
     return popnames
 
 
-def baypass_summary_betai_parser(summary_filename, bf_treshold, immutables):
+def baypass_summary_betai_parser(summary_filename, bf_treshold,
+                                 immutables, covar_names):
     """
     Parses a baypass summary file to extract any significant associations
     between a marker and a covariate.
@@ -75,7 +75,8 @@ def baypass_summary_betai_parser(summary_filename, bf_treshold, immutables):
             marker_id = splitline[1]
             bf_value = float(splitline[bf_col])
             if bf_value >= float(bf_treshold):
-                associations.append((marker_id, covariate))
+                associations.append((marker_id,
+                                     covar_names[int(covariate) - 1]))
 
     summary.close()
 
@@ -108,7 +109,8 @@ def baypass_pij_parser(pij_filename, associations):
 
 
 # LFMM exclusive functions
-def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
+def lfmm_results_parser(lfmm_results_filename, assoc_threshold,
+                        immutables, covar_names):
     """
     Parses a lfmm results file to extract any significant associations
     between a marker and a covariate.
@@ -121,10 +123,11 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold, immutables):
     results = open(lfmm_results_filename, "r")
     for snp, line in enumerate(results):
 
-        line = [float(y) for x, y in enumerate(line.split(","))
-                if x not in imut_indeces]
-        snp_assocs = [(str(snp + 1), str(i)) for i, j in enumerate(line)
-                      if j < assoc_threshold]
+        # line = [float(y) for x, y in enumerate(line.split(","))
+        #         if x not in imut_indeces]
+        snp_assocs = [(str(snp + 1), covar_names[i]) for i, j in
+                      enumerate(line.split(","))
+                      if float(j) < assoc_threshold and i not in imut_indeces]
 
         associations += snp_assocs
 
@@ -207,7 +210,7 @@ def lfmm_to_pop_allele_freqs(lfmm_filename, env_filename, associations,
         return id_freqs
 
 
-def parse_lfmm_envfile(envfile_filename, immutables):
+def parse_lfmm_envfile(envfile_filename):
     """
     Parses an ENVFILE (lfmm) input file and returns a list of np arrays
     (one per line). Covariate values are averaged per "population".
@@ -216,8 +219,7 @@ def parse_lfmm_envfile(envfile_filename, immutables):
 
     env_data = {}
     for lines in envfile:
-        lines = [y for x, y in enumerate(lines.strip().split())
-                 if x not in [int(x) for x in immutables]]
+        lines = lines.strip().split()
         if lines[0] not in env_data:
             env_data[lines[0]] = np.array([float(x) for x in lines[1:]])
         else:
@@ -230,5 +232,6 @@ def parse_lfmm_envfile(envfile_filename, immutables):
     covariates = []
     for pop in env_data.values():
         covariates.append(np.array([np.average(x) for x in pop.T]))
-    covariates = np.array(covariates)
-    return list(covariates.T)
+    covariates = np.array(covariates).T
+
+    return covariates
