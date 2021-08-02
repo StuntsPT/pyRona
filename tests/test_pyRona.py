@@ -670,17 +670,18 @@ def test_argument_parser():
 
     test_arguments = pr.argument_parser(args)
     test_arguments = str(test_arguments).strip().replace("Namespace(", "")[:-1]
+    test_arguments = [x.strip() for x in test_arguments.split(",")]
 
     control_arguments = [
-        "upstream='baypass'", " bayes_factor=20.0",
-        " baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out'",
-        " baypass_summary_betai_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out'",
-        " future_covars_file='..tests/data/ENVFILE_rpc85'",
-        " immutables=[]", " map_filename=None", " num_covars=3",
-        " outfile='/home/baptista/Music/LOL'",
-        " outliers=True", " plots='/tmp/indplots'",
-        " popnames_file='..tests/data/popnames_single_GEO.txt'",
-        " present_covars_file='..tests/data/ENVFILE'", " rtype='absdiff'",
-        " use_weights=True", " covar_names_file=None"]
+        "upstream='baypass'", "bayes_factor=20.0",
+        "baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out'",
+        "baypass_summary_betai_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out'",
+        "future_covars_file='..tests/data/ENVFILE_rpc85'",
+        "immutables=[]", "map_filename=None", "num_covars=3",
+        "outfile='/home/baptista/Music/LOL'",
+        "outliers=True", "plots='/tmp/indplots'",
+        "popnames_file='..tests/data/popnames_single_GEO.txt'",
+        "present_covars_file='..tests/data/ENVFILE'", "rtype='absdiff'",
+        "use_weights=True", "covar_names_file=None"]
 
-    assert sorted(test_arguments.split(",")) == sorted(control_arguments)
+    assert sorted(test_arguments) == sorted(control_arguments)
