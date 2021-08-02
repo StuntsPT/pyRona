@@ -1,5 +1,16 @@
 # *pyRona* changelog
 
+## Changes made in version 0.4.4
+
+### Bug fixes
+* Fixed a bug with individual plots when using LFMM (which would cause the wrong covariate to be shown in the plot). Another big thank you to Gabriele Nocchi for finding it!
+
+### New feature
+* You can now provide a file with covariate names (one per line), and all plots will use this information instead of simply numbering the covariates.
+* If you do not provide this file, by default your covariates will be numbered, **starting with 1** (previous to version 0.4.4 they were 0 indexed).
+
+---
+
 ## Changes made in version 0.4.3
 
 ### Bug fixes
