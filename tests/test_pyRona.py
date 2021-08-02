@@ -669,10 +669,11 @@ def test_argument_parser():
             '-draw-ind-plots', '/tmp/indplots']
 
     test_arguments = pr.argument_parser(args)
+    test_arguments = str(test_arguments).strip().replace("Namespace(", "")[:-1]
 
     control_arguments = [
-        "Namespace(upstream='baypass'", " bayes_factor=20.0",
-        " baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out')",
+        "upstream='baypass'", " bayes_factor=20.0",
+        " baypass_pij_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out'",
         " baypass_summary_betai_file='..tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out'",
         " future_covars_file='..tests/data/ENVFILE_rpc85'",
         " immutables=[]", " map_filename=None", " num_covars=3",
@@ -682,4 +683,4 @@ def test_argument_parser():
         " present_covars_file='..tests/data/ENVFILE'", " rtype='absdiff'",
         " use_weights=True", " covar_names_file=None"]
 
-    assert sorted(str(test_arguments).strip().split(",")) == sorted(control_arguments)
+    assert sorted(test_arguments.split(",")) == sorted(control_arguments)
