@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-# Copyright 2017-2020 Francisco Pina Martins <f.pinamartins@gmail.com>
+# Copyright 2017-2021 Francisco Pina Martins <f.pinamartins@gmail.com>
 # This file is part of pyRona.
 # pyRona is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ if sys.version_info.major < 3:
 
 
 # Set some variables (PKGBUILD inspired)
-VERSION = "0.4.3"
+VERSION = "0.4.4"
 URL = "https://gitlab.com/StuntsPT/pyRona"
 
 
