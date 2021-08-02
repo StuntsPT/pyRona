@@ -122,7 +122,7 @@ def lfmm_results_parser(lfmm_results_filename, assoc_threshold,
     imut_indeces = [int(x) - 1 for x in immutables]
     results = open(lfmm_results_filename, "r")
     for snp, line in enumerate(results):
-
+        line = line.strip()
         # line = [float(y) for x, y in enumerate(line.split(","))
         #         if x not in imut_indeces]
         snp_assocs = [(str(snp + 1), covar_names[i]) for i, j in

@@ -58,7 +58,7 @@ def test_baypass_s_b_p():
     """
     test_betai = fp.baypass_summary_betai_parser(
         "../tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out", 20,
-        ["1", "2", "3"])
+        ["1", "2", "3"], [str(x + 1) for x in range(16)])
 
     with open("../tests/data/jar/"
               "file_parser.baypass_summary_betai_parser.pickle", "rb") as fle:
@@ -75,7 +75,7 @@ def test_baypass_pij_parser():
         "../tests/data/Qsuber_GBS_mcmc_aux_summary_pij.out",
         fp.baypass_summary_betai_parser(
             "../tests/data/Qsuber_GBS_mcmc_aux_summary_betai.out",
-            20, ["1", "2", "3"]))
+            20, ["1", "2", "3"], [str(x + 1) for x in range(16)]))
 
     with open("../tests/data/jar/"
               "file_parser.baypass_pij_parser.pickle", "rb") as fle:
@@ -91,12 +91,13 @@ def test_lfmm_res_parser():
     lfmm_results = fp.lfmm_results_parser(
         "../tests/data/Qsuber_lfmm_results.csv",
         0.01,
-        ["1", "2", "3"])
+        ["1", "2", "3"],
+        [str(x) for x in range(16)])
     with open("../tests/data/jar/file_parser.lfmm_results_parser.pickle",
               "rb") as fle:
         control_pvalues = pickle.load(fle)
 
-    assert str(lfmm_results) == str(control_pvalues)
+    assert lfmm_results == control_pvalues
 
 
 def test_lfmm_to_pop_allele_freqs():
